@@ -14,13 +14,13 @@ import org.junit.Test;
 
 public class CamelCMISTest extends CamelTestSupport {
 
-	final String CMIS_URI="cmis://http://10.2.152.147:8181/alfresco/cmisatom#?username=talend.esb&password=t1esb23$$&repositoryId=02254d16-d664-4178-894d-e586ce7f211";
+	final String CMIS_URI="cmis://http://vm-dconvjboss-1.ammscloud.com:8181/alfresco/cmisatom#?username=talend.esb&password=t1esb23$$&repositoryId=-default-";
 //	final String CMIS_URI="cmis://http://cmis.alfresco.com/cmisatom?username=admin&password=admin&repositoryId=bb212ecb-122d-47ea-b5c1-128affb9cd8f";
 	
     @Test
     public void testCMISAlfrescoQuery() throws Exception {
         MockEndpoint mock = getMockEndpoint("mock:result");
-        mock.expectedMessageCount(1);
+        mock.expectedMinimumMessageCount(1);
 
 //        template.sendBody("direct:query", "SELECT * FROM cmis:folder WHERE cmis:name LIKE 'camel%'");
         template.sendBody("direct:query", "SELECT * FROM cmis:folder");
@@ -68,8 +68,12 @@ public class CamelCMISTest extends CamelTestSupport {
 //                        exchange.getIn().getHeaders().put(CamelCMISConstants.CMIS_FOLDER_PATH, "/cameldemoFolder");
 //                        exchange.getIn().getHeaders().put(CamelCMISConstants.CMIS_FOLDER_PATH, "/");
                     	
-                    	exchange.getIn().getHeaders().put(PropertyIds.NAME, "cameldemoFolder");
-                        exchange.getIn().getHeaders().put(PropertyIds.OBJECT_TYPE_ID, CamelCMISConstants.CMIS_FOLDER); 
+                      exchange.getIn().getHeaders().put(PropertyIds.CONTENT_STREAM_MIME_TYPE, "text/plain; charset=UTF-8");
+                      exchange.getIn().getHeaders().put(PropertyIds.NAME, "cameldemo2.txt");
+                      exchange.getIn().getHeaders().put(CamelCMISConstants.CMIS_FOLDER_PATH, "/Sites/regional-office-1/documentLibrary/Open Exceptions");
+                    	
+//                    	exchange.getIn().getHeaders().put(PropertyIds.NAME, "cameldemoFolder");
+//                        exchange.getIn().getHeaders().put(PropertyIds.OBJECT_TYPE_ID, CamelCMISConstants.CMIS_FOLDER); 
                     }
                 })
                 .to(CMIS_URI)
