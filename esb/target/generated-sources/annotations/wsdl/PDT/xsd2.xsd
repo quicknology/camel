@@ -1,0 +1,1916 @@
+<?xml version='1.0' encoding='UTF-8'?><!-- Published by JAX-WS RI at http://jax-ws.dev.java.net. RI's version is Oracle JAX-WS 2.1.5. --><xs:schema xmlns:tns="http://vbms.vba.va.gov/cdm" xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified" version="1.0" targetNamespace="http://vbms.vba.va.gov/cdm">
+
+<xs:element name="faultDetailBean" type="tns:FaultDetailBean"/>
+
+<xs:complexType name="DocumentType">
+<xs:complexContent>
+<xs:extension base="tns:LookUpValue">
+<xs:sequence/>
+<xs:attribute name="filenetDocumentClass" type="xs:string"/>
+<xs:attribute name="cdmDocumentClass" type="xs:string"/>
+</xs:extension>
+</xs:complexContent>
+</xs:complexType>
+
+<xs:complexType name="LookUpValue">
+<xs:sequence/>
+<xs:attribute name="ID" type="xs:long" use="required"/>
+<xs:attribute name="name" type="xs:string" use="required"/>
+<xs:attribute name="description" type="xs:string"/>
+</xs:complexType>
+
+<xs:complexType name="WorkFlow">
+<xs:complexContent>
+<xs:extension base="tns:LookUpValue">
+<xs:sequence>
+<xs:element name="createDate" type="xs:date"/>
+<xs:element name="lastUpdateDate" type="xs:date" minOccurs="0"/>
+</xs:sequence>
+</xs:extension>
+</xs:complexContent>
+</xs:complexType>
+
+<xs:complexType name="DocumentCategory">
+<xs:complexContent>
+<xs:extension base="tns:LookUpValue">
+<xs:sequence>
+<xs:element name="createDt" type="xs:date" minOccurs="0"/>
+<xs:element name="lastUpdateDt" type="xs:date" minOccurs="0"/>
+<xs:element name="expirationDt" type="xs:date" minOccurs="0"/>
+</xs:sequence>
+<xs:attribute name="subLabel" type="xs:string"/>
+<xs:attribute name="subDescription" type="xs:string"/>
+</xs:extension>
+</xs:complexContent>
+</xs:complexType>
+
+<xs:complexType name="Department">
+<xs:complexContent>
+<xs:extension base="tns:LookUpValue">
+<xs:sequence>
+<xs:element name="createDate" type="xs:date"/>
+<xs:element name="lastUpdateDate" type="xs:date" minOccurs="0"/>
+</xs:sequence>
+</xs:extension>
+</xs:complexContent>
+</xs:complexType>
+
+<xs:complexType name="Document">
+<xs:sequence>
+<xs:element name="annotation" type="tns:Annotation" nillable="true" minOccurs="0" maxOccurs="unbounded"/>
+<xs:element name="docContent" type="xs:base64Binary" minOccurs="0"/>
+<xs:element name="trackedItems" type="tns:TrackedItem"/>
+<xs:element name="createDt" type="xs:date" minOccurs="0"/>
+<xs:element name="lastUpdateDt" type="xs:date" minOccurs="0"/>
+<xs:element name="receivedDt" type="xs:date" minOccurs="0"/>
+</xs:sequence>
+<xs:attribute name="ID" type="xs:string" use="required"/>
+<xs:attribute name="actionable" type="xs:boolean" use="required"/>
+<xs:attribute name="externalID" type="xs:string" use="required"/>
+<xs:attribute name="Veteran_Person_ID" type="xs:long" use="required"/>
+<xs:attribute name="path" type="xs:string" use="required"/>
+<xs:attribute name="fileNumber" type="xs:string" use="required"/>
+<xs:attribute name="filename" type="xs:string" use="required"/>
+<xs:attribute name="createUser_ID" type="xs:string" use="required"/>
+<xs:attribute name="category" type="xs:string"/>
+<xs:attribute name="docType" type="xs:string" use="required"/>
+<xs:attribute name="metadata" type="xs:string"/>
+<xs:attribute name="newMail" type="xs:boolean" use="required"/>
+<xs:attribute name="mimeType" type="xs:string" use="required"/>
+<xs:attribute name="subject" type="xs:string"/>
+<xs:attribute name="endProduct" type="xs:string"/>
+<xs:attribute name="source" type="xs:string"/>
+<xs:attribute name="shippingNum" type="xs:string"/>
+<xs:attribute name="veteranFirstName" type="xs:string"/>
+<xs:attribute name="veteranMiddleName" type="xs:string"/>
+<xs:attribute name="veteranLastName" type="xs:string"/>
+<xs:attribute name="veteranSuffix" type="xs:string"/>
+</xs:complexType>
+
+<xs:complexType name="Annotation">
+<xs:sequence>
+<xs:element name="content" type="xs:string"/>
+<xs:element name="createDt" type="xs:date"/>
+<xs:element name="lastUpdateDt" type="xs:date" minOccurs="0"/>
+</xs:sequence>
+<xs:attribute name="ID" type="xs:long" use="required"/>
+<xs:attribute name="documentID" type="xs:string" use="required"/>
+<xs:attribute name="text" type="xs:string"/>
+<xs:attribute name="type" type="xs:string" use="required"/>
+<xs:attribute name="createUser_ID" type="xs:long" use="required"/>
+<xs:attribute name="modifiedUser_ID" type="xs:long"/>
+<xs:attribute name="jpaVersion" type="xs:long" use="required"/>
+</xs:complexType>
+
+<xs:complexType name="TrackedItem">
+<xs:sequence>
+<xs:element name="document" type="tns:Document"/>
+<xs:element name="requestDt" type="xs:date"/>
+<xs:element name="suspenseDt" type="xs:date"/>
+<xs:element name="closeDt" type="xs:date"/>
+<xs:element name="inErrorDt" type="xs:date"/>
+<xs:element name="followUpDt" type="xs:date"/>
+<xs:element name="secondFollowUpDt" type="xs:date" minOccurs="0"/>
+<xs:element name="createDt" type="xs:date" minOccurs="0"/>
+<xs:element name="lastUpdateDt" type="xs:date" minOccurs="0"/>
+<xs:element name="receivedDt" type="xs:date"/>
+</xs:sequence>
+<xs:attribute name="ID" type="xs:long" use="required"/>
+<xs:attribute name="Claim_ID" type="xs:long" use="required"/>
+<xs:attribute name="itemRequested" type="xs:string" use="required"/>
+<xs:attribute name="sentTo" type="xs:string" use="required"/>
+</xs:complexType>
+
+<xs:complexType name="Type526Document">
+<xs:complexContent>
+<xs:extension base="tns:Document">
+<xs:sequence>
+<xs:element name="contentions" type="xs:string" nillable="true" minOccurs="0" maxOccurs="unbounded"/>
+</xs:sequence>
+</xs:extension>
+</xs:complexContent>
+</xs:complexType>
+
+<xs:complexType name="FormDocument">
+<xs:complexContent>
+<xs:extension base="tns:Document">
+<xs:sequence>
+<xs:element name="formFields" type="tns:FormField" nillable="true" minOccurs="0" maxOccurs="unbounded"/>
+</xs:sequence>
+</xs:extension>
+</xs:complexContent>
+</xs:complexType>
+
+<xs:complexType name="FormField">
+<xs:sequence>
+<xs:element name="value" type="xs:anyType"/>
+</xs:sequence>
+<xs:attribute name="name" type="xs:string" use="required"/>
+<xs:attribute name="maxLength" type="xs:long"/>
+<xs:attribute name="required" type="xs:boolean"/>
+</xs:complexType>
+
+<xs:complexType name="LetterDocument">
+<xs:complexContent>
+<xs:extension base="tns:Document">
+<xs:sequence/>
+<xs:attribute name="claimId" type="xs:string"/>
+<xs:attribute name="letterId" type="xs:string"/>
+</xs:extension>
+</xs:complexContent>
+</xs:complexType>
+
+<xs:complexType name="FaultDetailBean">
+<xs:sequence/>
+<xs:attribute name="exceptionClassName" type="xs:string"/>
+<xs:attribute name="message" type="xs:string" use="required"/>
+<xs:attribute name="uid" type="xs:string"/>
+<xs:attribute name="serverException" type="xs:boolean" use="required"/>
+</xs:complexType>
+
+<xs:complexType name="DisabilityBodySystem">
+<xs:sequence>
+<xs:element name="bodySystem" type="tns:BodySystem"/>
+<xs:element name="createDt" type="xs:date" minOccurs="0"/>
+<xs:element name="lastUpdateDt" type="xs:date" minOccurs="0"/>
+<xs:element name="expirationDt" type="xs:date" minOccurs="0"/>
+<xs:element name="disability" type="tns:Disability"/>
+</xs:sequence>
+<xs:attribute name="ID" type="xs:long" use="required"/>
+</xs:complexType>
+
+<xs:complexType name="BodySystem">
+<xs:sequence>
+<xs:element name="createDt" type="xs:date"/>
+<xs:element name="lastUpdateDt" type="xs:date"/>
+<xs:element name="expirationDt" type="xs:date" minOccurs="0"/>
+<xs:element name="suggestionSource" type="tns:SuggestionSource"/>
+</xs:sequence>
+<xs:attribute name="suggestedInd" type="xs:boolean" use="required"/>
+<xs:attribute name="ID" type="xs:long" use="required"/>
+<xs:attribute name="mainSystem" type="xs:string" use="required"/>
+<xs:attribute name="subSystem" type="xs:string" use="required"/>
+<xs:attribute name="positionInList" type="xs:int"/>
+<xs:attribute name="score" type="xs:float"/>
+</xs:complexType>
+
+<xs:complexType name="Disability">
+<xs:sequence>
+<xs:element name="createDt" type="xs:date" minOccurs="0"/>
+<xs:element name="lastUpdateDt" type="xs:date" minOccurs="0"/>
+<xs:element name="expirationDt" type="xs:date" minOccurs="0"/>
+</xs:sequence>
+<xs:attribute name="ID" type="xs:long" use="required"/>
+<xs:attribute name="name" type="xs:string" use="required"/>
+</xs:complexType>
+
+<xs:complexType name="FieldError">
+<xs:sequence/>
+<xs:attribute name="fieldName" type="xs:string"/>
+<xs:attribute name="fieldValue" type="xs:string"/>
+<xs:attribute name="errorMessage" type="xs:string"/>
+</xs:complexType>
+
+<xs:complexType name="DocumentTypeCategoryAssoc">
+<xs:sequence>
+<xs:element name="createDt" type="xs:date" minOccurs="0"/>
+<xs:element name="lastUpdateDt" type="xs:date" minOccurs="0"/>
+<xs:element name="expirationDt" type="xs:date" minOccurs="0"/>
+</xs:sequence>
+<xs:attribute name="typeId" type="xs:long"/>
+<xs:attribute name="categoryId" type="xs:long"/>
+</xs:complexType>
+
+<xs:complexType name="ThirdPartyLetter">
+<xs:complexContent>
+<xs:extension base="tns:Letter">
+<xs:sequence>
+<xs:element name="providerAddress" type="tns:Address" minOccurs="0"/>
+<xs:element name="contentions" type="tns:ThirdPartyContention" nillable="true" minOccurs="0" maxOccurs="unbounded"/>
+<xs:element name="claimant" type="tns:Participant"/>
+<xs:element name="claim" type="tns:Claim" minOccurs="0"/>
+<xs:element name="veteran" type="tns:Veteran" minOccurs="0"/>
+</xs:sequence>
+<xs:attribute name="providerName" type="xs:string"/>
+</xs:extension>
+</xs:complexContent>
+</xs:complexType>
+
+<xs:complexType name="Letter">
+<xs:sequence>
+<xs:element name="senderAddress" type="tns:Address"/>
+<xs:element name="recipientAddress" type="tns:Address"/>
+<xs:element name="generationDate" type="xs:date"/>
+<xs:element name="salutation" type="xs:string" default="Dear"/>
+<xs:element name="body" type="tns:LetterBody"/>
+<xs:element name="signature" type="xs:string"/>
+<xs:element name="enclosure" type="xs:string" nillable="true" minOccurs="0" maxOccurs="unbounded"/>
+<xs:element name="blameLine" type="xs:string" minOccurs="0"/>
+<xs:element name="carbonCopy" type="xs:string" nillable="true" minOccurs="0" maxOccurs="unbounded"/>
+<xs:element name="sentDate" type="xs:date"/>
+<xs:element name="stationNumber" type="tns:RegionalOffice" minOccurs="0"/>
+<xs:element name="createDt" type="xs:date" minOccurs="0"/>
+<xs:element name="lastUpdateDt" type="xs:date" minOccurs="0"/>
+<xs:element name="vbmsUser" type="tns:VBMSUser"/>
+</xs:sequence>
+<xs:attribute name="letterType" type="xs:string"/>
+<xs:attribute name="documentType" type="xs:long" use="required"/>
+<xs:attribute name="claim_ID" type="xs:long" use="required"/>
+<xs:attribute name="unique_ID" type="xs:string"/>
+<xs:attribute name="expirationDt" type="xs:date"/>
+<xs:attribute name="ID" type="xs:long" use="required"/>
+<xs:attribute name="status" type="xs:string" use="required"/>
+</xs:complexType>
+
+<xs:complexType name="Address">
+<xs:sequence>
+<xs:element name="source" type="tns:Source"/>
+<xs:element name="createDt" type="xs:date" minOccurs="0"/>
+<xs:element name="lastUpdateDt" type="xs:date" minOccurs="0"/>
+</xs:sequence>
+<xs:attribute name="ID" type="xs:long" use="required"/>
+<xs:attribute name="addressLine1" type="xs:string" use="required"/>
+<xs:attribute name="addressLine2" type="xs:string"/>
+<xs:attribute name="addressLine3" type="xs:string"/>
+<xs:attribute name="AddressType_ID" type="xs:long"/>
+<xs:attribute name="city" type="xs:string" use="required"/>
+<xs:attribute name="State_Code" type="xs:string"/>
+<xs:attribute name="Country_Code" type="xs:string"/>
+<xs:attribute name="postalCode" type="xs:string" use="required"/>
+<xs:attribute name="preferredAddrInd" type="xs:boolean" use="required"/>
+<xs:attribute name="jpaVersion" type="xs:long" use="required"/>
+</xs:complexType>
+
+<xs:complexType name="Source">
+<xs:sequence>
+<xs:element name="sourceDt" type="xs:date" minOccurs="0"/>
+<xs:element name="createDt" type="xs:date" minOccurs="0"/>
+<xs:element name="lastUpdateDt" type="xs:date" minOccurs="0"/>
+</xs:sequence>
+<xs:attribute name="ID" type="xs:long" use="required"/>
+<xs:attribute name="VBMSUser_ID" type="xs:string"/>
+<xs:attribute name="sourceName" type="xs:string" use="required"/>
+<xs:attribute name="jpaVersion" type="xs:long" use="required"/>
+</xs:complexType>
+
+<xs:complexType name="ThirdPartyContention">
+<xs:sequence/>
+<xs:attribute name="id" type="xs:long"/>
+<xs:attribute name="contentionId" type="xs:long"/>
+<xs:attribute name="letterId" type="xs:long"/>
+<xs:attribute name="startDate" type="xs:date"/>
+<xs:attribute name="endDate" type="xs:date"/>
+<xs:attribute name="name" type="xs:string"/>
+<xs:attribute name="expirationDt" type="xs:date"/>
+</xs:complexType>
+
+<xs:complexType name="Participant">
+<xs:complexContent>
+<xs:extension base="tns:Person">
+<xs:sequence/>
+<xs:attribute name="externalPartID" type="xs:string"/>
+</xs:extension>
+</xs:complexContent>
+</xs:complexType>
+
+<xs:complexType name="Person">
+<xs:complexContent>
+<xs:extension base="tns:Party">
+<xs:sequence>
+<xs:element name="alternateNames" type="tns:AlternateName" nillable="true" minOccurs="0" maxOccurs="unbounded"/>
+<xs:element name="personalInfo" type="tns:PersonalInfo" minOccurs="0"/>
+<xs:element name="namePrefix" type="tns:NamePrefix" minOccurs="0"/>
+</xs:sequence>
+<xs:attribute name="firstName" type="xs:string" use="required"/>
+<xs:attribute name="middleName" type="xs:string"/>
+<xs:attribute name="lastName" type="xs:string" use="required"/>
+<xs:attribute name="gender" type="xs:string" use="required"/>
+<xs:attribute name="NameSuffix_ID" type="xs:string"/>
+</xs:extension>
+</xs:complexContent>
+</xs:complexType>
+
+<xs:complexType name="Party" abstract="true">
+<xs:sequence>
+<xs:element name="createDt" type="xs:date" minOccurs="0"/>
+<xs:element name="lastUpdateDt" type="xs:date" minOccurs="0"/>
+</xs:sequence>
+<xs:attribute name="ID" type="xs:long" use="required"/>
+</xs:complexType>
+
+<xs:complexType name="AlternateName">
+<xs:sequence>
+<xs:element name="source" type="tns:Source" minOccurs="0"/>
+<xs:element name="namePrefix" type="tns:NamePrefix" minOccurs="0"/>
+<xs:element name="createDt" type="xs:date" minOccurs="0"/>
+<xs:element name="lastUpdateDt" type="xs:date" minOccurs="0"/>
+</xs:sequence>
+<xs:attribute name="ID" type="xs:long" use="required"/>
+<xs:attribute name="Person_ID" type="xs:long" use="required"/>
+<xs:attribute name="firstName" type="xs:string" use="required"/>
+<xs:attribute name="middleName" type="xs:string"/>
+<xs:attribute name="lastName" type="xs:string" use="required"/>
+<xs:attribute name="NameSuffix_ID" type="xs:long"/>
+</xs:complexType>
+
+<xs:complexType name="NamePrefix">
+<xs:sequence/>
+<xs:attribute name="ID" type="xs:long" use="required"/>
+<xs:attribute name="prefix" type="xs:string" use="required"/>
+<xs:attribute name="bgsInd" type="xs:boolean" use="required"/>
+</xs:complexType>
+
+<xs:complexType name="PersonalInfo">
+<xs:sequence>
+<xs:element name="address" type="tns:Address" nillable="true" minOccurs="0" maxOccurs="unbounded"/>
+<xs:element name="eMail" type="tns:Email" nillable="true" minOccurs="0" maxOccurs="unbounded"/>
+<xs:element name="criminalInfo" type="tns:CriminalInfo" nillable="true" minOccurs="0" maxOccurs="unbounded"/>
+<xs:element name="financialInfo" type="tns:FinancialInfo" nillable="true" minOccurs="0" maxOccurs="unbounded"/>
+<xs:element name="insuranceInfo" type="tns:InsuranceInfo" nillable="true" minOccurs="0" maxOccurs="unbounded"/>
+<xs:element name="phone" type="tns:Phone" nillable="true" minOccurs="0" maxOccurs="unbounded"/>
+<xs:element name="dateOfBirth" type="xs:date"/>
+<xs:element name="dateOfDeath" type="xs:date" minOccurs="0"/>
+<xs:element name="currentOccupationStartDt" type="xs:date" minOccurs="0"/>
+<xs:element name="createDt" type="xs:date" minOccurs="0"/>
+<xs:element name="lastUpdateDt" type="xs:date" minOccurs="0"/>
+</xs:sequence>
+<xs:attribute name="Person_ID" type="xs:long" use="required"/>
+<xs:attribute name="birthCity" type="xs:string" use="required"/>
+<xs:attribute name="birthState_Code" type="xs:string"/>
+<xs:attribute name="birthCountry_Code" type="xs:string"/>
+<xs:attribute name="causeOfDeath" type="xs:string"/>
+<xs:attribute name="ssn" type="xs:string"/>
+<xs:attribute name="ssnValidation" type="xs:string"/>
+<xs:attribute name="noSsnReason" type="xs:string"/>
+<xs:attribute name="employmentInd" type="xs:boolean" use="required"/>
+<xs:attribute name="currentOccupation" type="xs:string"/>
+<xs:attribute name="potentialDangersInd" type="xs:boolean" use="required"/>
+<xs:attribute name="employmenHdcpInd" type="xs:boolean" use="required"/>
+<xs:attribute name="birthplaceValidation" type="xs:string"/>
+<xs:attribute name="dobValidation" type="xs:string"/>
+</xs:complexType>
+
+<xs:complexType name="Email">
+<xs:sequence>
+<xs:element name="source" type="tns:Source"/>
+<xs:element name="createDt" type="xs:date" minOccurs="0"/>
+<xs:element name="lastUpdateDt" type="xs:date" minOccurs="0"/>
+</xs:sequence>
+<xs:attribute name="ID" type="xs:long" use="required"/>
+<xs:attribute name="PersonalInfo_Person_ID" type="xs:long" use="required"/>
+<xs:attribute name="eMail" type="xs:string" use="required"/>
+<xs:attribute name="EmailType" type="xs:string"/>
+<xs:attribute name="notes" type="xs:string"/>
+<xs:attribute name="preferredEmailInd" type="xs:boolean" use="required"/>
+</xs:complexType>
+
+<xs:complexType name="CriminalInfo">
+<xs:sequence>
+<xs:element name="dateSentToJail" type="xs:date"/>
+<xs:element name="dateReleasedFromJail" type="xs:date"/>
+<xs:element name="paroleEndDt" type="xs:date"/>
+<xs:element name="createDt" type="xs:date" minOccurs="0"/>
+<xs:element name="lastUpdateDt" type="xs:date" minOccurs="0"/>
+</xs:sequence>
+<xs:attribute name="ID" type="xs:long" use="required"/>
+<xs:attribute name="PersonalInfo_Person_ID" type="xs:long" use="required"/>
+<xs:attribute name="crimeCommitted" type="xs:string" use="required"/>
+<xs:attribute name="verdict" type="xs:string" use="required"/>
+<xs:attribute name="sentence" type="xs:string" use="required"/>
+<xs:attribute name="stateOfCrime" type="xs:string"/>
+<xs:attribute name="countryOfCrime" type="xs:string"/>
+<xs:attribute name="onParoleInd" type="xs:boolean" use="required"/>
+<xs:attribute name="prisonName" type="xs:string"/>
+<xs:attribute name="cityOfCrime" type="xs:string" use="required"/>
+</xs:complexType>
+
+<xs:complexType name="FinancialInfo">
+<xs:sequence>
+<xs:element name="createDt" type="xs:date" minOccurs="0"/>
+<xs:element name="lastUpdateDt" type="xs:date" minOccurs="0"/>
+</xs:sequence>
+<xs:attribute name="ID" type="xs:long" use="required"/>
+<xs:attribute name="PersonalInfo_Person_ID" type="xs:long" use="required"/>
+<xs:attribute name="disabilitySeverancePay" type="xs:decimal" use="required"/>
+<xs:attribute name="lumpReadjPay" type="xs:decimal" use="required"/>
+<xs:attribute name="netWorthAmnt" type="xs:decimal" use="required"/>
+<xs:attribute name="substananceAmnt" type="xs:decimal" use="required"/>
+<xs:attribute name="taxAbatement" type="xs:string"/>
+<xs:attribute name="taxID" type="xs:string" use="required"/>
+</xs:complexType>
+
+<xs:complexType name="InsuranceInfo">
+<xs:sequence>
+<xs:element name="policyStartDt" type="xs:date"/>
+<xs:element name="policyEndDt" type="xs:date"/>
+<xs:element name="createDt" type="xs:date" minOccurs="0"/>
+<xs:element name="lastUpdateDt" type="xs:date" minOccurs="0"/>
+</xs:sequence>
+<xs:attribute name="ID" type="xs:long" use="required"/>
+<xs:attribute name="PersonalInfo_Person_ID" type="xs:long" use="required"/>
+<xs:attribute name="providerName" type="xs:string" use="required"/>
+<xs:attribute name="insuredName" type="xs:string" use="required"/>
+<xs:attribute name="policyPrefix" type="xs:string" use="required"/>
+<xs:attribute name="policyNumber" type="xs:string" use="required"/>
+<xs:attribute name="policyGroupNumber" type="xs:string" use="required"/>
+</xs:complexType>
+
+<xs:complexType name="Phone">
+<xs:sequence>
+<xs:element name="source" type="tns:Source"/>
+<xs:element name="createDt" type="xs:date" minOccurs="0"/>
+<xs:element name="lastUpdateDt" type="xs:date" minOccurs="0"/>
+</xs:sequence>
+<xs:attribute name="ID" type="xs:long" use="required"/>
+<xs:attribute name="phoneNumber" type="xs:string" use="required"/>
+<xs:attribute name="timeToCall" type="tns:TimeToCall"/>
+<xs:attribute name="notes" type="xs:string"/>
+<xs:attribute name="PhoneType_ID" type="xs:string"/>
+<xs:attribute name="preferredPhoneInd" type="xs:boolean" use="required"/>
+</xs:complexType>
+
+<xs:complexType name="Organization">
+<xs:complexContent>
+<xs:extension base="tns:Party">
+<xs:sequence>
+<xs:element name="PoC_Person_Party_ID" type="xs:long" minOccurs="0" maxOccurs="unbounded"/>
+<xs:element name="email" type="tns:Email" nillable="true" minOccurs="0" maxOccurs="unbounded"/>
+</xs:sequence>
+<xs:attribute name="name" type="xs:string" use="required"/>
+</xs:extension>
+</xs:complexContent>
+</xs:complexType>
+
+<xs:complexType name="VSOInfo">
+<xs:complexContent>
+<xs:extension base="tns:Organization">
+<xs:sequence/>
+<xs:attribute name="Veteran_Person_ID" type="xs:long" use="required"/>
+<xs:attribute name="reasonForUse" type="xs:string" use="required"/>
+</xs:extension>
+</xs:complexContent>
+</xs:complexType>
+
+<xs:complexType name="PowerOfAttorney">
+<xs:complexContent>
+<xs:extension base="tns:Organization">
+<xs:sequence>
+<xs:element name="paperworkReceivedDt" type="xs:date"/>
+<xs:element name="establishedDt" type="xs:date"/>
+<xs:element name="revokedDt" type="xs:date" minOccurs="0"/>
+<xs:element name="poaFlag" type="tns:POAAccessibilityFlag"/>
+</xs:sequence>
+<xs:attribute name="Veteran_Person_ID" type="xs:long" use="required"/>
+<xs:attribute name="type" type="xs:string" use="required"/>
+</xs:extension>
+</xs:complexContent>
+</xs:complexType>
+
+<xs:complexType name="POAAccessibilityFlag">
+<xs:sequence>
+<xs:element name="createDt" type="xs:date" minOccurs="0"/>
+<xs:element name="lastUpdateDt" type="xs:date" minOccurs="0"/>
+<xs:element name="expirationDt" type="xs:date" minOccurs="0"/>
+<xs:element name="createdUser" type="tns:VBMSUser"/>
+<xs:element name="lastUpdatedUser" type="tns:VBMSUser"/>
+<xs:element name="poaAccessibilityPK" type="tns:POAAccessibilityPK"/>
+</xs:sequence>
+<xs:attribute name="accessible" type="xs:boolean" use="required"/>
+<xs:attribute name="jpaVersion" type="xs:long" use="required"/>
+</xs:complexType>
+
+<xs:complexType name="VBMSUser">
+<xs:sequence>
+<xs:element name="vbmsUserRoles" type="tns:VBMSUserRole" maxOccurs="unbounded"/>
+<xs:element name="createDt" type="xs:date" minOccurs="0"/>
+<xs:element name="lastUpdateDt" type="xs:date" minOccurs="0"/>
+<xs:element name="stationNumber" type="tns:RegionalOffice"/>
+<xs:element name="lastLogInDt" type="xs:date" minOccurs="0"/>
+</xs:sequence>
+<xs:attribute name="vbmsID" type="xs:long"/>
+<xs:attribute name="ID" type="xs:long"/>
+<xs:attribute name="name" type="xs:string"/>
+<xs:attribute name="userID" type="xs:string" use="required"/>
+<xs:attribute name="externalUserID" type="xs:string"/>
+<xs:attribute name="externalKey" type="xs:string"/>
+<xs:attribute name="securityLevel" type="xs:long" use="required"/>
+<xs:attribute name="jpaVersion" type="xs:long" use="required"/>
+</xs:complexType>
+
+<xs:complexType name="VBMSUserRole">
+<xs:sequence>
+<xs:element name="department" type="tns:Department"/>
+</xs:sequence>
+<xs:attribute name="ID" type="xs:long" use="required"/>
+<xs:attribute name="name" type="xs:string" use="required"/>
+<xs:attribute name="description" type="xs:string"/>
+</xs:complexType>
+
+<xs:complexType name="RegionalOffice">
+<xs:sequence>
+<xs:element name="area" type="tns:RegionalArea"/>
+<xs:element name="physicalAddress" type="tns:Address"/>
+<xs:element name="mailingAddress" type="tns:Address"/>
+<xs:element name="createDt" type="xs:date" minOccurs="0"/>
+<xs:element name="lastUpdateDt" type="xs:date" minOccurs="0"/>
+</xs:sequence>
+<xs:attribute name="stationNumber" type="xs:string" use="required"/>
+<xs:attribute name="roName" type="xs:string" use="required"/>
+<xs:attribute name="jpaVersion" type="xs:long" use="required"/>
+</xs:complexType>
+
+<xs:complexType name="POAAccessibilityPK">
+<xs:sequence/>
+<xs:attribute name="veteranID" type="xs:long" use="required"/>
+<xs:attribute name="poaID" type="xs:long" use="required"/>
+</xs:complexType>
+
+<xs:complexType name="Veteran">
+<xs:complexContent>
+<xs:extension base="tns:Person">
+<xs:sequence>
+<xs:element name="ServiceInfo" type="tns:ServiceInfo" minOccurs="0" maxOccurs="unbounded"/>
+<xs:element name="marriageInfo" type="tns:MarriageInfo" nillable="true" minOccurs="0" maxOccurs="unbounded"/>
+</xs:sequence>
+<xs:attribute name="combinedDegree" type="xs:string"/>
+<xs:attribute name="competencyRating" type="xs:string"/>
+<xs:attribute name="competency" type="xs:string"/>
+<xs:attribute name="fileNumber" type="xs:string"/>
+<xs:attribute name="survivingSpouseInd" type="xs:boolean" use="required"/>
+<xs:attribute name="marriageStatus" type="xs:string" use="required"/>
+</xs:extension>
+</xs:complexContent>
+</xs:complexType>
+
+<xs:complexType name="ServiceInfo">
+<xs:sequence>
+<xs:element name="Decorations" type="tns:Decoration" minOccurs="0" maxOccurs="unbounded"/>
+<xs:element name="deploymentInfo" type="tns:DeploymentInfo" nillable="true" minOccurs="0" maxOccurs="unbounded"/>
+<xs:element name="powInfo" type="tns:PowInfo" nillable="true" minOccurs="0" maxOccurs="unbounded"/>
+<xs:element name="enteredOnDutyDt" type="xs:date"/>
+<xs:element name="releasedActiveDutyDt" type="xs:date" minOccurs="0"/>
+<xs:element name="createDt" type="xs:date" minOccurs="0"/>
+<xs:element name="lastUpdateDt" type="xs:date" minOccurs="0"/>
+</xs:sequence>
+<xs:attribute name="ID" type="xs:long" use="required"/>
+<xs:attribute name="Veteran_Person_ID" type="xs:long" use="required"/>
+<xs:attribute name="fileNbr" type="xs:string" use="required"/>
+<xs:attribute name="activeDutyTrainingInd" type="xs:boolean" use="required"/>
+<xs:attribute name="serviceBranch" type="xs:string" use="required"/>
+<xs:attribute name="burialFlagIssueInd" type="xs:boolean" use="required"/>
+<xs:attribute name="charOfService" type="xs:string" use="required"/>
+<xs:attribute name="dischargeType" type="xs:string" use="required"/>
+<xs:attribute name="dischargeReason" type="xs:string" use="required"/>
+<xs:attribute name="externalKey" type="xs:string" use="required"/>
+<xs:attribute name="frgnSvcNbr" type="xs:string"/>
+<xs:attribute name="gulfSvcInd" type="xs:boolean" use="required"/>
+<xs:attribute name="medalOfHonorInd" type="xs:boolean" use="required"/>
+<xs:attribute name="mltyPersonInd" type="xs:boolean" use="required"/>
+<xs:attribute name="nonPayDays" type="xs:integer" use="required"/>
+<xs:attribute name="payGrade" type="xs:string" use="required"/>
+<xs:attribute name="purpleHeartInd" type="xs:boolean" use="required"/>
+<xs:attribute name="reenlistedInd" type="xs:boolean" use="required"/>
+<xs:attribute name="separationReason" type="xs:string" use="required"/>
+<xs:attribute name="subBranch" type="xs:string" use="required"/>
+<xs:attribute name="seperationPayAmt" type="xs:decimal"/>
+<xs:attribute name="serviceNumber" type="xs:string" use="required"/>
+<xs:attribute name="totalActiveSvcDays" type="xs:integer" use="required"/>
+<xs:attribute name="transferReservesInd" type="xs:boolean" use="required"/>
+<xs:attribute name="typeOfDuty" type="xs:string"/>
+<xs:attribute name="vetInd" type="xs:boolean" use="required"/>
+<xs:attribute name="vadsInd" type="xs:boolean" use="required"/>
+<xs:attribute name="vaEmployeeInd" type="xs:boolean" use="required"/>
+<xs:attribute name="verifiedServiceInd" type="xs:boolean" use="required"/>
+<xs:attribute name="vietnamSvcInd" type="xs:boolean" use="required"/>
+<xs:attribute name="anotherNameServedUnder" type="xs:string"/>
+<xs:attribute name="reserveStatus" type="xs:string"/>
+</xs:complexType>
+
+<xs:complexType name="Decoration">
+<xs:sequence/>
+<xs:attribute name="ID" type="xs:long" use="required"/>
+<xs:attribute name="name" type="xs:string" use="required"/>
+<xs:attribute name="awardDt" type="xs:string" use="required"/>
+</xs:complexType>
+
+<xs:complexType name="DeploymentInfo">
+<xs:sequence>
+<xs:element name="inTheaterStartDt" type="xs:date"/>
+<xs:element name="inTheaterEndDt" type="xs:date"/>
+<xs:element name="createDt" type="xs:date" minOccurs="0"/>
+<xs:element name="lastUpdateDt" type="xs:date" minOccurs="0"/>
+</xs:sequence>
+<xs:attribute name="ID" type="xs:long" use="required"/>
+<xs:attribute name="ServiceInfo_ID" type="xs:long" use="required"/>
+<xs:attribute name="inTheaterDays" type="xs:int" use="required"/>
+</xs:complexType>
+
+<xs:complexType name="PowInfo">
+<xs:sequence>
+<xs:element name="captureDt" type="xs:date"/>
+<xs:element name="releaseDt" type="xs:date"/>
+<xs:element name="createDt" type="xs:date" minOccurs="0"/>
+<xs:element name="lastUpdateDt" type="xs:date" minOccurs="0"/>
+</xs:sequence>
+<xs:attribute name="ID" type="xs:long" use="required"/>
+<xs:attribute name="ServiceInfo_ID" type="xs:long" use="required"/>
+<xs:attribute name="powValidation" type="xs:string" use="required"/>
+<xs:attribute name="powDays" type="xs:integer" use="required"/>
+<xs:attribute name="countryOfCaptivityCd" type="xs:string" use="required"/>
+<xs:attribute name="captivityLocation" type="xs:string" use="required"/>
+<xs:attribute name="captors" type="xs:string" use="required"/>
+<xs:attribute name="militaryTheater" type="xs:string" use="required"/>
+</xs:complexType>
+
+<xs:complexType name="MarriageInfo">
+<xs:sequence>
+<xs:element name="marriageDate" type="xs:date"/>
+<xs:element name="marriageCity" type="xs:string"/>
+<xs:element name="marriageState" type="xs:string"/>
+<xs:element name="firstName" type="xs:string"/>
+<xs:element name="lastName" type="xs:string"/>
+</xs:sequence>
+<xs:attribute name="marriageType" type="xs:string"/>
+<xs:attribute name="terminateType" type="xs:string"/>
+<xs:attribute name="terminateDate" type="xs:date"/>
+<xs:attribute name="terminateCity" type="xs:string"/>
+<xs:attribute name="terminateState" type="xs:string"/>
+<xs:attribute name="spouseVeteranInd" type="xs:boolean"/>
+<xs:attribute name="spouseFileNumber" type="xs:string"/>
+<xs:attribute name="spouseCoLivingInd" type="xs:boolean"/>
+<xs:attribute name="monthlySupportAmt" type="xs:decimal"/>
+</xs:complexType>
+
+<xs:complexType name="Dependent">
+<xs:complexContent>
+<xs:extension base="tns:Person">
+<xs:sequence>
+<xs:element name="relationship" type="xs:string"/>
+</xs:sequence>
+<xs:attribute name="Veteran_Person_ID" type="xs:long" use="required"/>
+<xs:attribute name="relativeStatus" type="xs:string" use="required"/>
+<xs:attribute name="veteranInd" type="xs:boolean" use="required"/>
+<xs:attribute name="relatedToVetInd" type="xs:boolean" use="required"/>
+<xs:attribute name="proofOfDependancy" type="xs:boolean" use="required"/>
+<xs:attribute name="Relationship_ID" type="xs:string"/>
+<xs:attribute name="awardInd" type="xs:boolean" use="required"/>
+</xs:extension>
+</xs:complexContent>
+</xs:complexType>
+
+<xs:complexType name="Child">
+<xs:complexContent>
+<xs:extension base="tns:Dependent">
+<xs:sequence/>
+<xs:attribute name="marriageStatus" type="xs:string"/>
+<xs:attribute name="marriageDate" type="xs:date"/>
+<xs:attribute name="activeDutyMilitaryInd" type="xs:boolean"/>
+<xs:attribute name="schoolGoingInd" type="xs:boolean"/>
+<xs:attribute name="seriouslyDiabledInd" type="xs:boolean"/>
+<xs:attribute name="biologicalInd" type="xs:boolean"/>
+<xs:attribute name="adoptedInd" type="xs:boolean"/>
+<xs:attribute name="stepChildInd" type="xs:boolean"/>
+<xs:attribute name="previouslyMarriedInd" type="xs:boolean"/>
+<xs:attribute name="nameOfPersonLivingWith" type="xs:string"/>
+<xs:attribute name="notLivingWithInd" type="xs:boolean"/>
+</xs:extension>
+</xs:complexContent>
+</xs:complexType>
+
+<xs:complexType name="Parent">
+<xs:complexContent>
+<xs:extension base="tns:Dependent">
+<xs:sequence/>
+<xs:attribute name="relationshipType" type="xs:string"/>
+<xs:attribute name="netWorthAmt" type="xs:decimal"/>
+<xs:attribute name="incomeAmt" type="xs:decimal"/>
+<xs:attribute name="expenseAmt" type="xs:decimal"/>
+<xs:attribute name="financialDependencyInd" type="xs:boolean"/>
+<xs:attribute name="expenseIncomeGapCoverageSource" type="xs:string"/>
+<xs:attribute name="coLivingParentDependentFlag" type="xs:boolean"/>
+<xs:attribute name="coLivingVeteranDependentFlag" type="xs:boolean"/>
+</xs:extension>
+</xs:complexContent>
+</xs:complexType>
+
+<xs:complexType name="Spouse">
+<xs:complexContent>
+<xs:extension base="tns:Dependent">
+<xs:sequence>
+<xs:element name="marriageInfo" type="tns:MarriageInfo" nillable="true" minOccurs="0" maxOccurs="unbounded"/>
+</xs:sequence>
+</xs:extension>
+</xs:complexContent>
+</xs:complexType>
+
+<xs:complexType name="Claim">
+<xs:sequence>
+<xs:element name="EndProductClaimType" type="tns:CodeValue"/>
+<xs:element name="claimDateDt" type="xs:date"/>
+<xs:element name="flashList" type="tns:Flash" nillable="true" minOccurs="0" maxOccurs="unbounded"/>
+<xs:element name="suspenseDate" type="xs:date" minOccurs="0"/>
+<xs:element name="contentions" type="tns:Contention" maxOccurs="unbounded"/>
+<xs:element name="inTakeSite" type="xs:string" minOccurs="0"/>
+<xs:element name="suppressAckLetterInd" type="xs:boolean" default="false"/>
+<xs:element name="futureReason" type="xs:string" minOccurs="0"/>
+</xs:sequence>
+<xs:attribute name="ID" type="xs:long" use="required"/>
+<xs:attribute name="Participant_Person_ID" type="xs:long" use="required"/>
+<xs:attribute name="PowerOfAttorney_ID" type="xs:string"/>
+<xs:attribute name="Veteran_Person_ID" type="xs:long" use="required"/>
+<xs:attribute name="InsuranceInfo_ID" type="xs:long"/>
+<xs:attribute name="benefitTypeCd" type="xs:string"/>
+<xs:attribute name="claimLevelStatusCd" type="xs:string" use="required"/>
+<xs:attribute name="modifiedEndProductCd" type="xs:string"/>
+<xs:attribute name="gulfWarRegistryInd" type="xs:boolean" use="required"/>
+<xs:attribute name="label" type="xs:string" use="required"/>
+<xs:attribute name="payeeCd" type="xs:string" use="required"/>
+<xs:attribute name="sectionUnit" type="xs:string"/>
+<xs:attribute name="serviceTypeCd" type="xs:string"/>
+<xs:attribute name="specialIssueCd" type="xs:string"/>
+<xs:attribute name="stationOfJurisdiction" type="xs:string" use="required"/>
+<xs:attribute name="currentStationOfJurisdiction" type="xs:string"/>
+<xs:attribute name="suspenseReasonCd" type="xs:string"/>
+<xs:attribute name="suspenseReasonComments" type="xs:string"/>
+<xs:attribute name="priority" type="xs:string" use="required"/>
+<xs:attribute name="td" type="xs:string"/>
+<xs:attribute name="disposition" type="xs:string"/>
+<xs:attribute name="folderWithClaim" type="xs:string"/>
+<xs:attribute name="preDischargeInd" type="xs:boolean"/>
+</xs:complexType>
+
+<xs:complexType name="CodeValue">
+<xs:sequence>
+<xs:element name="createDt" type="xs:date"/>
+<xs:element name="lastUpdateDt" type="xs:date" minOccurs="0"/>
+<xs:element name="expirationDt" type="xs:date" minOccurs="0"/>
+</xs:sequence>
+<xs:attribute name="code" type="xs:string" use="required"/>
+<xs:attribute name="name" type="xs:string" use="required"/>
+</xs:complexType>
+
+<xs:complexType name="EndProduct">
+<xs:complexContent>
+<xs:extension base="tns:CodeValue">
+<xs:sequence/>
+<xs:attribute name="description" type="xs:string"/>
+<xs:attribute name="jpaVersion" type="xs:long" use="required"/>
+</xs:extension>
+</xs:complexContent>
+</xs:complexType>
+
+<xs:complexType name="SuspenseReason">
+<xs:complexContent>
+<xs:extension base="tns:CodeValue">
+<xs:sequence/>
+<xs:attribute name="jpaVersion" type="xs:long" use="required"/>
+</xs:extension>
+</xs:complexContent>
+</xs:complexType>
+
+<xs:complexType name="Flash">
+<xs:sequence>
+<xs:element name="createDt" type="xs:date" minOccurs="0"/>
+<xs:element name="lastUpdateDt" type="xs:date" minOccurs="0"/>
+</xs:sequence>
+<xs:attribute name="assignedInd" type="xs:string" use="required"/>
+<xs:attribute name="name" type="xs:string" use="required"/>
+<xs:attribute name="type" type="xs:string" use="required"/>
+<xs:attribute name="ID" type="xs:long" use="required"/>
+</xs:complexType>
+
+<xs:complexType name="Contention">
+<xs:sequence>
+<xs:element name="createDt" type="xs:date" minOccurs="0"/>
+<xs:element name="completionDate" type="xs:date" minOccurs="0"/>
+<xs:element name="source" type="tns:Source" minOccurs="0"/>
+<xs:element name="submitDate" type="xs:date"/>
+<xs:element name="issue" type="tns:Issue" nillable="true" minOccurs="0" maxOccurs="unbounded"/>
+<xs:element name="startDate" type="xs:date"/>
+</xs:sequence>
+<xs:attribute name="ID" type="xs:string" use="required"/>
+<xs:attribute name="Claim_ID" type="xs:long" use="required"/>
+<xs:attribute name="actionableItemInd" type="xs:boolean" use="required"/>
+<xs:attribute name="awaitingResponse" type="xs:string" use="required"/>
+<xs:attribute name="classificationCd" type="xs:string"/>
+<xs:attribute name="decisionHistoryCd" type="xs:string"/>
+<xs:attribute name="decisionHistoryNotes" type="xs:string"/>
+<xs:attribute name="decisionStatusCode" type="xs:string"/>
+<xs:attribute name="fileNumber" type="xs:string"/>
+<xs:attribute name="levelStatusCode" type="xs:string"/>
+<xs:attribute name="medicalInd" type="xs:boolean" use="required"/>
+<xs:attribute name="partcipantContention" type="xs:string" use="required"/>
+<xs:attribute name="secondaryToContentionID" type="xs:string" use="required"/>
+<xs:attribute name="title" type="xs:string" use="required"/>
+<xs:attribute name="typeCode" type="xs:string"/>
+<xs:attribute name="workingContention" type="xs:string" use="required"/>
+<xs:attribute name="contentionCategory" type="tns:ContentionCategory"/>
+</xs:complexType>
+
+<xs:complexType name="Issue">
+<xs:sequence>
+<xs:element name="specificRating" type="xs:string" nillable="true" minOccurs="0" maxOccurs="unbounded"/>
+<xs:element name="createDt" type="xs:date" minOccurs="0"/>
+<xs:element name="lastUpdateDt" type="xs:date" minOccurs="0"/>
+</xs:sequence>
+<xs:attribute name="ID" type="xs:long" use="required"/>
+<xs:attribute name="contentionID" type="xs:string" use="required"/>
+<xs:attribute name="inferredInd" type="xs:boolean" use="required"/>
+<xs:attribute name="narrative" type="xs:string"/>
+<xs:attribute name="typeCd" type="xs:string"/>
+</xs:complexType>
+
+<xs:complexType name="LetterBody">
+<xs:sequence>
+<xs:element name="paragraphs" type="tns:Paragraph" nillable="true" minOccurs="0" maxOccurs="unbounded"/>
+<xs:element name="freeText" type="xs:string" minOccurs="0"/>
+<xs:element name="sections" type="tns:LetterSection" nillable="true" minOccurs="0" maxOccurs="unbounded"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="Paragraph">
+<xs:sequence>
+<xs:element name="text" type="xs:string" minOccurs="0"/>
+<xs:element name="fillIns" type="tns:FillIn" nillable="true" minOccurs="0" maxOccurs="unbounded"/>
+<xs:element name="developmentActions" type="tns:DevelopmentAction" nillable="true" minOccurs="0" maxOccurs="unbounded"/>
+</xs:sequence>
+<xs:attribute name="id" type="xs:long" use="required"/>
+</xs:complexType>
+
+<xs:complexType name="FillIn">
+<xs:sequence>
+<xs:element name="description" type="xs:string" minOccurs="0"/>
+<xs:element name="stringValue" type="xs:string" nillable="true" minOccurs="0" maxOccurs="unbounded"/>
+<xs:element name="dateValue" type="xs:date" minOccurs="0" maxOccurs="unbounded"/>
+<xs:element name="longValue" type="xs:long" minOccurs="0" maxOccurs="unbounded"/>
+<xs:element name="intValue" type="xs:integer" nillable="true" minOccurs="0" maxOccurs="unbounded"/>
+<xs:element name="floatValue" type="xs:decimal" nillable="true" minOccurs="0" maxOccurs="unbounded"/>
+<xs:element name="moneyValue" type="xs:decimal" nillable="true" minOccurs="0" maxOccurs="unbounded"/>
+</xs:sequence>
+<xs:attribute name="name" type="xs:string" use="required"/>
+<xs:attribute name="type" type="xs:string" use="required"/>
+<xs:attribute name="multipleValuesAllowed" type="xs:boolean" use="required"/>
+</xs:complexType>
+
+<xs:complexType name="DevelopmentAction">
+<xs:sequence>
+<xs:element name="customTitle" type="xs:string" minOccurs="0"/>
+<xs:element name="customText" type="xs:string" minOccurs="0"/>
+<xs:element name="documentId" type="xs:string" minOccurs="0"/>
+<xs:element name="externalId" type="xs:string" minOccurs="0"/>
+<xs:element name="createDate" type="xs:date" minOccurs="0"/>
+<xs:element name="standardDevelopmentActionDesc" type="xs:string" minOccurs="0"/>
+<xs:element name="standardDevelopmentActionCode" type="xs:string" minOccurs="0"/>
+<xs:element name="rulesBasedInd" type="xs:string" minOccurs="0"/>
+<xs:element name="suspenseDate" type="xs:date" minOccurs="0"/>
+<xs:element name="suspenseUnit" type="xs:string" minOccurs="0"/>
+<xs:element name="suspenseDuration" type="xs:int" minOccurs="0"/>
+<xs:element name="paragraphId" type="xs:string" minOccurs="0"/>
+<xs:element name="piesRequestCode" type="xs:string" minOccurs="0"/>
+<xs:element name="locationId" type="xs:string" minOccurs="0"/>
+<xs:element name="participantId" type="xs:string" minOccurs="0"/>
+<xs:element name="headingId" type="xs:string" minOccurs="0"/>
+<xs:element name="customHeadingId" type="xs:string" minOccurs="0"/>
+<xs:element name="federalAgencyIndicator" type="xs:string" minOccurs="0"/>
+<xs:element name="outputArguments" type="tns:OutputArgument" nillable="true" minOccurs="0" maxOccurs="unbounded"/>
+<xs:element name="devPlanTaskActivityActionId" type="xs:string" minOccurs="0"/>
+</xs:sequence>
+<xs:attribute name="ID" type="xs:long"/>
+<xs:attribute name="standardDevelopmentAction_ID" type="xs:string"/>
+<xs:attribute name="suspenseDays" type="xs:int"/>
+<xs:attribute name="benefitTypeCode" type="xs:string"/>
+<xs:attribute name="contention_ID" type="xs:string"/>
+</xs:complexType>
+
+<xs:complexType name="OutputArgument">
+<xs:sequence>
+<xs:element name="keyWordText" type="xs:string"/>
+<xs:element name="developmentActionId" type="xs:string"/>
+<xs:element name="rowNumber" type="xs:integer"/>
+<xs:element name="columnNumber" type="xs:int"/>
+<xs:element name="valueText" type="xs:string"/>
+<xs:element name="contentionId" type="xs:int" minOccurs="0"/>
+<xs:element name="outgoingDocumentId" type="xs:int" minOccurs="0"/>
+<xs:element name="participantOutgoingDocumentTypeName" type="xs:string"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="LetterSection">
+<xs:sequence>
+<xs:element name="paragraphs" type="tns:Paragraph" nillable="true" minOccurs="0" maxOccurs="unbounded"/>
+<xs:element name="freeText" type="xs:string" minOccurs="0"/>
+</xs:sequence>
+<xs:attribute name="id" type="xs:long"/>
+<xs:attribute name="letterId" type="xs:long"/>
+<xs:attribute name="sectionHeader" type="xs:string" use="required"/>
+<xs:attribute name="expirationDt" type="xs:date"/>
+</xs:complexType>
+
+<xs:complexType name="ClaimDevelopmentLetter">
+<xs:complexContent>
+<xs:extension base="tns:Letter">
+<xs:sequence>
+<xs:element name="isDevelopmentRequired" type="xs:boolean"/>
+<xs:element name="isEvidenceFound" type="xs:boolean"/>
+<xs:element name="contentions" type="tns:Contention" nillable="true" minOccurs="0" maxOccurs="unbounded"/>
+<xs:element name="unsolicitedEvidence" type="tns:UnsolicitedEvidence" nillable="true" minOccurs="0" maxOccurs="unbounded"/>
+<xs:element name="trackedItems" type="tns:TrackedItem" nillable="true" minOccurs="0" maxOccurs="unbounded"/>
+<xs:element name="developmentItems" type="xs:string" nillable="true" minOccurs="0" maxOccurs="unbounded"/>
+<xs:element name="rbaEvalutations" type="tns:RBAEvaluation" nillable="true" minOccurs="0" maxOccurs="unbounded"/>
+<xs:element name="claimant" type="tns:Participant"/>
+<xs:element name="claim" type="tns:Claim" minOccurs="0"/>
+<xs:element name="veteran" type="tns:Veteran" minOccurs="0"/>
+<xs:element name="isAdditionalEvidenceNeeded" type="xs:boolean"/>
+</xs:sequence>
+</xs:extension>
+</xs:complexContent>
+</xs:complexType>
+
+<xs:complexType name="UnsolicitedEvidence">
+<xs:sequence>
+<xs:element name="rcvdDt" type="xs:date"/>
+</xs:sequence>
+<xs:attribute name="jrnDt" type="xs:date"/>
+<xs:attribute name="descTxt" type="xs:string"/>
+<xs:attribute name="evdnceTypeCd" type="xs:string"/>
+<xs:attribute name="Incoming_Document_ID" type="xs:string"/>
+<xs:attribute name="Participant_Person_ID" type="xs:string"/>
+<xs:attribute name="UserProfile_UserName" type="xs:string"/>
+</xs:complexType>
+
+<xs:complexType name="RBAEvaluation">
+<xs:sequence>
+<xs:element name="percentNumber" type="xs:string"/>
+<xs:element name="descriptionText" type="xs:string"/>
+<xs:element name="paragraphText" type="xs:string"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="DevelopmentItem">
+<xs:sequence>
+<xs:element name="shortName" type="xs:string"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="ClaimWorkItem">
+<xs:complexContent>
+<xs:extension base="tns:WorkItem">
+<xs:sequence>
+<xs:element name="EndProductClaimType" type="tns:CodeValue"/>
+<xs:element name="suspenseDate" type="xs:date" minOccurs="0"/>
+<xs:element name="claimDateDt" type="xs:date" minOccurs="0"/>
+<xs:element name="claimStatus" type="tns:ClaimStatus"/>
+</xs:sequence>
+<xs:attribute name="claimID" type="xs:long" use="required"/>
+<xs:attribute name="modifiedEndProductCd" type="xs:long"/>
+<xs:attribute name="claimStatusName" type="xs:string"/>
+<xs:attribute name="claimStatusCode" type="xs:string"/>
+<xs:attribute name="participantPersonId" type="xs:long"/>
+<xs:attribute name="stationOfJurisdiction" type="xs:string"/>
+<xs:attribute name="veteranPersonID" type="xs:long"/>
+<xs:attribute name="terminalDigit" type="xs:long"/>
+<xs:attribute name="contentionsCount" type="xs:long"/>
+<xs:attribute name="claimantFirstName" type="xs:string"/>
+<xs:attribute name="claimantLastName" type="xs:string"/>
+<xs:attribute name="veteranFirstName" type="xs:string"/>
+<xs:attribute name="veteranLastName" type="xs:string"/>
+<xs:attribute name="fileNumber" type="xs:string"/>
+<xs:attribute name="vsrId" type="xs:long"/>
+<xs:attribute name="suspenseReason" type="xs:string"/>
+</xs:extension>
+</xs:complexContent>
+</xs:complexType>
+
+<xs:complexType name="WorkItem" abstract="true">
+<xs:sequence>
+<xs:element name="department" type="tns:Department" minOccurs="0"/>
+<xs:element name="status" type="tns:WorkItemStatus"/>
+<xs:element name="priority" type="tns:WorkItemPriority"/>
+<xs:element name="regionalOffice" type="tns:RegionalOffice" minOccurs="0"/>
+<xs:element name="workFlow" type="tns:WorkFlow"/>
+<xs:element name="createDate" type="xs:date"/>
+<xs:element name="lastUpdateDate" type="xs:date" minOccurs="0"/>
+</xs:sequence>
+<xs:attribute name="ID" type="xs:long" use="required"/>
+<xs:attribute name="type" type="xs:string" use="required"/>
+<xs:attribute name="assignedTo" type="xs:string"/>
+<xs:attribute name="jpaVersion" type="xs:long" use="required"/>
+<xs:attribute name="brokered" type="xs:boolean" use="required"/>
+</xs:complexType>
+
+<xs:complexType name="BrokeredClaimWorkItem">
+<xs:complexContent>
+<xs:extension base="tns:ClaimWorkItem">
+<xs:sequence>
+<xs:element name="brokeredItem" type="tns:BrokeredItem"/>
+</xs:sequence>
+</xs:extension>
+</xs:complexContent>
+</xs:complexType>
+
+<xs:complexType name="BrokeredItem">
+<xs:sequence>
+<xs:element name="id" type="xs:long"/>
+<xs:element name="createDate" type="xs:date"/>
+<xs:element name="lastUpdateDate" type="xs:date" minOccurs="0"/>
+<xs:element name="originRO" type="tns:RegionalOffice"/>
+<xs:element name="destinationRO" type="tns:RegionalOffice"/>
+<xs:element name="dateReceived" type="xs:date"/>
+<xs:element name="dateSent" type="xs:date"/>
+<xs:element name="expirationDt" type="xs:date"/>
+<xs:element name="brokerOfficial" type="tns:VBMSUser"/>
+<xs:element name="brokerNote" type="tns:Notes"/>
+</xs:sequence>
+<xs:attribute name="workItemId" type="xs:long"/>
+</xs:complexType>
+
+<xs:complexType name="Notes">
+<xs:sequence>
+<xs:element name="createDt" type="xs:date" minOccurs="0"/>
+<xs:element name="lastUpdateDt" type="xs:date" minOccurs="0"/>
+<xs:element name="expirationDt" type="xs:date" minOccurs="0"/>
+<xs:element name="vbmsUser" type="tns:VBMSUser"/>
+</xs:sequence>
+<xs:attribute name="ID" type="xs:long" use="required"/>
+<xs:attribute name="extItemID" type="xs:string"/>
+<xs:attribute name="extItemTypeLuID" type="xs:long"/>
+<xs:attribute name="narrative" type="xs:string" use="required"/>
+<xs:attribute name="actionTaken" type="xs:string"/>
+<xs:attribute name="jpaVersion" type="xs:long" use="required"/>
+<xs:attribute name="editable" type="xs:boolean"/>
+</xs:complexType>
+
+<xs:complexType name="BodySystemRecommendation">
+<xs:sequence>
+<xs:element name="ID" type="xs:long"/>
+<xs:element name="contentionID" type="xs:string"/>
+<xs:element name="contentionText" type="xs:string"/>
+<xs:element name="bodySystemID" type="xs:long"/>
+<xs:element name="bodySystem" type="xs:string"/>
+<xs:element name="bodyPart" type="xs:string"/>
+<xs:element name="suggestionSource" type="tns:SuggestionSource"/>
+<xs:element name="createDt" type="xs:date"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="LetterElement">
+<xs:sequence>
+<xs:element name="Letter" type="tns:Letter" minOccurs="0"/>
+<xs:element name="letterAssociation" type="tns:LetterAssociation" minOccurs="0"/>
+<xs:element name="createDt" type="xs:date" minOccurs="0"/>
+<xs:element name="lastUpdateDt" type="xs:date" minOccurs="0"/>
+<xs:element name="vbmsUser" type="tns:VBMSUser"/>
+</xs:sequence>
+<xs:attribute name="ID" type="xs:long" use="required"/>
+<xs:attribute name="contentType" type="xs:string" use="required"/>
+<xs:attribute name="elementType" type="xs:string" use="required"/>
+<xs:attribute name="elementName" type="xs:string"/>
+<xs:attribute name="value" type="xs:string"/>
+<xs:attribute name="text" type="xs:string"/>
+<xs:attribute name="omitInd" type="xs:boolean"/>
+<xs:attribute name="expirationDt" type="xs:date"/>
+</xs:complexType>
+
+<xs:complexType name="LetterAssociation">
+<xs:sequence>
+<xs:element name="Letter" type="tns:Letter"/>
+<xs:element name="createDt" type="xs:date" minOccurs="0"/>
+<xs:element name="lastUpdateDt" type="xs:date" minOccurs="0"/>
+<xs:element name="vbmsUser" type="tns:VBMSUser"/>
+</xs:sequence>
+<xs:attribute name="ID" type="xs:long" use="required"/>
+<xs:attribute name="attributeID" type="xs:string" use="required"/>
+<xs:attribute name="attributeClass" type="xs:string" use="required"/>
+<xs:attribute name="expirationDt" type="xs:date"/>
+</xs:complexType>
+
+<xs:complexType name="DocumentAttributes">
+<xs:sequence>
+<xs:element name="createDt" type="xs:date"/>
+<xs:element name="lastUpdateDt" type="xs:date"/>
+</xs:sequence>
+<xs:attribute name="docId" type="xs:string" use="required"/>
+<xs:attribute name="certifiedCopyInd" type="xs:boolean"/>
+</xs:complexType>
+
+<xs:complexType name="Manifest">
+<xs:sequence>
+<xs:element name="shipAddr" type="tns:Address"/>
+<xs:element name="returnAddr" type="tns:Address"/>
+<xs:element name="intakeSite" type="tns:IntakeSite"/>
+<xs:element name="regionalOffice" type="tns:RegionalOffice"/>
+<xs:element name="shipDt" type="xs:date" minOccurs="0"/>
+<xs:element name="createDt" type="xs:date" minOccurs="0"/>
+<xs:element name="lastUpdateDt" type="xs:date" minOccurs="0"/>
+<xs:element name="DCSList">
+<xs:simpleType>
+<xs:list itemType="xs:string"/>
+</xs:simpleType>
+</xs:element>
+</xs:sequence>
+<xs:attribute name="ID" type="xs:string" use="required"/>
+<xs:attribute name="boxNumber" type="xs:string" use="required"/>
+<xs:attribute name="trackingNumber" type="xs:string" use="required"/>
+<xs:attribute name="vendorName" type="xs:string" use="required"/>
+<xs:attribute name="jpaVersion" type="xs:long" use="required"/>
+</xs:complexType>
+
+<xs:complexType name="IntakeSite">
+<xs:sequence>
+<xs:element name="regionalOffice" type="tns:RegionalOffice"/>
+<xs:element name="mailingAddress" type="tns:Address"/>
+<xs:element name="physicalAddress" type="tns:Address"/>
+<xs:element name="createDt" type="xs:date" minOccurs="0"/>
+<xs:element name="lastUpdateDt" type="xs:date" minOccurs="0"/>
+</xs:sequence>
+<xs:attribute name="ID" type="xs:string" use="required"/>
+<xs:attribute name="intakeSiteID" type="xs:string" use="required"/>
+<xs:attribute name="name" type="xs:string" use="required"/>
+<xs:attribute name="jpaVersion" type="xs:long" use="required"/>
+</xs:complexType>
+
+<xs:complexType name="DevelopmentEnclosure">
+<xs:sequence>
+<xs:element name="documentId" type="xs:string"/>
+<xs:element name="outgoingDocumentStencId" type="xs:string"/>
+<xs:element name="copiesQuantity" type="xs:int"/>
+<xs:element name="oneOcrncInd" type="xs:string"/>
+</xs:sequence>
+<xs:attribute name="enclosureId" type="xs:long"/>
+</xs:complexType>
+
+<xs:complexType name="DataVerification">
+<xs:sequence>
+<xs:element name="createDt" type="xs:date"/>
+<xs:element name="lastUpdateDt" type="xs:date" minOccurs="0"/>
+<xs:element name="vbmsUser_vbmsID" type="tns:VBMSUser"/>
+</xs:sequence>
+<xs:attribute name="ID" type="xs:long" use="required"/>
+<xs:attribute name="notes_ID" type="xs:long"/>
+<xs:attribute name="category" type="xs:string" use="required"/>
+<xs:attribute name="externalKey" type="xs:string" use="required"/>
+<xs:attribute name="validationStatus" type="xs:string"/>
+<xs:attribute name="jpaVersion" type="xs:long" use="required"/>
+<xs:attribute name="veteran_ID" type="xs:long" use="required"/>
+<xs:attribute name="expirationDT" type="xs:date"/>
+</xs:complexType>
+
+<xs:complexType name="DocumentUploadData">
+<xs:sequence>
+<xs:element name="id" type="xs:long"/>
+<xs:element name="docID" type="xs:string"/>
+<xs:element name="creator" type="xs:string"/>
+<xs:element name="createDt" type="xs:date"/>
+<xs:element name="docType" type="xs:string"/>
+<xs:element name="docTitle" type="xs:string"/>
+<xs:element name="fileNumber" type="xs:string"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="FileUploadReport">
+<xs:sequence>
+<xs:element name="month" type="xs:string"/>
+<xs:element name="documentCount" type="xs:long"/>
+<xs:element name="documentDesc" type="xs:string" minOccurs="0"/>
+<xs:element name="creator" type="xs:string" minOccurs="0"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="DevelopmentStatus">
+<xs:sequence>
+<xs:element name="createDt" type="xs:date"/>
+<xs:element name="lastUpdateDt" type="xs:date"/>
+<xs:element name="expirationDt" type="xs:date" minOccurs="0"/>
+</xs:sequence>
+<xs:attribute name="ID" type="xs:long" use="required"/>
+<xs:attribute name="name" type="xs:string" use="required"/>
+<xs:attribute name="sortOrder" type="xs:int" use="required"/>
+<xs:attribute name="type" type="xs:string" use="required"/>
+</xs:complexType>
+
+<xs:complexType name="DevelopmentPlan">
+<xs:sequence>
+<xs:element name="taskList" type="tns:DevelopmentPlanTask" nillable="true" minOccurs="0" maxOccurs="unbounded"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="DevelopmentPlanTask">
+<xs:sequence>
+<xs:element name="createDt" type="xs:date"/>
+<xs:element name="lastUpdateDt" type="xs:date"/>
+<xs:element name="vbmsUser" type="tns:VBMSUser"/>
+<xs:element name="expirationDt" type="xs:date" minOccurs="0"/>
+<xs:element name="developmentTask" type="tns:DevelopmentTask"/>
+<xs:element name="developmentStatus" type="tns:DevelopmentStatus"/>
+<xs:element name="letter" type="tns:Letter" minOccurs="0"/>
+</xs:sequence>
+<xs:attribute name="ID" type="xs:long" use="required"/>
+<xs:attribute name="claim_ID" type="xs:long" use="required"/>
+<xs:attribute name="taskTitle" type="xs:string" use="required"/>
+<xs:attribute name="obsoleteInd" type="xs:boolean" use="required"/>
+</xs:complexType>
+
+<xs:complexType name="DevelopmentTask">
+<xs:sequence>
+<xs:element name="createDt" type="xs:date"/>
+<xs:element name="lastUpdateDt" type="xs:date"/>
+<xs:element name="expirationDt" type="xs:date" minOccurs="0"/>
+</xs:sequence>
+<xs:attribute name="ID" type="xs:long" use="required"/>
+<xs:attribute name="name" type="xs:string" use="required"/>
+<xs:attribute name="sortOrder" type="xs:int" use="required"/>
+<xs:attribute name="requiredInd" type="xs:boolean" use="required"/>
+<xs:attribute name="taskCode" type="xs:string" use="required"/>
+<xs:attribute name="uniqueInd" type="xs:boolean" use="required"/>
+<xs:attribute name="correspondenceInd" type="xs:boolean" use="required"/>
+</xs:complexType>
+
+<xs:complexType name="RatedIssueBodySystem">
+<xs:sequence>
+<xs:element name="createDt" type="xs:date" minOccurs="0"/>
+<xs:element name="lastUpdateDt" type="xs:date" minOccurs="0"/>
+<xs:element name="bodySystem" type="tns:BodySystem"/>
+</xs:sequence>
+<xs:attribute name="ID" type="xs:long" use="required"/>
+<xs:attribute name="ratedIssueID" type="xs:long" use="required"/>
+</xs:complexType>
+
+<xs:complexType name="DBQView">
+<xs:sequence>
+<xs:element name="createDt" type="xs:date" minOccurs="0"/>
+<xs:element name="lastUpdateDt" type="xs:date" minOccurs="0"/>
+<xs:element name="medicalOpinionInd" type="tns:MedicalInd"/>
+<xs:element name="dbq" type="tns:DBQ"/>
+<xs:element name="exams" type="tns:Exam" nillable="true" minOccurs="0" maxOccurs="unbounded"/>
+<xs:element name="suggestionSource" type="tns:SuggestionSource"/>
+</xs:sequence>
+<xs:attribute name="suggestedInd" type="xs:boolean" use="required"/>
+<xs:attribute name="eFolderReviewInd" type="xs:boolean" use="required"/>
+<xs:attribute name="contentionID" type="xs:string" use="required"/>
+<xs:attribute name="positionInList" type="xs:int"/>
+<xs:attribute name="score" type="xs:float"/>
+</xs:complexType>
+
+<xs:complexType name="DBQ">
+<xs:sequence>
+<xs:element name="createDt" type="xs:date"/>
+<xs:element name="lastUpdateDt" type="xs:date" minOccurs="0"/>
+<xs:element name="expirationDt" type="xs:date" minOccurs="0"/>
+</xs:sequence>
+<xs:attribute name="ID" type="xs:long" use="required"/>
+<xs:attribute name="name" type="xs:string" use="required"/>
+</xs:complexType>
+
+<xs:complexType name="Exam">
+<xs:sequence>
+<xs:element name="createDt" type="xs:date"/>
+<xs:element name="lastUpdateDt" type="xs:date" minOccurs="0"/>
+<xs:element name="expirationDt" type="xs:date" minOccurs="0"/>
+</xs:sequence>
+<xs:attribute name="ID" type="xs:long" use="required"/>
+<xs:attribute name="name" type="xs:string" use="required"/>
+</xs:complexType>
+
+<xs:complexType name="ExamDbqAssoc">
+<xs:sequence>
+<xs:element name="createDt" type="xs:date"/>
+<xs:element name="lastUpdateDt" type="xs:date" minOccurs="0"/>
+<xs:element name="expirationDt" type="xs:date" minOccurs="0"/>
+<xs:element name="dbq" type="tns:DBQ"/>
+<xs:element name="exam" type="tns:Exam"/>
+</xs:sequence>
+<xs:attribute name="ID" type="xs:long" use="required"/>
+</xs:complexType>
+
+<xs:complexType name="UserDocumentAssoc">
+<xs:sequence>
+<xs:element name="userId" type="xs:string"/>
+<xs:element name="docTitle" type="xs:string"/>
+<xs:element name="fileNumber" type="xs:string"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="RatedIssue">
+<xs:sequence>
+<xs:element name="createDt" type="xs:date" minOccurs="0"/>
+<xs:element name="lastUpdateDt" type="xs:date" minOccurs="0"/>
+<xs:element name="beginDate" type="xs:date" minOccurs="0"/>
+</xs:sequence>
+<xs:attribute name="ID" type="xs:long" use="required"/>
+<xs:attribute name="diagnosticCode" type="xs:string" use="required"/>
+<xs:attribute name="diagnosticDescription" type="xs:string" use="required"/>
+<xs:attribute name="ratingReason" type="xs:string" use="required"/>
+<xs:attribute name="ratingDecision" type="xs:string" use="required"/>
+<xs:attribute name="notificationDate" type="xs:date" use="required"/>
+<xs:attribute name="appealsIndicator" type="xs:string" use="required"/>
+<xs:attribute name="fileNumber" type="xs:string" use="required"/>
+<xs:attribute name="diagnosticPercent" type="xs:string"/>
+</xs:complexType>
+
+<xs:complexType name="DBQRecommendation">
+<xs:sequence>
+<xs:element name="ID" type="xs:long"/>
+<xs:element name="contentionID" type="xs:string"/>
+<xs:element name="contentionText" type="xs:string"/>
+<xs:element name="DBQID" type="xs:long"/>
+<xs:element name="DBQ" type="xs:string"/>
+<xs:element name="suggestionSource" type="tns:SuggestionSource"/>
+<xs:element name="createDt" type="xs:date"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="TypeValue">
+<xs:sequence/>
+<xs:attribute name="code" type="xs:string" use="required"/>
+<xs:attribute name="name" type="xs:string" use="required"/>
+</xs:complexType>
+
+<xs:complexType name="DBQBodySystemAssoc">
+<xs:sequence>
+<xs:element name="createDt" type="xs:date"/>
+<xs:element name="lastUpdateDt" type="xs:date" minOccurs="0"/>
+<xs:element name="expirationDt" type="xs:date" minOccurs="0"/>
+<xs:element name="dbq" type="tns:DBQ"/>
+<xs:element name="bodySystem" type="tns:BodySystem"/>
+</xs:sequence>
+<xs:attribute name="ID" type="xs:long" use="required"/>
+<xs:attribute name="dbqCandidateId" type="xs:long" use="required"/>
+</xs:complexType>
+
+<xs:complexType name="ContentionAnalysisResult">
+<xs:sequence>
+<xs:element name="bodySystems" type="tns:BodySystem" nillable="true" minOccurs="0" maxOccurs="unbounded"/>
+<xs:element name="dbqs" type="tns:DBQView" nillable="true" minOccurs="0" maxOccurs="unbounded"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="DevelopmentPlanTaskActivity">
+<xs:sequence>
+<xs:element name="createDt" type="xs:date"/>
+<xs:element name="lastUpdateDt" type="xs:date"/>
+<xs:element name="vbmsUser" type="tns:VBMSUser"/>
+<xs:element name="expirationDt" type="xs:date" minOccurs="0"/>
+<xs:element name="developmentPlanTask" type="tns:DevelopmentPlanTask"/>
+<xs:element name="developmentActivity" type="tns:DevelopmentActivity"/>
+</xs:sequence>
+<xs:attribute name="ID" type="xs:long" use="required"/>
+<xs:attribute name="letterStatus" type="xs:string"/>
+</xs:complexType>
+
+<xs:complexType name="DevelopmentActivity">
+<xs:sequence>
+<xs:element name="createDt" type="xs:date"/>
+<xs:element name="lastUpdateDt" type="xs:date"/>
+<xs:element name="developmentTask" type="tns:DevelopmentTask"/>
+<xs:element name="expirationDt" type="xs:date" minOccurs="0"/>
+</xs:sequence>
+<xs:attribute name="ID" type="xs:long" use="required"/>
+<xs:attribute name="name" type="xs:string" use="required"/>
+<xs:attribute name="sortOrder" type="xs:int" use="required"/>
+<xs:attribute name="evidenceInd" type="xs:boolean" use="required"/>
+</xs:complexType>
+
+<xs:complexType name="RatedIssueView">
+<xs:sequence>
+<xs:element name="ratedIssue" type="tns:RatedIssue" minOccurs="0"/>
+<xs:element name="linkStatus" type="tns:LinkStatus" minOccurs="0"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="BenefitType">
+<xs:sequence>
+<xs:element name="createDt" type="xs:date" minOccurs="0"/>
+<xs:element name="lastUpdateDt" type="xs:date" minOccurs="0"/>
+<xs:element name="expirationDt" type="xs:date" minOccurs="0"/>
+</xs:sequence>
+<xs:attribute name="ID" type="xs:long" use="required"/>
+<xs:attribute name="code" type="xs:string" use="required"/>
+<xs:attribute name="name" type="xs:string" use="required"/>
+<xs:attribute name="description" type="xs:string"/>
+<xs:attribute name="jpaVersion" type="xs:long" use="required"/>
+</xs:complexType>
+
+<xs:complexType name="DevelopmentActivityAction">
+<xs:sequence>
+<xs:element name="createDt" type="xs:date"/>
+<xs:element name="lastUpdateDt" type="xs:date"/>
+<xs:element name="stdDvlpmtAction" type="tns:StdDvlpmtAction"/>
+<xs:element name="developmentActivity" type="tns:DevelopmentActivity"/>
+<xs:element name="expirationDt" type="xs:date" minOccurs="0"/>
+</xs:sequence>
+<xs:attribute name="ID" type="xs:long" use="required"/>
+</xs:complexType>
+
+<xs:complexType name="StdDvlpmtAction">
+<xs:sequence>
+<xs:element name="stdPrgrphId" type="xs:integer"/>
+<xs:element name="stdActionDescpTxt" type="xs:string" minOccurs="0"/>
+<xs:element name="dvlpmtActionCategyTypeCd" type="xs:string" minOccurs="0"/>
+<xs:element name="pgmTypeCd" type="xs:string" minOccurs="0"/>
+<xs:element name="stdDvlpmtActionCd" type="xs:string" minOccurs="0"/>
+<xs:element name="suspnsDuratnQty" type="xs:integer"/>
+<xs:element name="piesReqstCd" type="xs:string"/>
+<xs:element name="ptcpntId" type="xs:integer"/>
+<xs:element name="lctnId" type="xs:integer"/>
+<xs:element name="fedAgencyInd" type="xs:string"/>
+</xs:sequence>
+<xs:attribute name="stdDvlpmtActionId" type="xs:long" use="required"/>
+<xs:attribute name="vbmscSupportedInd" type="xs:boolean" use="required"/>
+</xs:complexType>
+
+<xs:complexType name="DevelopmentPlanTaskActivityAction">
+<xs:sequence>
+<xs:element name="createDt" type="xs:date"/>
+<xs:element name="lastUpdateDt" type="xs:date"/>
+<xs:element name="vbmsUser" type="tns:VBMSUser"/>
+<xs:element name="expirationDt" type="xs:date" minOccurs="0"/>
+<xs:element name="developmentPlanTaskActivity" type="tns:DevelopmentPlanTaskActivity"/>
+<xs:element name="stdDvlpmtAction" type="tns:StdDvlpmtAction"/>
+<xs:element name="letter" type="tns:Letter" minOccurs="0"/>
+</xs:sequence>
+<xs:attribute name="ID" type="xs:long" use="required"/>
+<xs:attribute name="omitInd" type="xs:boolean" use="required"/>
+<xs:attribute name="TrackedItem_ID" type="xs:long" use="required"/>
+<xs:attribute name="suspenseDuration" type="xs:int"/>
+</xs:complexType>
+
+<xs:complexType name="ContentionType">
+<xs:sequence>
+<xs:element name="createDt" type="xs:date" minOccurs="0"/>
+<xs:element name="lastUpdateDt" type="xs:date" minOccurs="0"/>
+<xs:element name="expirationDt" type="xs:date" minOccurs="0"/>
+</xs:sequence>
+<xs:attribute name="ID" type="xs:long" use="required"/>
+<xs:attribute name="code" type="xs:string" use="required"/>
+<xs:attribute name="description" type="xs:string" use="required"/>
+</xs:complexType>
+
+<xs:complexType name="StdEnclsr">
+<xs:sequence>
+<xs:element name="nm" type="xs:string"/>
+<xs:element name="jetFormName" type="xs:string"/>
+<xs:element name="copiesQty" type="xs:integer"/>
+</xs:sequence>
+<xs:attribute name="stdEnclsrId" type="xs:integer"/>
+</xs:complexType>
+
+<xs:complexType name="ValidationErrors">
+<xs:sequence>
+<xs:element name="fieldError" type="tns:FieldError" maxOccurs="unbounded"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="BodySystemHistorical">
+<xs:sequence>
+<xs:element name="expirationDt" type="xs:date" minOccurs="0"/>
+<xs:element name="createDt" type="xs:date" minOccurs="0"/>
+<xs:element name="lastUpdateDt" type="xs:date" minOccurs="0"/>
+<xs:element name="bodySystem" type="tns:BodySystem"/>
+</xs:sequence>
+<xs:attribute name="contentionID" type="xs:string" use="required"/>
+<xs:attribute name="ID" type="xs:long" use="required"/>
+<xs:attribute name="contentionText" type="xs:string" use="required"/>
+<xs:attribute name="suggestedInd" type="xs:boolean"/>
+<xs:attribute name="positionInList" type="xs:long"/>
+<xs:attribute name="score" type="xs:float"/>
+<xs:attribute name="suggestionSource" type="tns:SuggestionSource"/>
+</xs:complexType>
+
+<xs:complexType name="DevPlanTaskNote">
+<xs:complexContent>
+<xs:extension base="tns:VbmsNote">
+<xs:sequence/>
+<xs:attribute name="devPlanTask_ID" type="xs:long" use="required"/>
+</xs:extension>
+</xs:complexContent>
+</xs:complexType>
+
+<xs:complexType name="VbmsNote" abstract="true">
+<xs:sequence>
+<xs:element name="createDt" type="xs:date"/>
+<xs:element name="lastUpdateDt" type="xs:date"/>
+<xs:element name="expirationDt" type="xs:date" minOccurs="0"/>
+<xs:element name="vbmsUser" type="tns:VBMSUser"/>
+</xs:sequence>
+<xs:attribute name="ID" type="xs:long" use="required"/>
+<xs:attribute name="narrative" type="xs:string" use="required"/>
+<xs:attribute name="actionTaken" type="xs:string"/>
+<xs:attribute name="jpaVersion" type="xs:long" use="required"/>
+<xs:attribute name="editable" type="xs:boolean"/>
+</xs:complexType>
+
+<xs:complexType name="StdOutputArgmtList">
+<xs:sequence>
+<xs:element name="stdOutputArgmtId" type="xs:integer"/>
+<xs:element name="seqNbr" type="xs:integer"/>
+<xs:element name="qlfyrTypeCd" type="xs:string"/>
+<xs:element name="txt" type="xs:string"/>
+</xs:sequence>
+<xs:attribute name="id" type="xs:long"/>
+</xs:complexType>
+
+<xs:complexType name="StdOutputArgmt">
+<xs:sequence>
+<xs:element name="keywrdTxt" type="xs:string"/>
+<xs:element name="outputArgmtTypeCd" type="xs:string"/>
+<xs:element name="fillinType" type="xs:string"/>
+<xs:element name="userPrompt" type="xs:string"/>
+<xs:element name="defaultTxt" type="xs:string"/>
+<xs:element name="stdOutputArgmtList" type="tns:StdOutputArgmtList" maxOccurs="unbounded"/>
+</xs:sequence>
+<xs:attribute name="stdOutputArgmtId" type="xs:long"/>
+</xs:complexType>
+
+<xs:complexType name="StdPrgrph">
+<xs:sequence>
+<xs:element name="stdOutputArgmts" type="tns:StdOutputArgmt" nillable="true" minOccurs="0" maxOccurs="unbounded"/>
+</xs:sequence>
+<xs:attribute name="stdPrgrphId" type="xs:integer" use="required"/>
+</xs:complexType>
+
+<xs:complexType name="DbqHistorical">
+<xs:sequence>
+<xs:element name="createDt" type="xs:date" minOccurs="0"/>
+<xs:element name="expirationDt" type="xs:date" minOccurs="0"/>
+<xs:element name="lastUpdateDt" type="xs:date" minOccurs="0"/>
+<xs:element name="dbq" type="tns:DBQ"/>
+</xs:sequence>
+<xs:attribute name="contentionID" type="xs:string" use="required"/>
+<xs:attribute name="ID" type="xs:long" use="required"/>
+<xs:attribute name="contentionText" type="xs:string" use="required"/>
+<xs:attribute name="suggestedInd" type="xs:boolean"/>
+<xs:attribute name="positionInList" type="xs:long"/>
+<xs:attribute name="score" type="xs:float"/>
+<xs:attribute name="suggestionSource" type="tns:SuggestionSource"/>
+</xs:complexType>
+
+<xs:complexType name="DevelopmentActionGroup">
+<xs:sequence>
+<xs:element name="outgoingDocumentTypeCode" type="xs:string"/>
+<xs:element name="claimId" type="xs:long"/>
+<xs:element name="letterTemplate" type="xs:string"/>
+<xs:element name="documentDate" type="xs:date"/>
+<xs:element name="name" type="xs:string"/>
+<xs:element name="establishedDate" type="xs:date"/>
+<xs:element name="printDate" type="xs:date"/>
+<xs:element name="enclosures" type="xs:string"/>
+<xs:element name="fileStatusTypeCode" type="xs:string"/>
+<xs:element name="fileStatusDate" type="xs:date"/>
+<xs:element name="developmentTypeCode" type="xs:string"/>
+<xs:element name="letterText" type="xs:string"/>
+<xs:element name="barCode" type="xs:string"/>
+<xs:element name="participantId" type="xs:string"/>
+<xs:element name="participantDocumentTn" type="xs:string"/>
+<xs:element name="letterText2" type="xs:string"/>
+<xs:element name="templateTypeCode" type="xs:string"/>
+<xs:element name="claimContact" type="tns:ClaimContact"/>
+<xs:element name="developmentEnclosures" type="tns:DevelopmentEnclosure" nillable="true" minOccurs="0" maxOccurs="unbounded"/>
+<xs:element name="developmentActions" type="tns:DevelopmentAction" nillable="true" minOccurs="0" maxOccurs="unbounded"/>
+</xs:sequence>
+<xs:attribute name="documentId" type="xs:string"/>
+</xs:complexType>
+
+<xs:complexType name="ClaimContact">
+<xs:sequence>
+<xs:element name="addressLine1" type="xs:string"/>
+<xs:element name="addressLine2" type="xs:string"/>
+<xs:element name="addressLine3" type="xs:string"/>
+<xs:element name="badAddressInd" type="xs:boolean"/>
+<xs:element name="city" type="xs:string"/>
+<xs:element name="countryTn" type="xs:string"/>
+<xs:element name="country" type="xs:string"/>
+<xs:element name="developmentContactTypeCode" type="xs:string"/>
+<xs:element name="effectiveDate" type="xs:date"/>
+<xs:element name="firstName" type="xs:string"/>
+<xs:element name="foreignPostalCode" type="xs:string"/>
+<xs:element name="lastName" type="xs:string"/>
+<xs:element name="middleName" type="xs:string"/>
+<xs:element name="orgName" type="xs:string"/>
+<xs:element name="postalCode" type="xs:string"/>
+<xs:element name="provinceName" type="xs:string"/>
+<xs:element name="participantAddressTn" type="xs:string"/>
+<xs:element name="participantContactId" type="xs:string"/>
+<xs:element name="participantRelationshipTn" type="xs:string"/>
+<xs:element name="providerReleaseInd" type="xs:boolean"/>
+<xs:element name="suffix" type="xs:string"/>
+<xs:element name="slttnTn" type="xs:string"/>
+<xs:element name="territoryName" type="xs:string"/>
+<xs:element name="zip1StSfxNo" type="xs:string"/>
+<xs:element name="zip2NdSfxNo" type="xs:string"/>
+<xs:element name="zipPrefixNo" type="xs:string"/>
+<xs:element name="postalTypeCode" type="xs:string"/>
+<xs:element name="postOfficeTypeCode" type="xs:string"/>
+</xs:sequence>
+<xs:attribute name="participantId" type="xs:string"/>
+</xs:complexType>
+
+<xs:complexType name="StdDvlpmtCategory">
+<xs:sequence>
+<xs:element name="category" type="xs:string"/>
+<xs:element name="description" type="xs:string"/>
+<xs:element name="pgmTypeCd" type="xs:string"/>
+<xs:element name="letterType" type="xs:string"/>
+</xs:sequence>
+<xs:attribute name="Id" type="xs:long"/>
+</xs:complexType>
+
+<xs:complexType name="DocControlSheet">
+<xs:sequence>
+<xs:element name="finalDestination" type="tns:RegionalOffice"/>
+<xs:element name="intakeSite" type="tns:IntakeSite"/>
+<xs:element name="regionalOffice" type="tns:RegionalOffice"/>
+<xs:element name="manifest" type="tns:Manifest"/>
+<xs:element name="shipDT" type="xs:date" minOccurs="0"/>
+<xs:element name="createDt" type="xs:date" minOccurs="0"/>
+<xs:element name="lastUpdateDt" type="xs:date" minOccurs="0"/>
+</xs:sequence>
+<xs:attribute name="ID" type="xs:string" use="required"/>
+<xs:attribute name="boxNumber" type="xs:string" use="required"/>
+<xs:attribute name="fileNumber" type="xs:string" use="required"/>
+<xs:attribute name="firstName" type="xs:string" use="required"/>
+<xs:attribute name="participantID" type="xs:string" use="required"/>
+<xs:attribute name="middleInitial" type="xs:string" use="required"/>
+<xs:attribute name="lastName" type="xs:string" use="required"/>
+<xs:attribute name="status" type="xs:string"/>
+<xs:attribute name="jpaVersion" type="xs:long" use="required"/>
+</xs:complexType>
+
+<xs:complexType name="UserHistoryLink">
+<xs:sequence>
+<xs:element name="vbmsUser" type="tns:VBMSUser"/>
+<xs:element name="moduleName" type="tns:Module"/>
+<xs:element name="createDt" type="xs:dateTime"/>
+<xs:element name="lastUpdateDt" type="xs:date" minOccurs="0"/>
+</xs:sequence>
+<xs:attribute name="ID" type="xs:long" use="required"/>
+<xs:attribute name="parameter" type="xs:string" use="required"/>
+<xs:attribute name="description" type="xs:string" use="required"/>
+<xs:attribute name="jpaVersion" type="xs:long" use="required"/>
+</xs:complexType>
+
+<xs:complexType name="Relationship">
+<xs:sequence>
+<xs:element name="externalPartIdA" type="xs:string"/>
+<xs:element name="externalPartIdB" type="xs:string"/>
+<xs:element name="relationshipName" type="xs:string"/>
+</xs:sequence>
+<xs:attribute name="beginDate" type="xs:date"/>
+<xs:attribute name="endDate" type="xs:date"/>
+</xs:complexType>
+
+<xs:complexType name="SubmitResponseEvent">
+<xs:complexContent>
+<xs:extension base="tns:Event">
+<xs:sequence>
+<xs:element name="responseText" type="xs:string"/>
+</xs:sequence>
+</xs:extension>
+</xs:complexContent>
+</xs:complexType>
+
+<xs:complexType name="Event" abstract="true">
+<xs:sequence/>
+</xs:complexType>
+
+<xs:complexType name="Award">
+<xs:sequence>
+<xs:element name="awardStatusDt" type="xs:date"/>
+<xs:element name="lastPaidDt" type="xs:date" minOccurs="0"/>
+<xs:element name="retroactiveDt" type="xs:date" minOccurs="0"/>
+<xs:element name="createDt" type="xs:date" minOccurs="0"/>
+<xs:element name="lastUpdateDt" type="xs:date" minOccurs="0"/>
+</xs:sequence>
+<xs:attribute name="ID" type="xs:long" use="required"/>
+<xs:attribute name="Issue_ID" type="xs:long" use="required"/>
+<xs:attribute name="Veteran_Person_ID" type="xs:long" use="required"/>
+<xs:attribute name="beneficiaryPerson_ID" type="xs:long" use="required"/>
+<xs:attribute name="benefitParticipant_Person_ID" type="xs:long" use="required"/>
+<xs:attribute name="receiptParticipant_Person_ID" type="xs:long" use="required"/>
+<xs:attribute name="AwardBenefit_ID" type="xs:string"/>
+<xs:attribute name="AwardPayStatus_ID" type="xs:string"/>
+<xs:attribute name="AwardStatus_ID" type="xs:string"/>
+<xs:attribute name="accountBalanceAmt" type="xs:decimal" use="required"/>
+<xs:attribute name="beneficiaryType" type="xs:string" use="required"/>
+<xs:attribute name="deductionsAmt" type="xs:decimal"/>
+<xs:attribute name="fiduciaryType" type="xs:string"/>
+<xs:attribute name="Frequency_ID" type="xs:string"/>
+<xs:attribute name="igReferenceNbr" type="xs:string"/>
+<xs:attribute name="requestedFrequency" type="xs:string"/>
+<xs:attribute name="Document_ID" type="xs:long" use="required"/>
+</xs:complexType>
+
+<xs:complexType name="ValidationSource">
+<xs:sequence/>
+<xs:attribute name="ID" type="xs:long" use="required"/>
+<xs:attribute name="dataVerification_ID" type="xs:long" use="required"/>
+<xs:attribute name="validationStatusDesc" type="xs:string" use="required"/>
+</xs:complexType>
+
+<xs:complexType name="ContentionDbq">
+<xs:sequence>
+<xs:element name="createDt" type="xs:date" minOccurs="0"/>
+<xs:element name="lastUpdateDt" type="xs:date" minOccurs="0"/>
+<xs:element name="medicalOpinionInd" type="tns:MedicalInd"/>
+<xs:element name="dbq" type="tns:DBQ"/>
+</xs:sequence>
+<xs:attribute name="eFolderReviewInd" type="xs:boolean" use="required"/>
+<xs:attribute name="ID" type="xs:long" use="required"/>
+<xs:attribute name="contentionID" type="xs:string" use="required"/>
+</xs:complexType>
+
+<xs:complexType name="ContentionAppendix">
+<xs:sequence>
+<xs:element name="createDt" type="xs:date" minOccurs="0"/>
+<xs:element name="lastUpdateDt" type="xs:date" minOccurs="0"/>
+<xs:element name="contentionCategory" type="tns:ContentionCategory" minOccurs="0"/>
+<xs:element name="contentionType" type="tns:ContentionType" minOccurs="0"/>
+</xs:sequence>
+<xs:attribute name="contentionID" type="xs:string" use="required"/>
+</xs:complexType>
+
+<xs:complexType name="ClaimTypeEndProductInput">
+<xs:sequence/>
+<xs:attribute name="benefitTypeId" type="xs:string"/>
+<xs:attribute name="payeeCode" type="xs:string" use="required"/>
+<xs:attribute name="benefitTypeCd" type="xs:string" use="required"/>
+<xs:attribute name="shareCommandTypeCode" type="xs:string" use="required"/>
+<xs:attribute name="serviceTypeCode" type="xs:string" use="required"/>
+</xs:complexType>
+
+<xs:complexType name="ContentionRatedIssue">
+<xs:sequence>
+<xs:element name="createDt" type="xs:date" minOccurs="0"/>
+<xs:element name="lastUpdateDt" type="xs:date" minOccurs="0"/>
+</xs:sequence>
+<xs:attribute name="ID" type="xs:long" use="required"/>
+<xs:attribute name="ratedIssueID" type="xs:long" use="required"/>
+<xs:attribute name="contentionID" type="xs:string" use="required"/>
+<xs:attribute name="linkStatus" type="tns:LinkStatus"/>
+<xs:attribute name="jpaVersion" type="xs:long" use="required"/>
+</xs:complexType>
+
+<xs:complexType name="DevPlanTaskActFillin">
+<xs:sequence>
+<xs:element name="createDt" type="xs:date"/>
+<xs:element name="lastUpdateDt" type="xs:date"/>
+<xs:element name="vbmsUser" type="tns:VBMSUser"/>
+<xs:element name="expirationDt" type="xs:date" minOccurs="0"/>
+<xs:element name="devPlanTaskActivityAction" type="tns:DevelopmentPlanTaskActivityAction"/>
+</xs:sequence>
+<xs:attribute name="ID" type="xs:long" use="required"/>
+<xs:attribute name="Paragraph_ID" type="xs:long" use="required"/>
+<xs:attribute name="fillinType" type="xs:string" use="required"/>
+<xs:attribute name="fillinName" type="xs:string" use="required"/>
+<xs:attribute name="fillinValue" type="xs:string"/>
+<xs:attribute name="parentFillinId" type="xs:long"/>
+</xs:complexType>
+
+<xs:complexType name="Evidence">
+<xs:sequence>
+<xs:element name="createDt" type="xs:date" minOccurs="0"/>
+<xs:element name="lastUpdateDt" type="xs:date" minOccurs="0"/>
+</xs:sequence>
+<xs:attribute name="ID" type="xs:long" use="required"/>
+<xs:attribute name="modifiedUserID" type="xs:string" use="required"/>
+<xs:attribute name="title" type="xs:string" use="required"/>
+<xs:attribute name="actions" type="xs:string" use="required"/>
+<xs:attribute name="description" type="xs:string"/>
+<xs:attribute name="statusCd" type="xs:string"/>
+<xs:attribute name="supportCd" type="xs:string"/>
+</xs:complexType>
+
+<xs:simpleType name="SuggestionSource">
+<xs:restriction base="xs:string">
+<xs:enumeration value="historical"/>
+<xs:enumeration value="bodypart"/>
+<xs:enumeration value="disability"/>
+<xs:enumeration value="manual"/>
+<xs:enumeration value="analyzedbodysystem"/>
+<xs:enumeration value="manualbodysystem"/>
+</xs:restriction>
+</xs:simpleType>
+
+<xs:simpleType name="TimeToCall">
+<xs:restriction base="xs:string">
+<xs:enumeration value="Day Time"/>
+<xs:enumeration value="Night Time"/>
+</xs:restriction>
+</xs:simpleType>
+
+<xs:simpleType name="RegionalArea">
+<xs:restriction base="xs:string">
+<xs:enumeration value="CENTRAL"/>
+<xs:enumeration value="EASTERN"/>
+<xs:enumeration value="SOUTHERN"/>
+<xs:enumeration value="WESTERN"/>
+</xs:restriction>
+</xs:simpleType>
+
+<xs:simpleType name="ContentionCategory">
+<xs:restriction base="xs:string">
+<xs:enumeration value="Ancillary"/>
+<xs:enumeration value="Pension"/>
+<xs:enumeration value="Service-Connected"/>
+</xs:restriction>
+</xs:simpleType>
+
+<xs:simpleType name="ClaimStatus">
+<xs:restriction base="xs:string">
+<xs:enumeration value="Open"/>
+<xs:enumeration value="Ready for Decision"/>
+<xs:enumeration value="Ready to Work"/>
+<xs:enumeration value="Rating Incomplete"/>
+<xs:enumeration value="Rating Decision Complete"/>
+<xs:enumeration value="Secondary Ready for Decision"/>
+<xs:enumeration value="Pending Authorization"/>
+<xs:enumeration value="Closed"/>
+<xs:enumeration value="Cancelled"/>
+<xs:enumeration value="Unknown"/>
+<xs:enumeration value="Rating Correction"/>
+<xs:enumeration value="Pending Concur"/>
+<xs:enumeration value="Self Returned"/>
+<xs:enumeration value="Returned by Other User"/>
+</xs:restriction>
+</xs:simpleType>
+
+<xs:simpleType name="WorkItemStatus">
+<xs:restriction base="xs:string">
+<xs:enumeration value="Open"/>
+<xs:enumeration value="Completed"/>
+</xs:restriction>
+</xs:simpleType>
+
+<xs:simpleType name="WorkItemPriority">
+<xs:restriction base="xs:string">
+<xs:enumeration value="High"/>
+<xs:enumeration value="Normal"/>
+</xs:restriction>
+</xs:simpleType>
+
+<xs:simpleType name="MedicalInd">
+<xs:restriction base="xs:string">
+<xs:enumeration value="Aggravated"/>
+<xs:enumeration value="Direct"/>
+<xs:enumeration value="Secondary"/>
+<xs:enumeration value="None"/>
+</xs:restriction>
+</xs:simpleType>
+
+<xs:simpleType name="LinkStatus">
+<xs:restriction base="xs:string">
+<xs:enumeration value="Auto"/>
+<xs:enumeration value="Manual"/>
+<xs:enumeration value="Verified"/>
+</xs:restriction>
+</xs:simpleType>
+
+<xs:simpleType name="Module">
+<xs:restriction base="xs:string">
+<xs:enumeration value="Claim"/>
+<xs:enumeration value="Search"/>
+<xs:enumeration value="EFolder"/>
+<xs:enumeration value="EFolderDoc"/>
+<xs:enumeration value="WorkQueue"/>
+</xs:restriction>
+</xs:simpleType>
+</xs:schema>
