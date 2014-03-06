@@ -11,11 +11,9 @@
 
   <groupId>com.sms.dcp</groupId>
   <artifactId>esb</artifactId>
-  <packaging>jar</packaging>
+  <name>ESB :: Camel :: CXF :: OSGI</name>
+  <packaging>bundle</packaging>
   <version>1.0.0</version>
-
-  <name>A Camel Route</name>
-  <url>http://www.myorganization.org</url>
 
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -119,6 +117,54 @@
         </configuration>
       </plugin>
 
+			<!-- to generate the MANIFEST-FILE of the bundle -->
+			<plugin>
+				<groupId>org.apache.felix</groupId>
+				<artifactId>maven-bundle-plugin</artifactId>
+				<extensions>true</extensions>
+				<configuration>
+					<manifestLocation>target/META-INF</manifestLocation>
+					<instructions>
+						<Bundle-SymbolicName>${project.groupId}.${project.artifactId}</Bundle-SymbolicName>
+						<Export-Package>gov.*,com.sms*</Export-Package>
+						<Import-Package>
+							org.apache.cxf,
+							org.apache.cxf.binding,
+							org.apache.cxf.binding.corba,
+							org.apache.cxf.binding.soap,
+							org.apache.cxf.binding.soap.spring,
+							org.apache.cxf.bus,
+							org.apache.cxf.bus.resource,
+							org.apache.cxf.bus.spring,
+							org.apache.cxf.buslifecycle,
+							org.apache.cxf.catalog,
+							org.apache.cxf.configuration,
+							org.apache.cxf.configuration.spring,
+							org.apache.cxf.endpoint,
+							org.apache.cxf.headers,
+							org.apache.cxf.management,
+							org.apache.cxf.management.jmx,
+							org.apache.cxf.phase,
+							org.apache.cxf.resource,
+							org.apache.cxf.service.factory,
+							org.apache.cxf.transport,
+							org.apache.cxf.transport.http,
+							org.apache.cxf.transport.http.policy,
+							org.apache.cxf.transport.http_jetty,
+							org.apache.cxf.transport.jms,
+							org.apache.cxf.transports.http,
+							org.apache.cxf.workqueue,
+							org.apache.cxf.wsdl,
+							org.apache.cxf.wsdl11,
+							org.apache.ws.security.action,
+							org.apache.ws.security.processor,
+							org.springframework.beans.factory.config,
+							org.springframework.mail.javamail,
+							*
+					    </Import-Package>
+					</instructions>
+				</configuration>
+			</plugin>
     </plugins>
   </build>
 
