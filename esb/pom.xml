@@ -1,121 +1,151 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 
-  <modelVersion>4.0.0</modelVersion>
+	<modelVersion>4.0.0</modelVersion>
 
-  <parent>
-    <artifactId>parent</artifactId>
-    <groupId>com.sms.dcp</groupId>
-    <version>1.0.0</version>
-  </parent>
+	<parent>
+		<artifactId>parent</artifactId>
+		<groupId>com.sms.dcp</groupId>
+		<version>1.0.0</version>
+	</parent>
 
-  <groupId>com.sms.dcp</groupId>
-  <artifactId>esb</artifactId>
-  <name>ESB :: Camel :: CXF :: OSGI</name>
-  <packaging>bundle</packaging>
-  <version>1.0.0</version>
+	<groupId>com.sms.dcp</groupId>
+	<artifactId>esb</artifactId>
+	<name>ESB :: Camel :: CXF :: OSGI</name>
+	<packaging>bundle</packaging>
+	<version>1.0.0</version>
 
-  <properties>
-    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-    <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
-  </properties>
+	<properties>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+	</properties>
 
-  <dependencies>
-    <dependency>
-      <groupId>org.apache.camel</groupId>
-      <artifactId>camel-core</artifactId>
-      <version>2.12.2</version>
-    </dependency>
-    <dependency>
-		<groupId>org.apache.camel</groupId>
-		<artifactId>camel-cmis</artifactId>
-		<version>${camel.version}</version>
+	<dependencies>
+		<dependency>
+			<groupId>org.apache.camel</groupId>
+			<artifactId>camel-core</artifactId>
+			<version>2.12.2</version>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.camel</groupId>
+			<artifactId>camel-spring</artifactId>
+			<version>${camel.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.camel</groupId>
+			<artifactId>camel-cmis</artifactId>
+			<version>${camel.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.chemistry.opencmis</groupId>
+			<artifactId>chemistry-opencmis-client-impl</artifactId>
+			<version>0.10.0</version>
+		</dependency>
+		<!-- logging -->
+		<dependency>
+			<groupId>org.slf4j</groupId>
+			<artifactId>slf4j-api</artifactId>
+			<version>1.7.5</version>
+		</dependency>
+		<dependency>
+			<groupId>org.slf4j</groupId>
+			<artifactId>slf4j-log4j12</artifactId>
+			<version>1.7.5</version>
+		</dependency>
+		<dependency>
+			<groupId>log4j</groupId>
+			<artifactId>log4j</artifactId>
+			<version>1.2.17</version>
+		</dependency>
+
+		<!-- testing -->
+		<dependency>
+			<groupId>org.apache.camel</groupId>
+			<artifactId>camel-test</artifactId>
+			<version>2.12.2</version>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.camel</groupId>
+			<artifactId>camel-test-spring</artifactId>
+			<version>2.12.2</version>
+			<scope>test</scope>
+		</dependency>
+	<dependency>
+		<groupId>com.sun.xml.ws</groupId>
+		<artifactId>jaxws-rt</artifactId>
+		<version>2.1.4</version>
 	</dependency>
-    <!-- logging -->
-    <dependency>
-      <groupId>org.slf4j</groupId>
-      <artifactId>slf4j-api</artifactId>
-      <version>1.7.5</version>
-    </dependency>
-    <dependency>
-      <groupId>org.slf4j</groupId>
-      <artifactId>slf4j-log4j12</artifactId>
-      <version>1.7.5</version>
-    </dependency>
-    <dependency>
-      <groupId>log4j</groupId>
-      <artifactId>log4j</artifactId>
-      <version>1.2.17</version>
-    </dependency>
+	</dependencies>
 
-    <!-- testing -->
-    <dependency>
-      <groupId>org.apache.camel</groupId>
-      <artifactId>camel-test</artifactId>
-      <version>2.12.2</version>
-      <scope>test</scope>
-    </dependency>
-  </dependencies>
+            
+	<build>
+		<defaultGoal>install</defaultGoal>
 
-  <build>
-    <defaultGoal>install</defaultGoal>
+		<plugins>
+			<!-- CXF wsdl2java generator, will plugin to the compile goal -->
+			<plugin>
+				<groupId>org.apache.cxf</groupId>
+				<artifactId>cxf-codegen-plugin</artifactId>
+				<executions>
+					<execution>
+						<id>generate-sources</id>
+						<phase>generate-sources</phase>
+						<configuration>
+							<sourceRoot>${basedir}/target/generated/src/main/java</sourceRoot>
+							<wsdlOptions>
+								<wsdlOption>
+									<wsdl>${basedir}/src/main/resources/wsdl/PDT/eDocumentService.wsdl</wsdl>
+									<!-- <wsdl>${basedir}/src/main/resources/etc/report_incident.wsdl</wsdl> -->
+								</wsdlOption>
+								<!-- <bindingFiles> -->
+								<!-- <bindingFile>${basedir}/src/main/resources/wsdl/PDT/xsd1.xsd</bindingFile> -->
+								<!-- <bindingFile>${basedir}/src/main/resources/wsdl/PDT/xsd2.xsd</bindingFile> -->
+								<!-- </bindingFiles> -->
+							</wsdlOptions>
+						</configuration>
+						<goals>
+							<goal>wsdl2java</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<version>2.5.1</version>
+				<configuration>
+					<source>1.6</source>
+					<target>1.6</target>
+				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-resources-plugin</artifactId>
+				<version>2.6</version>
+				<configuration>
+					<encoding>UTF-8</encoding>
+				</configuration>
+			</plugin>
 
-    <plugins>
-    <!-- CXF wsdl2java generator, will plugin to the compile goal -->
-      <plugin>
-        <groupId>org.apache.cxf</groupId>
-        <artifactId>cxf-codegen-plugin</artifactId>
-        <executions>
-          <execution>
-            <id>generate-sources</id>
-            <phase>generate-sources</phase>
-            <configuration>
-              <sourceRoot>${basedir}/target/generated/src/main/java</sourceRoot>
-              <wsdlOptions>
-                <wsdlOption>
-                  <wsdl>${basedir}/src/main/resources/wsdl/PDT/eDocumentService.wsdl</wsdl>
-<!--                   <wsdl>${basedir}/src/main/resources/etc/report_incident.wsdl</wsdl> -->
-                </wsdlOption>
-<!--                 <bindingFiles> -->
-<!-- 					<bindingFile>${basedir}/src/main/resources/wsdl/PDT/xsd1.xsd</bindingFile> -->
-<!-- 					<bindingFile>${basedir}/src/main/resources/wsdl/PDT/xsd2.xsd</bindingFile> -->
-<!-- 				</bindingFiles> -->
-              </wsdlOptions>
-            </configuration>
-            <goals>
-              <goal>wsdl2java</goal>
-            </goals>
-          </execution>
-        </executions>
-      </plugin>
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-compiler-plugin</artifactId>
-        <version>2.5.1</version>
-        <configuration>
-          <source>1.6</source>
-          <target>1.6</target>
-        </configuration>
-      </plugin>
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-resources-plugin</artifactId>
-        <version>2.6</version>
-        <configuration>
-          <encoding>UTF-8</encoding>
-        </configuration>
-      </plugin>
+			<!-- allows the route to be ran via 'mvn camel:run' -->
+			<plugin>
+				<groupId>org.apache.camel</groupId>
+				<artifactId>camel-maven-plugin</artifactId>
+				<version>2.12.2</version>
+			</plugin>
 
-      <!-- Allows the example to be run via 'mvn compile exec:java' -->
-      <plugin>
-        <groupId>org.codehaus.mojo</groupId>
-        <artifactId>exec-maven-plugin</artifactId>
-        <version>1.2.1</version>
-        <configuration>
-            <mainClass>com.sms.dcp.MainApp</mainClass>
-            <includePluginDependencies>false</includePluginDependencies>
-        </configuration>
-      </plugin>
+			<!-- Allows the example to be run via 'mvn compile exec:java' -->
+			<!-- <plugin> -->
+			<!-- <groupId>org.codehaus.mojo</groupId> -->
+			<!-- <artifactId>exec-maven-plugin</artifactId> -->
+			<!-- <version>1.2.1</version> -->
+			<!-- <configuration> -->
+			<!-- <mainClass>com.sms.dcp.MainApp</mainClass> -->
+			<!-- <includePluginDependencies>false</includePluginDependencies> -->
+			<!-- </configuration> -->
+			<!-- </plugin> -->
 
 			<!-- to generate the MANIFEST-FILE of the bundle -->
 			<plugin>
@@ -126,46 +156,55 @@
 					<manifestLocation>target/META-INF</manifestLocation>
 					<instructions>
 						<Bundle-SymbolicName>${project.groupId}.${project.artifactId}</Bundle-SymbolicName>
-						<Export-Package>gov.*,com.sms*</Export-Package>
+						<Export-Package>gov.*,com.sms*,org.apache.chemistry.opencmis.*</Export-Package>
 						<Import-Package>
-							org.apache.cxf,
-							org.apache.cxf.binding,
-							org.apache.cxf.binding.corba,
-							org.apache.cxf.binding.soap,
-							org.apache.cxf.binding.soap.spring,
-							org.apache.cxf.bus,
-							org.apache.cxf.bus.resource,
-							org.apache.cxf.bus.spring,
-							org.apache.cxf.buslifecycle,
-							org.apache.cxf.catalog,
-							org.apache.cxf.configuration,
-							org.apache.cxf.configuration.spring,
-							org.apache.cxf.endpoint,
-							org.apache.cxf.headers,
-							org.apache.cxf.management,
-							org.apache.cxf.management.jmx,
-							org.apache.cxf.phase,
-							org.apache.cxf.resource,
-							org.apache.cxf.service.factory,
-							org.apache.cxf.transport,
-							org.apache.cxf.transport.http,
-							org.apache.cxf.transport.http.policy,
-							org.apache.cxf.transport.http_jetty,
-							org.apache.cxf.transport.jms,
-							org.apache.cxf.transports.http,
-							org.apache.cxf.workqueue,
-							org.apache.cxf.wsdl,
-							org.apache.cxf.wsdl11,
-							org.apache.ws.security.action,
-							org.apache.ws.security.processor,
-							org.springframework.beans.factory.config,
-							org.springframework.mail.javamail,
-							*
-					    </Import-Package>
+						!com.sun.xml.internal.ws.api.message,
+						!com.sun.xml.internal.ws.developer,
+						!com.sun.xml.ws.api,
+						!com.sun.xml.*,
+						*
+						</Import-Package>
+<!-- 						<Import-Package> -->
+<!-- 							org.apache.cxf, -->
+<!-- 							org.apache.cxf.binding, -->
+<!-- 							org.apache.cxf.binding.corba, -->
+<!-- 							org.apache.cxf.binding.soap, -->
+<!-- 							org.apache.cxf.binding.soap.spring, -->
+<!-- 							org.apache.cxf.bus, -->
+<!-- 							org.apache.cxf.bus.resource, -->
+<!-- 							org.apache.cxf.bus.spring, -->
+<!-- 							org.apache.cxf.buslifecycle, -->
+<!-- 							org.apache.cxf.catalog, -->
+<!-- 							org.apache.cxf.configuration, -->
+<!-- 							org.apache.cxf.configuration.spring, -->
+<!-- 							org.apache.cxf.endpoint, -->
+<!-- 							org.apache.cxf.headers, -->
+<!-- 							org.apache.cxf.management, -->
+<!-- 							org.apache.cxf.management.jmx, -->
+<!-- 							org.apache.cxf.phase, -->
+<!-- 							org.apache.cxf.resource, -->
+<!-- 							org.apache.cxf.service.factory, -->
+<!-- 							org.apache.cxf.transport, -->
+<!-- 							org.apache.cxf.transport.http, -->
+<!-- 							org.apache.cxf.transport.http.policy, -->
+<!-- 							org.apache.cxf.transport.http_jetty, -->
+<!-- 							org.apache.cxf.transport.jms, -->
+<!-- 							org.apache.cxf.transports.http, -->
+<!-- 							org.apache.cxf.workqueue, -->
+<!-- 							org.apache.cxf.wsdl, -->
+<!-- 							org.apache.cxf.wsdl11, -->
+<!-- 							org.apache.ws.security.action, -->
+<!-- 							org.apache.ws.security.processor, -->
+<!-- 							org.springframework.beans.factory.config, -->
+<!-- 							org.springframework.mail.javamail, -->
+<!-- 							org.apache.camel.component.cmis, -->
+<!-- 							org.apache.chemistry.opencmis.commons, -->
+<!-- 							* -->
+<!-- 					    </Import-Package> -->
 					</instructions>
 				</configuration>
 			</plugin>
-    </plugins>
-  </build>
+		</plugins>
+	</build>
 
 </project>

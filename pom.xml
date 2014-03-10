@@ -176,13 +176,13 @@
         <artifactId>maven-bundle-plugin</artifactId>
         <version>${maven-bundle-plugin.version}</version>
         <extensions>true</extensions>
-        <configuration>
-          <excludeDependencies>false</excludeDependencies>
-          <instructions>
-            <Import-Package>${example.osgi.imports},*</Import-Package>
-            <_versionpolicy>${example.osgi.import.default.version}</_versionpolicy>
-          </instructions>
-        </configuration>
+<!--         <configuration> -->
+<!--           <excludeDependencies>false</excludeDependencies> -->
+<!--           <instructions> -->
+<!--             <Import-Package>${example.osgi.imports},*</Import-Package> -->
+<!--             <_versionpolicy>${example.osgi.import.default.version}</_versionpolicy> -->
+<!--           </instructions> -->
+<!--         </configuration> -->
       </plugin>
     </plugins>
   </build>

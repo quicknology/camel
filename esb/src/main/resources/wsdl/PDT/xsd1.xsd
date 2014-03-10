@@ -1,123 +1,132 @@
-<?xml version='1.0' encoding='UTF-8'?><!-- Published by JAX-WS RI at http://jax-ws.dev.java.net. RI's version is Oracle JAX-WS 2.1.5. --><xs:schema xmlns:tns="http://vbms.vba.va.gov/external/eDocumentService/" xmlns:ns1="http://vbms.vba.va.gov/cdm" xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified" version="1.0" targetNamespace="http://vbms.vba.va.gov/external/eDocumentService/">
+<?xml version='1.0' encoding='UTF-8'?><!-- Published by JAX-WS RI at http://jax-ws.dev.java.net. 
+	RI's version is Oracle JAX-WS 2.1.5. -->
+<xs:schema xmlns:tns="http://vbms.vba.va.gov/external/eDocumentService/"
+	xmlns:ns1="http://vbms.vba.va.gov/cdm" xmlns:xs="http://www.w3.org/2001/XMLSchema"
+	elementFormDefault="qualified" version="1.0"
+	targetNamespace="http://vbms.vba.va.gov/external/eDocumentService/">
 
-<xs:import namespace="http://vbms.vba.va.gov/cdm" schemaLocation="xsd2.xsd"/>
+	<xs:import namespace="http://vbms.vba.va.gov/cdm"
+		schemaLocation="xsd2.xsd" />
 
-<xs:element name="dataValidationFaultDetailBean" type="tns:DataValidationFaultDetailBean"/>
+	<xs:element name="dataValidationFaultDetailBean" type="tns:DataValidationFaultDetailBean" />
 
-<xs:element name="fetchDocument">
-<xs:complexType>
-<xs:sequence>
-<xs:element name="veteran" type="ns1:Veteran"/>
-<xs:element name="query" type="ns1:Document"/>
-</xs:sequence>
-</xs:complexType>
-</xs:element>
+	<xs:element name="fetchDocument">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="veteran" type="ns1:Veteran" />
+				<xs:element name="query" type="ns1:Document" />
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
 
-<xs:element name="fetchDocumentResponse">
-<xs:complexType>
-<xs:sequence>
-<xs:element name="result" type="ns1:Document"/>
-</xs:sequence>
-</xs:complexType>
-</xs:element>
+	<xs:element name="fetchDocumentResponse">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="result" type="ns1:Document" />
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
 
-<xs:element name="getDocumentTypes">
-<xs:complexType>
-<xs:sequence/>
-</xs:complexType>
-</xs:element>
+	<xs:element name="getDocumentTypes">
+		<xs:complexType>
+			<xs:sequence />
+		</xs:complexType>
+	</xs:element>
 
-<xs:element name="getDocumentTypesResponse">
-<xs:complexType>
-<xs:sequence>
-<xs:element name="result" type="ns1:DocumentType" nillable="true" minOccurs="0" maxOccurs="unbounded"/>
-</xs:sequence>
-</xs:complexType>
-</xs:element>
+	<xs:element name="getDocumentTypesResponse">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="result" type="ns1:DocumentType"
+					nillable="true" minOccurs="0" maxOccurs="unbounded" />
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
 
-<xs:element name="getFormFieldsForDocumentType">
-<xs:complexType>
-<xs:sequence>
-<xs:element name="documentType" type="xs:string"/>
-</xs:sequence>
-</xs:complexType>
-</xs:element>
+	<xs:element name="getFormFieldsForDocumentType">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="documentType" type="xs:string" />
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
 
-<xs:element name="getFormFieldsForDocumentTypeResponse">
-<xs:complexType>
-<xs:sequence>
-<xs:element name="result" type="ns1:FormField" nillable="true" minOccurs="0" maxOccurs="unbounded"/>
-</xs:sequence>
-</xs:complexType>
-</xs:element>
+	<xs:element name="getFormFieldsForDocumentTypeResponse">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="result" type="ns1:FormField" nillable="true"
+					minOccurs="0" maxOccurs="unbounded" />
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
 
-<xs:element name="uploadDocument">
-<xs:complexType>
-<xs:sequence>
-<xs:element name="veteran" type="ns1:Veteran"/>
-<xs:element name="document" type="ns1:Document"/>
-</xs:sequence>
-</xs:complexType>
-</xs:element>
+	<xs:element name="uploadDocument">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="veteran" type="ns1:Veteran" />
+				<xs:element name="document" type="ns1:Document" />
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
 
-<xs:element name="uploadDocumentResponse">
-<xs:complexType>
-<xs:sequence>
-<xs:element name="message" type="xs:string"/>
-</xs:sequence>
-</xs:complexType>
-</xs:element>
+	<xs:element name="uploadDocumentResponse">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="message" type="xs:string" />
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
 
-<xs:element name="uploadFormDocument">
-<xs:complexType>
-<xs:sequence>
-<xs:element name="formDocument" type="ns1:FormDocument"/>
-</xs:sequence>
-</xs:complexType>
-</xs:element>
+	<xs:element name="uploadFormDocument">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="formDocument" type="ns1:FormDocument" />
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
 
-<xs:element name="uploadFormDocumentResponse">
-<xs:complexType>
-<xs:sequence>
-<xs:element name="message" type="xs:string"/>
-</xs:sequence>
-</xs:complexType>
-</xs:element>
+	<xs:element name="uploadFormDocumentResponse">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="message" type="xs:string" />
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
 
-<xs:element name="uploadLetterDocument">
-<xs:complexType>
-<xs:sequence>
-<xs:element name="document" type="ns1:LetterDocument"/>
-</xs:sequence>
-</xs:complexType>
-</xs:element>
+	<xs:element name="uploadLetterDocument">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="document" type="ns1:LetterDocument" />
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
 
-<xs:element name="uploadLetterDocumentResponse">
-<xs:complexType>
-<xs:sequence>
-<xs:element name="message" type="xs:string"/>
-</xs:sequence>
-</xs:complexType>
-</xs:element>
+	<xs:element name="uploadLetterDocumentResponse">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="message" type="xs:string" />
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
 
-<xs:complexType name="FormFieldError">
-<xs:sequence>
-<xs:element name="fieldName" type="xs:string"/>
-<xs:element name="errorType" type="tns:FormFieldErrorType"/>
-<xs:element name="message" type="xs:string"/>
-</xs:sequence>
-</xs:complexType>
+	<xs:complexType name="FormFieldError">
+		<xs:sequence>
+			<xs:element name="fieldName" type="xs:string" />
+			<xs:element name="errorType" type="tns:FormFieldErrorType" />
+			<xs:element name="message" type="xs:string" />
+		</xs:sequence>
+	</xs:complexType>
 
-<xs:complexType name="DataValidationFaultDetailBean">
-<xs:sequence>
-<xs:element name="formFieldErrors" type="tns:FormFieldError" nillable="true" minOccurs="0" maxOccurs="unbounded"/>
-</xs:sequence>
-</xs:complexType>
+	<xs:complexType name="DataValidationFaultDetailBean">
+		<xs:sequence>
+			<xs:element name="formFieldErrors" type="tns:FormFieldError"
+				nillable="true" minOccurs="0" maxOccurs="unbounded" />
+		</xs:sequence>
+	</xs:complexType>
 
-<xs:simpleType name="FormFieldErrorType">
-<xs:restriction base="xs:string">
-<xs:enumeration value="MISSING_REQUIRED_FIELD"/>
-<xs:enumeration value="EXCEEDED_MAXIMUM_LENGTH"/>
-</xs:restriction>
-</xs:simpleType>
+	<xs:simpleType name="FormFieldErrorType">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="MISSING_REQUIRED_FIELD" />
+			<xs:enumeration value="EXCEEDED_MAXIMUM_LENGTH" />
+		</xs:restriction>
+	</xs:simpleType>
 </xs:schema>
