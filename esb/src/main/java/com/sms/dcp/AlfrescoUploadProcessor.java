@@ -43,14 +43,66 @@ import org.springframework.beans.factory.annotation.Value;
  */
 public class AlfrescoUploadProcessor {
 	Logger logger = Logger.getLogger(AlfrescoUploadProcessor.class);
-	final String username = "talend.esb";
-	final String password = "t1esb23$$";
-	final String repository = "-default-";
+	final static String USERNAME_DEFAULT = "talend.esb";
+	final static String PASSWORD_DEFAULT = "t1esb23$$";
+	final static String REPOSITORY_DEFAULT = "-default-";
 	//http://vm-dconvjboss-1.ammscloud.com:8383/share to browse the content
-	final String url="http://vm-dconvjboss-1.ammscloud.com:8383/alfresco/api/-default-/public/cmis/versions/1.1/atom";
+	final static String URL_DEFAULT="http://vm-dconvjboss-1.ammscloud.com:8383/alfresco/api/-default-/public/cmis/versions/1.1/atom";
 	// future the regional office could be dynamic based on the request
-	final String path = "/sites/regional-office-1/documentLibrary/Open Exceptions/";
+	final static String PATH_DEFAULT = "/sites/regional-office-1/documentLibrary/Open Exceptions/";
 
+	String alfrescoURL;
+	String alfrescoUsername;
+	String alfrescoPassword;
+	String alfrescoRepository;
+	String alfrescoFolder;
+	
+	public String getAlfrescoURL() {
+		if (alfrescoURL == null || alfrescoURL.length()==0) {
+			return URL_DEFAULT;
+		}
+		return alfrescoURL;
+	}
+	public void setAlfrescoURL(String alfrescoURL) {
+		this.alfrescoURL = alfrescoURL;
+	}
+	public String getAlfrescoUsername() {
+		if (alfrescoUsername == null || alfrescoUsername.length()==0) {
+			return USERNAME_DEFAULT;
+		}
+		return alfrescoUsername;
+	}
+	public void setAlfrescoUsername(String alfrescoUsername) {
+		this.alfrescoUsername = alfrescoUsername;
+	}
+	public String getAlfrescoPassword() {
+		if (alfrescoPassword == null || alfrescoPassword.length()==0) {
+			return PASSWORD_DEFAULT;
+		}
+		return alfrescoPassword;
+	}
+	public void setAlfrescoPassword(String alfrescoPassword) {
+		this.alfrescoPassword = alfrescoPassword;
+	}
+	public String getAlfrescoRepository() {
+		if (alfrescoRepository == null || alfrescoRepository.length()==0) {
+			return REPOSITORY_DEFAULT;
+		}
+		return alfrescoRepository;
+	}
+	public void setAlfrescoRepository(String alfrescoRepository) {
+		this.alfrescoRepository = alfrescoRepository;
+	}
+	public String getAlfrescoFolder() {
+		if (alfrescoFolder == null || alfrescoFolder.length()==0) {
+			return PATH_DEFAULT;
+		}
+		return alfrescoFolder;
+	}
+	public void setAlfrescoFolder(String alfrescoFolder) {
+		this.alfrescoFolder = alfrescoFolder;
+	}
+	
 	/**
 	 *
 	 * 
@@ -74,21 +126,18 @@ public class AlfrescoUploadProcessor {
 		Map<String, String> parameter = new HashMap<String, String>();
 
 		// user credentials
-		parameter.put(SessionParameter.USER, username);
-		parameter.put(SessionParameter.PASSWORD, password);
+		parameter.put(SessionParameter.USER, getAlfrescoUsername());
+		parameter.put(SessionParameter.PASSWORD, getAlfrescoPassword());
 		// connection settings
-		parameter
-				.put(SessionParameter.ATOMPUB_URL,
-						url);
-		parameter.put(SessionParameter.BINDING_TYPE,
-				BindingType.ATOMPUB.value());
-		parameter.put(SessionParameter.REPOSITORY_ID, repository);
+		parameter.put(SessionParameter.ATOMPUB_URL,	getAlfrescoURL());
+		parameter.put(SessionParameter.BINDING_TYPE, BindingType.ATOMPUB.value());
+		parameter.put(SessionParameter.REPOSITORY_ID, getAlfrescoRepository());
 
 		// create session
 		Session session = factory.createSession(parameter);
 		
 		//Get Folder path to save document
-		Folder folder = (Folder) session.getObjectByPath(path);
+		Folder folder = (Folder) session.getObjectByPath(getAlfrescoFolder());
 
 		if (folder==null) {
 			throw new RuntimeException("Folder Does not Exist");

@@ -35,7 +35,7 @@ public class CamelCMISTest extends CamelTestSupport {
         mock.expectedMessageCount(1);
 
 //        template.sendBody("direct:upload", "Hello Camel");
-        
+//        
 //        assertMockEndpointsSatisfied();
 
     }
@@ -61,16 +61,17 @@ public class CamelCMISTest extends CamelTestSupport {
                 log(LoggingLevel.INFO, "big-brother", "Processing message with id='${header.CamelFileName}' body='${body}'")
                 .to("mock:result");
                 
-                from("direct:upload").process(new Processor() {
+                from("direct:upload").setProperty("my:lastname", constant("Doe")).process(new Processor() {
                     public void process(Exchange exchange) throws Exception {
 //                        exchange.getIn().getHeaders().put(PropertyIds.CONTENT_STREAM_MIME_TYPE, "text/plain; charset=UTF-8");
 //                        exchange.getIn().getHeaders().put(PropertyIds.NAME, "cameldemo.txt");
 //                        exchange.getIn().getHeaders().put(CamelCMISConstants.CMIS_FOLDER_PATH, "/cameldemoFolder");
-//                        exchange.getIn().getHeaders().put(CamelCMISConstants.CMIS_FOLDER_PATH, "/");
+                        exchange.getIn().getHeaders().put(CamelCMISConstants.CMIS_FOLDER_PATH, "/");
                     	
-                      exchange.getIn().getHeaders().put(PropertyIds.CONTENT_STREAM_MIME_TYPE, "text/plain; charset=UTF-8");
-                      exchange.getIn().getHeaders().put(PropertyIds.NAME, "cameldemo2.txt");
-                      exchange.getIn().getHeaders().put(CamelCMISConstants.CMIS_FOLDER_PATH, "/Sites/regional-office-1/documentLibrary/Open Exceptions");
+                      exchange.getIn().getHeaders().put(PropertyIds.CONTENT_STREAM_MIME_TYPE, "text/plain");
+                      exchange.getIn().getHeaders().put(PropertyIds.NAME, "cameldemo12.txt");
+                      exchange.getIn().getHeaders().put("my:lastName", "Smith");
+//                      exchange.getIn().getHeaders().put(CamelCMISConstants.CMIS_FOLDER_PATH, "/Sites/regional-office-1/documentLibrary/Open Exceptions");
                     	
 //                    	exchange.getIn().getHeaders().put(PropertyIds.NAME, "cameldemoFolder");
 //                        exchange.getIn().getHeaders().put(PropertyIds.OBJECT_TYPE_ID, CamelCMISConstants.CMIS_FOLDER); 
