@@ -12,15 +12,15 @@
 
 <beans xmlns="http://www.springframework.org/schema/beans"
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:camel="http://camel.apache.org/schema/spring"
-	xmlns:cxf="http://camel.apache.org/schema/cxf"
-	xmlns:context="http://www.springframework.org/schema/context" 
+	xmlns:cxf="http://camel.apache.org/schema/cxf" xmlns:context="http://www.springframework.org/schema/context"
 	xsi:schemaLocation="
            http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
            http://camel.apache.org/schema/spring http://camel.apache.org/schema/spring/camel-spring.xsd
            http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.0.xsd 
            http://camel.apache.org/schema/cxf http://camel.apache.org/schema/cxf/camel-cxf.xsd">
 
-	<context:property-placeholder location="file:${karaf.home}/va_esb_proxy/config.properties" />
+	<context:property-placeholder
+		location="file:${karaf.home}/va_esb_proxy/config.properties" />
 
 	<cxf:cxfEndpoint id="edocument"
 		address="http://localhost:9000/webservices/edocument" endpointName="s:eDocumentServiceSOAP"
@@ -31,12 +31,12 @@
 	<bean id="myroute" class="com.sms.dcp.MyRouteBuilder" />
 	<bean id="alfrescoroute" class="com.sms.dcp.AlfrescoRouteBuilder" />
 	<bean id="soapProxyProcessor" class="com.sms.dcp.SoapProxyProcessor" />
-	<bean id="alfrescoUploadProcessor" class="com.sms.dcp.AlfrescoUploadProcessor" >
-		<property name="alfrescoURL" value="${Alfresco_URL}"/>
-		<property name="alfrescoUsername" value="${Alfresco_Username}"/>
-		<property name="alfrescoPassword" value="${Alfresco_Password}"/>
-		<property name="alfrescoRepository" value="${Alfresco_Repository}"/>
-		<property name="alfrescoFolder" value="${Alfresco_Folder}"/>
+	<bean id="alfrescoUploadProcessor" class="com.sms.dcp.AlfrescoUploadProcessor">
+		<property name="alfrescoURL" value="${Alfresco_URL}" />
+		<property name="alfrescoUsername" value="${Alfresco_Username}" />
+		<property name="alfrescoPassword" value="${Alfresco_Password}" />
+		<property name="alfrescoRepository" value="${Alfresco_Repository}" />
+		<property name="alfrescoFolder" value="${Alfresco_Folder}" />
 	</bean>
 
 	<camel:camelContext id="camel">
@@ -44,7 +44,26 @@
 		<!-- <camel:routeBuilder ref="alfrescoroute"/> -->
 		<camel:route>
 			<camel:from uri="file://inbox?noop=true" />
-			<camel:to uri="bean:alfrescoUploadProcessor?method=uploadFile" />
+			<camel:to uri="direct:alfrescoFile" />
+<!-- 			<camel:to uri="bean:alfrescoUploadProcessor?method=uploadFile" /> -->
+		</camel:route>
+		<camel:route>
+			<camel:from uri="cxf:bean:edocument" />
+			<camel:to uri="bean:soapProxyProcessor" />
+			<camel:to uri="direct:alfrescoSOAP" />
+			<camel:setBody>
+				<camel:simple>ok</camel:simple>
+			</camel:setBody>
+		</camel:route>
+		<camel:route>
+			<camel:from uri="direct:alfrescoFile"/>
+			<camel:to uri="log:alfresco?showHeaders"/>
+			<camel:to uri="bean:alfrescoUploadProcessor?method=uploadFile"/>
+		</camel:route>
+		<camel:route>
+			<camel:from uri="direct:alfrescoSOAP"/>
+			<camel:to uri="log:alfresco?showHeaders"/>
+			<camel:to uri="bean:alfrescoUploadProcessor?method=uploadSOAPReq"/>
 		</camel:route>
 	</camel:camelContext>
 

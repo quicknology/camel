@@ -43,6 +43,7 @@ import org.springframework.beans.factory.annotation.Value;
  */
 public class AlfrescoUploadProcessor {
 	Logger logger = Logger.getLogger(AlfrescoUploadProcessor.class);
+	
 	final static String USERNAME_DEFAULT = "talend.esb";
 	final static String PASSWORD_DEFAULT = "t1esb23$$";
 	final static String REPOSITORY_DEFAULT = "-default-";
@@ -110,16 +111,31 @@ public class AlfrescoUploadProcessor {
 	 */
 	public void uploadFile(Exchange exchange) throws Exception {
 
-		String name = (String) exchange.getIn().getHeader("CamelFileNameOnly") +Calendar.getInstance().getTimeInMillis() + ".pdf";
-		String mimetype=MimeTypes.getMIMEType("pdf"); //
+		Map<String, Object> metadatas = new HashMap<String, Object>();
+		metadatas.put("meta:fileName", (String) exchange.getIn().getHeader("CamelFileNameOnly"));
+		metadatas.put("sve:veteransLastName", "Doe");
+		metadatas.put("sve:veteransFirstName", "John");
+		//get the content from the message
+		byte[] content = exchange.getIn().getBody((new byte[0]).getClass());
+	
+		doUpload(metadatas, content);
+	}
+	
+	public void uploadSOAPReq(Exchange exchange) throws Exception {
+		byte[] content = exchange.getIn().getBody((new byte[0]).getClass());
+		doUpload(exchange.getIn().getHeaders(), content);
+	}
+	
+	public void doUpload(Map<String, Object> metadatas, byte[] content) {
+		logger.info("doUpload");
 		
-		logger.debug("Mimetype for pdf: " + mimetype);
-		List<String> aspects = new ArrayList<String>();
-		aspects.add("P:sve:exception");
-		aspects.add("P:cm:titled"); // don't really need it. Just example
-		exchange.getOut().setHeader("cmis:secondaryObjectTypeIds", aspects);
-		exchange.getOut().setHeader(PropertyIds.NAME, name);
-		exchange.getOut().setHeader(PropertyIds.CONTENT_STREAM_MIME_TYPE, mimetype);
+		String fileName = (String) metadatas.get("meta:fileName");
+		String fileExt = fileName.substring(fileName.lastIndexOf(".")+1, fileName.length());
+		logger.info("fileExt:"+fileExt);
+		String name = fileName.replace(fileExt, "") +Calendar.getInstance().getTimeInMillis()+"."+fileExt;
+		String mimetype = MimeTypes.getMIMEType(fileExt);	
+		logger.debug("Mimetype : " + mimetype);
+
 		
 		// Example using apache chemistry's library directly
 		SessionFactory factory = SessionFactoryImpl.newInstance();
@@ -141,26 +157,35 @@ public class AlfrescoUploadProcessor {
 
 		if (folder==null) {
 			throw new RuntimeException("Folder Does not Exist");
-		}
+		}	
 		
-		//get the content from the message
-		byte[] content = exchange.getIn().getBody((new byte[0]).getClass());
-		InputStream stream = new ByteArrayInputStream(content);
-		
-		logger.debug("Size: " + content.length);
 		// create a major version
 		
 		// Setting document properties, 
 		// such as custom VA properties.
 		Map<String, Object> properties = new HashMap<String, Object>();
 		properties.put(PropertyIds.OBJECT_TYPE_ID, "cmis:document");
+		List<String> aspects = new ArrayList<String>();
+		aspects.add("P:sve:exception");
+//		aspects.add("P:cm:titled"); // don't really need it. Just example
 		properties.put(PropertyIds.SECONDARY_OBJECT_TYPE_IDS, aspects);
-		properties.put("sve:veteransFirstName", "John");
-		properties.put("sve:veteransLastName", "Doe");
+		for (String propName : metadatas.keySet()) {
+			if (propName.startsWith("sve:")) {
+				logger.info("headerprop:"+propName+", value"+metadatas.get(propName));
+				if (propName.equalsIgnoreCase("sve:veteransFirstName")) {
+					properties.put("sve:veteransFirstName", metadatas.get(propName));
+				} else if (propName.equalsIgnoreCase("sve:veteransLastName")) {
+					properties.put("sve:veteransLastName", metadatas.get(propName));
+				}
+				
+			}
+		}
 		properties.put(PropertyIds.NAME, name);
 		
-		logger.debug("Uploading " + name + " to "
-				+ folder.getPath());
+		logger.debug("Uploading " + name + " to " + folder.getPath());
+		logger.debug("Size: " + content.length);
+		//get the content from the message
+		InputStream stream = new ByteArrayInputStream(content);
 		ContentStream contentStream = new ContentStreamImpl(name,
 				BigInteger.valueOf(content.length), mimetype, stream);
 		Document newDoc = folder.createDocument(properties, contentStream,
