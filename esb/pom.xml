@@ -12,7 +12,7 @@
 
 	<groupId>com.sms.dcp</groupId>
 	<artifactId>esb</artifactId>
-	<name>ESB :: Camel :: CXF :: OSGI</name>
+	<name>ESB VA Proxy Service</name>
 	<packaging>bundle</packaging>
 	<version>1.0.0</version>
 

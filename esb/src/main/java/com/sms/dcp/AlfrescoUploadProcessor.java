@@ -123,7 +123,7 @@ public class AlfrescoUploadProcessor {
 	
 	public void uploadSOAPReq(Exchange exchange) throws Exception {
 		byte[] content = exchange.getIn().getBody((new byte[0]).getClass());
-		doUpload(exchange.getIn().getHeaders(), content);
+		doUpload((Map<String,Object>)exchange.getIn().getHeader("metadatas"), content);
 	}
 	
 	public void doUpload(Map<String, Object> metadatas, byte[] content) {
@@ -171,13 +171,7 @@ public class AlfrescoUploadProcessor {
 		properties.put(PropertyIds.SECONDARY_OBJECT_TYPE_IDS, aspects);
 		for (String propName : metadatas.keySet()) {
 			if (propName.startsWith("sve:")) {
-				logger.info("headerprop:"+propName+", value"+metadatas.get(propName));
-				if (propName.equalsIgnoreCase("sve:veteransFirstName")) {
-					properties.put("sve:veteransFirstName", metadatas.get(propName));
-				} else if (propName.equalsIgnoreCase("sve:veteransLastName")) {
-					properties.put("sve:veteransLastName", metadatas.get(propName));
-				}
-				
+				properties.put(propName, metadatas.get(propName));
 			}
 		}
 		properties.put(PropertyIds.NAME, name);

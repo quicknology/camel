@@ -23,9 +23,9 @@
 		location="file:${karaf.home}/va_esb_proxy/config.properties" />
 
 	<cxf:cxfEndpoint id="edocument"
-		address="http://localhost:9000/webservices/edocument" endpointName="s:eDocumentServiceSOAP"
-		serviceName="s:eDocumentService" wsdlURL="wsdl/PDT/eDocumentService.wsdl"
-		serviceClass="gov.va.vba.vbms.external.edocumentservice.EDocumentService"
+		address="http://localhost:${Proxy_Port_for_Facility}/webservices/edocument"
+		endpointName="s:eDocumentServiceSOAP" serviceName="s:eDocumentService"
+		wsdlURL="wsdl/PDT/eDocumentService.wsdl" serviceClass="gov.va.vba.vbms.external.edocumentservice.EDocumentService"
 		xmlns:s="http://vbms.vba.va.gov/external/eDocumentService/" />
 
 	<bean id="myroute" class="com.sms.dcp.MyRouteBuilder" />
@@ -45,25 +45,54 @@
 		<camel:route>
 			<camel:from uri="file://inbox?noop=true" />
 			<camel:to uri="direct:alfrescoFile" />
-<!-- 			<camel:to uri="bean:alfrescoUploadProcessor?method=uploadFile" /> -->
+			<!-- <camel:to uri="bean:alfrescoUploadProcessor?method=uploadFile" /> -->
 		</camel:route>
 		<camel:route>
 			<camel:from uri="cxf:bean:edocument" />
-			<camel:to uri="bean:soapProxyProcessor" />
-			<camel:to uri="direct:alfrescoSOAP" />
-			<camel:setBody>
-				<camel:simple>ok</camel:simple>
-			</camel:setBody>
+			<camel:choice>
+				<camel:when>
+					<camel:simple>${header.operationName} == 'uploadFormDocument'</camel:simple>
+					<camel:setHeader headerName="soapOperationSupported">
+						<camel:simple resultType="java.lang.Boolean">true</camel:simple>
+					</camel:setHeader>
+					<camel:to uri="bean:soapProxyProcessor" />
+					<camel:to uri="direct:alfrescoSOAP" />
+					<camel:to uri="direct:contentBasedRouting" />
+				</camel:when>
+				<camel:otherwise>
+					<camel:setHeader headerName="soapOperationSupported">
+						<camel:simple resultType="java.lang.Boolean">false</camel:simple>
+					</camel:setHeader>
+					<camel:to uri="direct:contentBasedRouting" />
+				</camel:otherwise>
+			</camel:choice>
+
 		</camel:route>
 		<camel:route>
-			<camel:from uri="direct:alfrescoFile"/>
-			<camel:to uri="log:alfresco?showHeaders"/>
-			<camel:to uri="bean:alfrescoUploadProcessor?method=uploadFile"/>
+			<camel:from uri="direct:alfrescoFile" />
+			<camel:to uri="log:alfresco?showHeaders" />
+			<camel:to uri="bean:alfrescoUploadProcessor?method=uploadFile" />
 		</camel:route>
 		<camel:route>
-			<camel:from uri="direct:alfrescoSOAP"/>
-			<camel:to uri="log:alfresco?showHeaders"/>
-			<camel:to uri="bean:alfrescoUploadProcessor?method=uploadSOAPReq"/>
+			<camel:from uri="direct:alfrescoSOAP" />
+			<camel:to uri="log:alfresco?showHeaders" />
+			<camel:to uri="bean:alfrescoUploadProcessor?method=uploadSOAPReq" />
+		</camel:route>
+		<camel:route>
+			<camel:from uri="direct:contentBasedRouting" />
+			<camel:choice>
+				<camel:when>
+					<camel:simple>${header.soapOperationSupported}</camel:simple>
+					<camel:setBody>
+						<camel:simple>ok</camel:simple>
+					</camel:setBody>
+				</camel:when>
+				<camel:otherwise>
+					<camel:setBody>
+						<camel:simple>Operation Not Supported</camel:simple>
+					</camel:setBody>
+				</camel:otherwise>
+			</camel:choice>
 		</camel:route>
 	</camel:camelContext>
 
