@@ -1,8 +1,6 @@
 package com.sms.dcp;
 
-import gov.va.vba.vbms.cdm.Document;
-import gov.va.vba.vbms.cdm.FormDocument;
-import gov.va.vba.vbms.cdm.Veteran;
+import gov.va.vba.cmp.cmp.FormDocument;
 
 import java.util.HashMap;
 import java.util.List;
@@ -65,24 +63,25 @@ public class SoapProxyProcessor {
 				}
 
 			}
-		} else if (operationName.equals("uploadDocument")) {
-			for (Object currentObj : obj) {
-				if (currentObj instanceof Veteran) {
-					logger.info("Got Veteran");
-		        	Veteran vet = (Veteran) obj.get(0);
-		        	logger.info(vet.getFileNumber()+","+vet.getFirstName()+","+vet.getLastName());
-		        	
-		        	// set alfresco headers
-		        	docMetadatas.put("sve:veteransFirstName", vet.getFirstName());
-		        	docMetadatas.put("sve:veteransLastName", vet.getLastName());
-				} else if (currentObj instanceof Document) {
-					logger.info("Got Document");
-					Document doc = (Document) currentObj;
-					// set alfresco headers
-					docMetadatas.put("meta:fileName", doc.getFilename());
-					exchange.getIn().setBody("camel upload");
-				}
-			}
+			//code with VA WSDL
+//		} else if (operationName.equals("uploadDocument")) {
+//			for (Object currentObj : obj) {
+//				if (currentObj instanceof Veteran) {
+//					logger.info("Got Veteran");
+//		        	Veteran vet = (Veteran) obj.get(0);
+//		        	logger.info(vet.getFileNumber()+","+vet.getFirstName()+","+vet.getLastName());
+//		        	
+//		        	// set alfresco headers
+//		        	docMetadatas.put("sve:veteransFirstName", vet.getFirstName());
+//		        	docMetadatas.put("sve:veteransLastName", vet.getLastName());
+//				} else if (currentObj instanceof Document) {
+//					logger.info("Got Document");
+//					Document doc = (Document) currentObj;
+//					// set alfresco headers
+//					docMetadatas.put("meta:fileName", doc.getFilename());
+//					exchange.getIn().setBody("camel upload");
+//				}
+//			}
 		}
 		
 		exchange.getIn().getHeaders().put("metadatas", docMetadatas);

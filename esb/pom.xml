@@ -97,12 +97,13 @@
 							<wsdlOptions>
 								<wsdlOption>
 									<wsdl>${basedir}/src/main/resources/wsdl/PDT/eDocumentService.wsdl</wsdl>
-									<!-- <wsdl>${basedir}/src/main/resources/etc/report_incident.wsdl</wsdl> -->
 								</wsdlOption>
-								<!-- <bindingFiles> -->
-								<!-- <bindingFile>${basedir}/src/main/resources/wsdl/PDT/xsd1.xsd</bindingFile> -->
-								<!-- <bindingFile>${basedir}/src/main/resources/wsdl/PDT/xsd2.xsd</bindingFile> -->
-								<!-- </bindingFiles> -->
+								<wsdlOption>
+									<wsdl>${basedir}/src/main/resources/wsdl/alfresco/eDocumentServiceAlfresco.wsdl</wsdl>
+								</wsdlOption>
+								<wsdlOption>
+									<wsdl>${basedir}/src/main/resources/wsdl/ddc/eDocumentService.wsdl</wsdl>
+								</wsdlOption>
 							</wsdlOptions>
 						</configuration>
 						<goals>
