@@ -96,7 +96,7 @@
 							<sourceRoot>${basedir}/target/generated/src/main/java</sourceRoot>
 							<wsdlOptions>
 								<wsdlOption>
-									<wsdl>${basedir}/src/main/resources/wsdl/PDT/eDocumentService.wsdl</wsdl>
+									<wsdl>${basedir}/src/main/resources/wsdl/2-2/eDocumentService.wsdl</wsdl>
 								</wsdlOption>
 								<wsdlOption>
 									<wsdl>${basedir}/src/main/resources/wsdl/alfresco/eDocumentServiceAlfresco.wsdl</wsdl>
