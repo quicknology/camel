@@ -25,30 +25,53 @@
         <xsd:import namespace="http://cmp.vba.va.gov/cmp" schemaLocation="xsd2.xsd"/>
     </xsd:schema>
 </types>
+
 <message name="DocumentServiceException">
 <part xmlns:ns2="http://cmp.vba.va.gov/cmp" name="fault" element="ns2:faultDetailBean"/>
 </message>
+
 <message name="uploadFormDocument">
 <part name="parameters" element="tns:uploadFormDocument"/>
 </message>
+
 <message name="uploadFormDocumentResponse">
 <part name="parameters" element="tns:uploadFormDocumentResponse"/>
 </message>
+
+<message name="getDocumentStatus">
+<part name="parameters" element="tns:getDocumentStatus"/>
+</message>
+
+<message name="getDocumentStatusResponse">
+<part name="parameters" element="tns:getDocumentStatusResponse"/>
+</message>
+
 <message name="DocumentDataValidationException">
 <part name="fault" element="tns:dataValidationFaultDetailBean"/>
 </message>
+
 <portType name="eDocumentService">
+
 <operation name="uploadFormDocument">
 <input message="tns:uploadFormDocument"/>
 <output message="tns:uploadFormDocumentResponse"/>
 <fault message="tns:DocumentDataValidationException" name="DocumentDataValidationException"/>
 <fault message="tns:DocumentServiceException" name="DocumentServiceException"/>
 </operation>
+
+<operation name="getDocumentStatus">
+<input message="tns:getDocumentStatus"/>
+<output message="tns:getDocumentStatusResponse"/>
+<fault message="tns:DocumentServiceException" name="DocumentServiceException"/>
+</operation>
+
 </portType>
+
 <binding name="eDocumentServiceSOAPBinding" type="tns:eDocumentService">
 <!-- <wsp:PolicyReference URI="#Mtom.xml"/> -->
 <!-- <wsp:PolicyReference URI="#Mtom.xml"/> -->
 <soap:binding transport="http://schemas.xmlsoap.org/soap/http" style="document"/>
+
 <operation name="uploadFormDocument">
 <soap:operation soapAction="http://cmp.vba.va.gov/external/eDocumentService/uploadFormDocument"/>
 <input>
@@ -64,10 +87,26 @@
 <soap:fault name="DocumentServiceException" use="literal"/>
 </fault>
 </operation>
+
+<operation name="getDocumentStatus">
+<soap:operation soapAction="http://cmp.vba.va.gov/external/eDocumentService/getDocumentStatus"/>
+<input>
+<soap:body use="literal"/>
+</input>
+<output>
+<soap:body use="literal"/>
+</output>
+<fault name="DocumentServiceException">
+<soap:fault name="DocumentServiceException" use="literal"/>
+</fault>
+</operation>
+
 </binding>
+
 <service name="eDocumentService">
 <port name="eDocumentServiceSOAP" binding="tns:eDocumentServiceSOAPBinding">
 <soap:address location="https://cmp.vba.va.gov/eDocumentService"/>
 </port>
 </service>
+
 </definitions>

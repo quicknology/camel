@@ -22,20 +22,17 @@
 	<context:property-placeholder
 		location="file:${karaf.home}/va_esb_proxy/config.properties" />
 
-<!-- 	<cxf:cxfEndpoint id="edocumentVA" -->
-<!-- 		address="http://localhost:${Port_for_VA}/webservices/edocumentVA" -->
-<!-- 		endpointName="s:eDocumentServiceSOAP" serviceName="s:eDocumentService" -->
-<!-- 		wsdlURL="wsdl/PDT/eDocumentService.wsdl" serviceClass="gov.va.vba.vbms.external.edocumentservice.EDocumentService" -->
-<!-- 		xmlns:s="http://vbms.vba.va.gov/external/eDocumentService/" /> -->
+	<cxf:cxfEndpoint id="edocumentVA" address="${VA_URL}"
+		endpointName="s:eDocumentServiceSOAP" serviceName="s:eDocumentService"
+		wsdlURL="wsdl/PDT/eDocumentService.wsdl" serviceClass="gov.va.vba.vbms.external.edocumentservice.EDocumentService"
+		xmlns:s="http://vbms.vba.va.gov/external/eDocumentService/" />
 
-<!-- 	<cxf:cxfEndpoint id="edocumentDDC" -->
-<!-- 		address="http://localhost:${Proxy_Port_for_Facility}/webservices/edocumentDDC" -->
-<!-- 		endpointName="s:eDocumentServiceSOAP" serviceName="s:eDocumentService" -->
-<!-- 		wsdlURL="wsdl/ddc/eDocumentService.wsdl" serviceClass="gov.va.vba.cmp.external.edocumentservice.EDocumentService" -->
-<!-- 		xmlns:s="http://cmp.vba.va.gov/external/eDocumentService/" /> -->
+	<cxf:cxfEndpoint id="edocumentDDC" address="${FACILITY_URL}"
+		endpointName="s:eDocumentServiceSOAP" serviceName="s:eDocumentService"
+		wsdlURL="wsdl/ddc/eDocumentService.wsdl" serviceClass="gov.va.vba.cmp.external.edocumentservice.EDocumentService"
+		xmlns:s="http://cmp.vba.va.gov/external/eDocumentService/" />
 
-	<cxf:cxfEndpoint id="edocumentAlfresco"
-		address="http://localhost:${Proxy_Port_for_Alfresco}/webservices/edocumentAlfresco"
+	<cxf:cxfEndpoint id="edocumentAlfresco" address="${ALFRESCO_URL}"
 		endpointName="s:eDocumentServiceAlfrescoSOAP" serviceName="s:eDocumentServiceAlfresco"
 		wsdlURL="wsdl/alfresco/eDocumentServiceAlfresco.wsdl"
 		serviceClass="gov.va.vba.cmp.external.edocumentservicealfresco.EDocumentServiceAlfresco"
@@ -43,7 +40,8 @@
 
 	<bean id="myroute" class="com.sms.dcp.MyRouteBuilder" />
 	<bean id="alfrescoroute" class="com.sms.dcp.AlfrescoRouteBuilder" />
-	<bean id="soapProxyProcessor" class="com.sms.dcp.SoapProxyProcessor" />
+	<bean id="facilitySoapProxyProcessor" class="com.sms.dcp.FacilitySoapProxyProcessor" />
+	<bean id="alfrescoSoapProxyProcessor" class="com.sms.dcp.AlfrescoSoapProxyProcessor" />
 	<bean id="alfrescoUploadProcessor" class="com.sms.dcp.AlfrescoUploadProcessor">
 		<property name="alfrescoURL" value="${Alfresco_URL}" />
 		<property name="alfrescoUsername" value="${Alfresco_Username}" />
@@ -55,14 +53,16 @@
 	<camel:camelContext id="camel">
 		<!-- <camel:routeBuilder ref="myroute" /> -->
 		<!-- <camel:routeBuilder ref="alfrescoroute"/> -->
-<!-- 		<camel:route id="alfrescoSoapProxy"> -->
-<!-- 			<camel:from uri="cxf:bean:edocumentAlfresco" /> -->
-<!-- 			<camel:to uri="log:alfrescoSoapProxy" /> -->
-<!-- 		</camel:route> -->
-<!-- 		<camel:route id="ddcSoapProxy"> -->
-<!-- 			<camel:from uri="cxf:bean:edocumentDDC" /> -->
-<!-- 			<camel:to uri="log:ddcSoapProxy" /> -->
-<!-- 		</camel:route> -->
+		<!-- <camel:route id="alfrescoSoapProxy"> -->
+		<!-- <camel:from uri="cxf:bean:edocumentAlfresco" /> -->
+		<!-- <camel:to uri="log:alfrescoSoapProxy" /> -->
+		<!-- </camel:route> -->
+		<camel:route id="ddcSoapProxy">
+			<camel:from uri="cxf:bean:edocumentDDC" />
+			<camel:to uri="log:ddcSoapProxy" />
+			<camel:to uri="bean:facilitySoapProxyProcessor" />
+			<camel:to uri="direct:SOAPToAlfresco" />
+		</camel:route>
 		<camel:route id="fileToAlfrescoDemo">
 			<camel:from uri="file://inbox?noop=true" />
 			<camel:to uri="direct:alfrescoFile" />
@@ -70,33 +70,20 @@
 		</camel:route>
 		<camel:route id="toVA">
 			<camel:from uri="cxf:bean:edocumentAlfresco" />
-			<camel:choice>
-				<camel:when>
-					<camel:simple>${header.operationName} == 'uploadFormDocument'</camel:simple>
-					<camel:setHeader headerName="soapOperationSupported">
-						<camel:simple resultType="java.lang.Boolean">true</camel:simple>
-					</camel:setHeader>
-					<camel:to uri="bean:soapProxyProcessor" />
-<!-- 					<camel:to uri="direct:alfrescoSOAP" /> -->
-					<camel:to uri="direct:contentBasedReply" />
-				</camel:when>
-				<camel:otherwise>
-					<camel:setHeader headerName="soapOperationSupported">
-						<camel:simple resultType="java.lang.Boolean">false</camel:simple>
-					</camel:setHeader>
-					<camel:to uri="direct:contentBasedReply" />
-				</camel:otherwise>
-			</camel:choice>
+			<camel:to uri="bean:alfrescoSoapProxyProcessor" />
+			<camel:to uri="cxf:bean:edocumentVA" />
 		</camel:route>
 		<camel:route id="directFileToAlfresco">
 			<camel:from uri="direct:alfrescoFile" />
 			<camel:to uri="log:alfresco?showHeaders" />
 			<camel:to uri="bean:alfrescoUploadProcessor?method=uploadFile" />
 		</camel:route>
-		<camel:route id="directSOAPToAlfresco">
-			<camel:from uri="direct:alfrescoSOAP" />
+		<camel:route id="SOAPToAlfresco">
+			<camel:from uri="direct:SOAPToAlfresco" />
 			<camel:to uri="log:alfresco?showHeaders" />
 			<camel:to uri="bean:alfrescoUploadProcessor?method=uploadSOAPReq" />
+			<camel:to uri="direct:setOperationSupportHeader" />
+			<camel:to uri="direct:contentBasedReply" />
 		</camel:route>
 		<camel:route id="directSetBody">
 			<camel:from uri="direct:contentBasedReply" />
@@ -113,6 +100,28 @@
 					</camel:setBody>
 				</camel:otherwise>
 			</camel:choice>
+		</camel:route>
+		<camel:route id="setOperationSupportHeader">
+			<camel:from uri="direct:setOperationSupportHeader" />
+			<camel:choice>
+				<camel:when>
+					<camel:simple>${header.operationName} == 'uploadFormDocument'</camel:simple>
+					<camel:setHeader headerName="soapOperationSupported">
+						<camel:simple resultType="java.lang.Boolean">true</camel:simple>
+					</camel:setHeader>
+				</camel:when>
+				<camel:otherwise>
+					<camel:setHeader headerName="soapOperationSupported">
+						<camel:simple resultType="java.lang.Boolean">false</camel:simple>
+					</camel:setHeader>
+				</camel:otherwise>
+			</camel:choice>
+		</camel:route>
+
+		<camel:route id="mockVASOAP">
+			<camel:from uri="cxf:bean:edocumentVA" />
+			<camel:to uri="direct:setOperationSupportHeader" />
+			<camel:to uri="direct:contentBasedReply" />
 		</camel:route>
 	</camel:camelContext>
 

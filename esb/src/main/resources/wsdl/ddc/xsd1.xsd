@@ -22,6 +22,22 @@
 </xs:complexType>
 </xs:element>
 
+<xs:element name="getDocumentStatus">
+<xs:complexType>
+<xs:sequence>
+<xs:element name="documentId" type="xs:string" nillable="true" minOccurs="0" maxOccurs="unbounded"/>
+</xs:sequence>
+</xs:complexType>
+</xs:element>
+
+<xs:element name="getDocumentStatusResponse">
+<xs:complexType>
+<xs:sequence>
+<xs:element name="documentStatus" type="xs:string" nillable="true" minOccurs="0" maxOccurs="unbounded"/>
+</xs:sequence>
+</xs:complexType>
+</xs:element>
+
 <xs:complexType name="DataValidationFaultDetailBean">
 <xs:sequence>
 <xs:element name="formFieldErrors" type="tns:FormFieldError" nillable="true" minOccurs="0" maxOccurs="unbounded"/>

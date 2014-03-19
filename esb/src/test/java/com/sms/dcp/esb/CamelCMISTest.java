@@ -49,7 +49,7 @@ public class CamelCMISTest extends CamelTestSupport {
                 
 //                from("timer://foo?repeatCount=1")
                 from("direct:query")
-                .to(CMIS_URI+"&queryMode=true")
+//                .to(CMIS_URI+"&queryMode=true")
                 .split(body())
                 .process(new Processor() {
                     public void process(Exchange exchange) throws Exception {
@@ -77,7 +77,7 @@ public class CamelCMISTest extends CamelTestSupport {
 //                        exchange.getIn().getHeaders().put(PropertyIds.OBJECT_TYPE_ID, CamelCMISConstants.CMIS_FOLDER); 
                     }
                 })
-                .to(CMIS_URI)
+//                .to(CMIS_URI)
                 .log(LoggingLevel.INFO, "big-brother", "Processing message with id='${header.id}' body='${body}'")
                 .to("mock:result");
                 

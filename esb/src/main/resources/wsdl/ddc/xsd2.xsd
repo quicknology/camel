@@ -1,109 +1,100 @@
-<?xml version='1.0' encoding='UTF-8'?><!-- Published by JAX-WS RI at http://jax-ws.dev.java.net. 
-	RI's version is Oracle JAX-WS 2.1.5. -->
-<xs:schema xmlns:tns="http://cmp.vba.va.gov/cmp" xmlns:xs="http://www.w3.org/2001/XMLSchema"
-	elementFormDefault="qualified" version="1.0" targetNamespace="http://cmp.vba.va.gov/cmp">
+<?xml version='1.0' encoding='UTF-8'?><!-- Published by JAX-WS RI at http://jax-ws.dev.java.net. RI's version is Oracle JAX-WS 2.1.5. --><xs:schema xmlns:tns="http://cmp.vba.va.gov/cmp" xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified" version="1.0" targetNamespace="http://cmp.vba.va.gov/cmp">
 
-	<xs:element name="faultDetailBean" type="tns:FaultDetailBean" />
+<xs:element name="faultDetailBean" type="tns:FaultDetailBean"/>
 
-	<xs:complexType name="Document">
-		<xs:sequence>
-			<xs:element name="annotation" type="tns:Annotation"
-				nillable="true" minOccurs="0" maxOccurs="unbounded" />
-			<xs:element name="docContent" type="xs:base64Binary"
-				minOccurs="0" />
-			<xs:element name="trackedItems" type="tns:TrackedItem" />
-			<xs:element name="createDt" type="xs:date" minOccurs="0" />
-			<xs:element name="lastUpdateDt" type="xs:date" minOccurs="0" />
-			<xs:element name="receivedDt" type="xs:date" minOccurs="0" />
-		</xs:sequence>
-		<xs:attribute name="ID" type="xs:string" use="required" />
-		<xs:attribute name="actionable" type="xs:boolean" use="required" />
-		<xs:attribute name="externalID" type="xs:string" use="required" />
-		<xs:attribute name="Veteran_Person_ID" type="xs:long"
-			use="required" />
-		<xs:attribute name="path" type="xs:string" use="required" />
-		<xs:attribute name="fileNumber" type="xs:string" use="required" />
-		<xs:attribute name="filename" type="xs:string" use="required" />
-		<xs:attribute name="createUser_ID" type="xs:string" use="required" />
-		<xs:attribute name="category" type="xs:string" />
-		<xs:attribute name="docType" type="xs:string" use="required" />
-		<xs:attribute name="metadata" type="xs:string" />
-		<xs:attribute name="newMail" type="xs:boolean" use="required" />
-		<xs:attribute name="mimeType" type="xs:string" use="required" />
-		<xs:attribute name="subject" type="xs:string" />
-		<xs:attribute name="endProduct" type="xs:string" />
-		<xs:attribute name="source" type="xs:string" />
-		<xs:attribute name="shippingNum" type="xs:string" />
-		<xs:attribute name="veteranFirstName" type="xs:string" />
-		<xs:attribute name="veteranMiddleName" type="xs:string" />
-		<xs:attribute name="veteranLastName" type="xs:string" />
-		<xs:attribute name="veteranSuffix" type="xs:string" />
-		<xs:attribute name="dcsId" type="xs:string" />
-	</xs:complexType>
+<xs:complexType name="Document">
+<xs:sequence>
+<xs:element name="annotation" type="tns:Annotation" nillable="true" minOccurs="0" maxOccurs="unbounded"/>
+<xs:element name="docContent" type="xs:base64Binary" minOccurs="0"/>
+<xs:element name="trackedItems" type="tns:TrackedItem"/>
+<xs:element name="createDt" type="xs:date" minOccurs="0"/>
+<xs:element name="lastUpdateDt" type="xs:date" minOccurs="0"/>
+<xs:element name="receivedDt" type="xs:date" minOccurs="0"/>
+</xs:sequence>
+<xs:attribute name="ID" type="xs:string" use="required"/>
+<xs:attribute name="actionable" type="xs:boolean" use="required"/>
+<xs:attribute name="externalID" type="xs:string" use="required"/>
+<xs:attribute name="Veteran_Person_ID" type="xs:long" use="required"/>
+<xs:attribute name="path" type="xs:string" use="required"/>
+<xs:attribute name="fileNumber" type="xs:string" use="required"/>
+<xs:attribute name="filename" type="xs:string" use="required"/>
+<xs:attribute name="createUser_ID" type="xs:string" use="required"/>
+<xs:attribute name="category" type="xs:string"/>
+<xs:attribute name="docType" type="xs:string" use="required"/>
+<xs:attribute name="metadata" type="xs:string"/>
+<xs:attribute name="newMail" type="xs:boolean" use="required"/>
+<xs:attribute name="mimeType" type="xs:string" use="required"/>
+<xs:attribute name="subject" type="xs:string"/>
+<xs:attribute name="endProduct" type="xs:string"/>
+<xs:attribute name="source" type="xs:string"/>
+<xs:attribute name="shippingNum" type="xs:string"/>
+<xs:attribute name="veteranFirstName" type="xs:string"/>
+<xs:attribute name="veteranMiddleName" type="xs:string"/>
+<xs:attribute name="veteranLastName" type="xs:string"/>
+<xs:attribute name="veteranSuffix" type="xs:string"/>
+<xs:attribute name="dcsId" type="xs:string"/>
+</xs:complexType>
 
-	<xs:complexType name="Annotation">
-		<xs:sequence>
-			<xs:element name="content" type="xs:string" />
-			<xs:element name="createDt" type="xs:date" />
-			<xs:element name="lastUpdateDt" type="xs:date" minOccurs="0" />
-		</xs:sequence>
-		<xs:attribute name="ID" type="xs:long" use="required" />
-		<xs:attribute name="documentID" type="xs:string" use="required" />
-		<xs:attribute name="text" type="xs:string" />
-		<xs:attribute name="type" type="xs:string" use="required" />
-		<xs:attribute name="createUser_ID" type="xs:long" use="required" />
-		<xs:attribute name="modifiedUser_ID" type="xs:long" />
-		<xs:attribute name="jpaVersion" type="xs:long" use="required" />
-	</xs:complexType>
+<xs:complexType name="Annotation">
+<xs:sequence>
+<xs:element name="content" type="xs:string"/>
+<xs:element name="createDt" type="xs:date"/>
+<xs:element name="lastUpdateDt" type="xs:date" minOccurs="0"/>
+</xs:sequence>
+<xs:attribute name="ID" type="xs:long" use="required"/>
+<xs:attribute name="documentID" type="xs:string" use="required"/>
+<xs:attribute name="text" type="xs:string"/>
+<xs:attribute name="type" type="xs:string" use="required"/>
+<xs:attribute name="createUser_ID" type="xs:long" use="required"/>
+<xs:attribute name="modifiedUser_ID" type="xs:long"/>
+<xs:attribute name="jpaVersion" type="xs:long" use="required"/>
+</xs:complexType>
 
-	<xs:complexType name="TrackedItem">
-		<xs:sequence>
-			<xs:element name="document" type="tns:Document" />
-			<xs:element name="requestDt" type="xs:date" />
-			<xs:element name="suspenseDt" type="xs:date" />
-			<xs:element name="closeDt" type="xs:date" />
-			<xs:element name="inErrorDt" type="xs:date" />
-			<xs:element name="followUpDt" type="xs:date" />
-			<xs:element name="secondFollowUpDt" type="xs:date"
-				minOccurs="0" />
-			<xs:element name="createDt" type="xs:date" minOccurs="0" />
-			<xs:element name="lastUpdateDt" type="xs:date" minOccurs="0" />
-			<xs:element name="receivedDt" type="xs:date" />
-		</xs:sequence>
-		<xs:attribute name="ID" type="xs:long" use="required" />
-		<xs:attribute name="Claim_ID" type="xs:long" use="required" />
-		<xs:attribute name="itemRequested" type="xs:string" use="required" />
-		<xs:attribute name="sentTo" type="xs:string" use="required" />
-	</xs:complexType>
+<xs:complexType name="TrackedItem">
+<xs:sequence>
+<xs:element name="document" type="tns:Document"/>
+<xs:element name="requestDt" type="xs:date"/>
+<xs:element name="suspenseDt" type="xs:date"/>
+<xs:element name="closeDt" type="xs:date"/>
+<xs:element name="inErrorDt" type="xs:date"/>
+<xs:element name="followUpDt" type="xs:date"/>
+<xs:element name="secondFollowUpDt" type="xs:date" minOccurs="0"/>
+<xs:element name="createDt" type="xs:date" minOccurs="0"/>
+<xs:element name="lastUpdateDt" type="xs:date" minOccurs="0"/>
+<xs:element name="receivedDt" type="xs:date"/>
+</xs:sequence>
+<xs:attribute name="ID" type="xs:long" use="required"/>
+<xs:attribute name="Claim_ID" type="xs:long" use="required"/>
+<xs:attribute name="itemRequested" type="xs:string" use="required"/>
+<xs:attribute name="sentTo" type="xs:string" use="required"/>
+</xs:complexType>
 
-	<xs:complexType name="FormDocument">
-		<xs:complexContent>
-			<xs:extension base="tns:Document">
-				<xs:sequence>
-					<xs:element name="formFields" type="tns:FormField"
-						nillable="true" minOccurs="0" maxOccurs="unbounded" />
-				</xs:sequence>
-				<xs:attribute name="dcsScanningComplete" type="xs:boolean" />
-			</xs:extension>
-		</xs:complexContent>
-	</xs:complexType>
+<xs:complexType name="FormDocument">
+<xs:complexContent>
+<xs:extension base="tns:Document">
+<xs:sequence>
+<xs:element name="formFields" type="tns:FormField" nillable="true" minOccurs="0" maxOccurs="unbounded"/>
+</xs:sequence>
+<xs:attribute name="dcsScanningComplete" type="xs:boolean"/>
+</xs:extension>
+</xs:complexContent>
+</xs:complexType>
 
-	<xs:complexType name="FormField">
-		<xs:sequence>
-			<xs:element name="value" type="xs:anyType" />
-		</xs:sequence>
-		<xs:attribute name="name" type="xs:string" use="required" />
-		<xs:attribute name="maxLength" type="xs:long" />
-		<xs:attribute name="required" type="xs:boolean" />
-	</xs:complexType>
+<xs:complexType name="FormField">
+<xs:sequence>
+<xs:element name="value" type="xs:anyType"/>
+</xs:sequence>
+<xs:attribute name="name" type="xs:string" use="required"/>
+<xs:attribute name="maxLength" type="xs:long"/>
+<xs:attribute name="required" type="xs:boolean"/>
+</xs:complexType>
 
-	<xs:complexType name="FaultDetailBean">
-		<xs:sequence />
-		<xs:attribute name="exceptionClassName" type="xs:string" />
-		<xs:attribute name="message" type="xs:string" use="required" />
-		<xs:attribute name="uid" type="xs:string" />
-		<xs:attribute name="serverException" type="xs:boolean"
-			use="required" />
-	</xs:complexType>
+<xs:complexType name="FaultDetailBean">
+<xs:sequence/>
+<xs:attribute name="exceptionClassName" type="xs:string"/>
+<xs:attribute name="message" type="xs:string" use="required"/>
+<xs:attribute name="uid" type="xs:string"/>
+<xs:attribute name="serverException" type="xs:boolean" use="required"/>
+</xs:complexType>
 
 </xs:schema>
