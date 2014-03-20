@@ -28,7 +28,7 @@ import javax.xml.datatype.XMLGregorianCalendar;
  *       &lt;/sequence>
  *       &lt;attribute name="ID" use="required" type="{http://www.w3.org/2001/XMLSchema}long" />
  *       &lt;attribute name="contentionID" use="required" type="{http://www.w3.org/2001/XMLSchema}string" />
- *       &lt;attribute name="inferredInd" use="required" type="{http://www.w3.org/2001/XMLSchema}boolean" />
+ *       &lt;attribute name="inferredInd" type="{http://www.w3.org/2001/XMLSchema}boolean" />
  *       &lt;attribute name="narrative" type="{http://www.w3.org/2001/XMLSchema}string" />
  *       &lt;attribute name="typeCd" type="{http://www.w3.org/2001/XMLSchema}string" />
  *     &lt;/restriction>
@@ -56,8 +56,8 @@ public class Issue {
     protected long id;
     @XmlAttribute(name = "contentionID", required = true)
     protected String contentionID;
-    @XmlAttribute(name = "inferredInd", required = true)
-    protected boolean inferredInd;
+    @XmlAttribute(name = "inferredInd")
+    protected Boolean inferredInd;
     @XmlAttribute(name = "narrative")
     protected String narrative;
     @XmlAttribute(name = "typeCd")
@@ -183,16 +183,24 @@ public class Issue {
     /**
      * Gets the value of the inferredInd property.
      * 
+     * @return
+     *     possible object is
+     *     {@link Boolean }
+     *     
      */
-    public boolean isInferredInd() {
+    public Boolean isInferredInd() {
         return inferredInd;
     }
 
     /**
      * Sets the value of the inferredInd property.
      * 
+     * @param value
+     *     allowed object is
+     *     {@link Boolean }
+     *     
      */
-    public void setInferredInd(boolean value) {
+    public void setInferredInd(Boolean value) {
         this.inferredInd = value;
     }
 

@@ -28,24 +28,24 @@ import javax.xml.datatype.XMLGregorianCalendar;
  *         &lt;element name="financialInfo" type="{http://vbms.vba.va.gov/cdm}FinancialInfo" maxOccurs="unbounded" minOccurs="0"/>
  *         &lt;element name="insuranceInfo" type="{http://vbms.vba.va.gov/cdm}InsuranceInfo" maxOccurs="unbounded" minOccurs="0"/>
  *         &lt;element name="phone" type="{http://vbms.vba.va.gov/cdm}Phone" maxOccurs="unbounded" minOccurs="0"/>
- *         &lt;element name="dateOfBirth" type="{http://www.w3.org/2001/XMLSchema}date"/>
+ *         &lt;element name="dateOfBirth" type="{http://www.w3.org/2001/XMLSchema}date" minOccurs="0"/>
  *         &lt;element name="dateOfDeath" type="{http://www.w3.org/2001/XMLSchema}date" minOccurs="0"/>
  *         &lt;element name="currentOccupationStartDt" type="{http://www.w3.org/2001/XMLSchema}date" minOccurs="0"/>
  *         &lt;element name="createDt" type="{http://www.w3.org/2001/XMLSchema}date" minOccurs="0"/>
  *         &lt;element name="lastUpdateDt" type="{http://www.w3.org/2001/XMLSchema}date" minOccurs="0"/>
  *       &lt;/sequence>
  *       &lt;attribute name="Person_ID" use="required" type="{http://www.w3.org/2001/XMLSchema}long" />
- *       &lt;attribute name="birthCity" use="required" type="{http://www.w3.org/2001/XMLSchema}string" />
+ *       &lt;attribute name="birthCity" type="{http://www.w3.org/2001/XMLSchema}string" />
  *       &lt;attribute name="birthState_Code" type="{http://www.w3.org/2001/XMLSchema}string" />
  *       &lt;attribute name="birthCountry_Code" type="{http://www.w3.org/2001/XMLSchema}string" />
  *       &lt;attribute name="causeOfDeath" type="{http://www.w3.org/2001/XMLSchema}string" />
  *       &lt;attribute name="ssn" type="{http://www.w3.org/2001/XMLSchema}string" />
  *       &lt;attribute name="ssnValidation" type="{http://www.w3.org/2001/XMLSchema}string" />
  *       &lt;attribute name="noSsnReason" type="{http://www.w3.org/2001/XMLSchema}string" />
- *       &lt;attribute name="employmentInd" use="required" type="{http://www.w3.org/2001/XMLSchema}boolean" />
+ *       &lt;attribute name="employmentInd" type="{http://www.w3.org/2001/XMLSchema}boolean" />
  *       &lt;attribute name="currentOccupation" type="{http://www.w3.org/2001/XMLSchema}string" />
- *       &lt;attribute name="potentialDangersInd" use="required" type="{http://www.w3.org/2001/XMLSchema}boolean" />
- *       &lt;attribute name="employmenHdcpInd" use="required" type="{http://www.w3.org/2001/XMLSchema}boolean" />
+ *       &lt;attribute name="potentialDangersInd" type="{http://www.w3.org/2001/XMLSchema}boolean" />
+ *       &lt;attribute name="employmenHdcpInd" type="{http://www.w3.org/2001/XMLSchema}boolean" />
  *       &lt;attribute name="birthplaceValidation" type="{http://www.w3.org/2001/XMLSchema}string" />
  *       &lt;attribute name="dobValidation" type="{http://www.w3.org/2001/XMLSchema}string" />
  *     &lt;/restriction>
@@ -83,7 +83,6 @@ public class PersonalInfo {
     protected List<InsuranceInfo> insuranceInfo;
     @XmlElement(nillable = true)
     protected List<Phone> phone;
-    @XmlElement(required = true)
     @XmlSchemaType(name = "date")
     protected XMLGregorianCalendar dateOfBirth;
     @XmlSchemaType(name = "date")
@@ -96,7 +95,7 @@ public class PersonalInfo {
     protected XMLGregorianCalendar lastUpdateDt;
     @XmlAttribute(name = "Person_ID", required = true)
     protected long personID;
-    @XmlAttribute(name = "birthCity", required = true)
+    @XmlAttribute(name = "birthCity")
     protected String birthCity;
     @XmlAttribute(name = "birthState_Code")
     protected String birthStateCode;
@@ -110,14 +109,14 @@ public class PersonalInfo {
     protected String ssnValidation;
     @XmlAttribute(name = "noSsnReason")
     protected String noSsnReason;
-    @XmlAttribute(name = "employmentInd", required = true)
-    protected boolean employmentInd;
+    @XmlAttribute(name = "employmentInd")
+    protected Boolean employmentInd;
     @XmlAttribute(name = "currentOccupation")
     protected String currentOccupation;
-    @XmlAttribute(name = "potentialDangersInd", required = true)
-    protected boolean potentialDangersInd;
-    @XmlAttribute(name = "employmenHdcpInd", required = true)
-    protected boolean employmenHdcpInd;
+    @XmlAttribute(name = "potentialDangersInd")
+    protected Boolean potentialDangersInd;
+    @XmlAttribute(name = "employmenHdcpInd")
+    protected Boolean employmenHdcpInd;
     @XmlAttribute(name = "birthplaceValidation")
     protected String birthplaceValidation;
     @XmlAttribute(name = "dobValidation")
@@ -604,16 +603,24 @@ public class PersonalInfo {
     /**
      * Gets the value of the employmentInd property.
      * 
+     * @return
+     *     possible object is
+     *     {@link Boolean }
+     *     
      */
-    public boolean isEmploymentInd() {
+    public Boolean isEmploymentInd() {
         return employmentInd;
     }
 
     /**
      * Sets the value of the employmentInd property.
      * 
+     * @param value
+     *     allowed object is
+     *     {@link Boolean }
+     *     
      */
-    public void setEmploymentInd(boolean value) {
+    public void setEmploymentInd(Boolean value) {
         this.employmentInd = value;
     }
 
@@ -644,32 +651,48 @@ public class PersonalInfo {
     /**
      * Gets the value of the potentialDangersInd property.
      * 
+     * @return
+     *     possible object is
+     *     {@link Boolean }
+     *     
      */
-    public boolean isPotentialDangersInd() {
+    public Boolean isPotentialDangersInd() {
         return potentialDangersInd;
     }
 
     /**
      * Sets the value of the potentialDangersInd property.
      * 
+     * @param value
+     *     allowed object is
+     *     {@link Boolean }
+     *     
      */
-    public void setPotentialDangersInd(boolean value) {
+    public void setPotentialDangersInd(Boolean value) {
         this.potentialDangersInd = value;
     }
 
     /**
      * Gets the value of the employmenHdcpInd property.
      * 
+     * @return
+     *     possible object is
+     *     {@link Boolean }
+     *     
      */
-    public boolean isEmploymenHdcpInd() {
+    public Boolean isEmploymenHdcpInd() {
         return employmenHdcpInd;
     }
 
     /**
      * Sets the value of the employmenHdcpInd property.
      * 
+     * @param value
+     *     allowed object is
+     *     {@link Boolean }
+     *     
      */
-    public void setEmploymenHdcpInd(boolean value) {
+    public void setEmploymenHdcpInd(Boolean value) {
         this.employmenHdcpInd = value;
     }
 

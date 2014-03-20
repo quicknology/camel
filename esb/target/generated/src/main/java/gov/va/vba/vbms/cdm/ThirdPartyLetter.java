@@ -18,13 +18,12 @@ import javax.xml.bind.annotation.XmlType;
  * <pre>
  * &lt;complexType name="ThirdPartyLetter">
  *   &lt;complexContent>
- *     &lt;extension base="{http://vbms.vba.va.gov/cdm}Letter">
+ *     &lt;extension base="{http://vbms.vba.va.gov/cdm}ClaimLetter">
  *       &lt;sequence>
+ *         &lt;element name="contentions" type="{http://vbms.vba.va.gov/cdm}LetterContention" maxOccurs="unbounded" minOccurs="0"/>
+ *         &lt;element name="developmentActionParagraphs" type="{http://vbms.vba.va.gov/cdm}DevelopmentActionParagraph" maxOccurs="unbounded" minOccurs="0"/>
+ *         &lt;element name="customParagraphs" type="{http://vbms.vba.va.gov/cdm}CustomParagraph" maxOccurs="unbounded" minOccurs="0"/>
  *         &lt;element name="providerAddress" type="{http://vbms.vba.va.gov/cdm}Address" minOccurs="0"/>
- *         &lt;element name="contentions" type="{http://vbms.vba.va.gov/cdm}ThirdPartyContention" maxOccurs="unbounded" minOccurs="0"/>
- *         &lt;element name="claimant" type="{http://vbms.vba.va.gov/cdm}Participant"/>
- *         &lt;element name="claim" type="{http://vbms.vba.va.gov/cdm}Claim" minOccurs="0"/>
- *         &lt;element name="veteran" type="{http://vbms.vba.va.gov/cdm}Veteran" minOccurs="0"/>
  *       &lt;/sequence>
  *       &lt;attribute name="providerName" type="{http://www.w3.org/2001/XMLSchema}string" />
  *     &lt;/extension>
@@ -36,25 +35,111 @@ import javax.xml.bind.annotation.XmlType;
  */
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "ThirdPartyLetter", propOrder = {
-    "providerAddress",
     "contentions",
-    "claimant",
-    "claim",
-    "veteran"
+    "developmentActionParagraphs",
+    "customParagraphs",
+    "providerAddress"
 })
 public class ThirdPartyLetter
-    extends Letter
+    extends ClaimLetter
 {
 
-    protected Address providerAddress;
     @XmlElement(nillable = true)
-    protected List<ThirdPartyContention> contentions;
-    @XmlElement(required = true)
-    protected Participant claimant;
-    protected Claim claim;
-    protected Veteran veteran;
+    protected List<LetterContention> contentions;
+    @XmlElement(nillable = true)
+    protected List<DevelopmentActionParagraph> developmentActionParagraphs;
+    @XmlElement(nillable = true)
+    protected List<CustomParagraph> customParagraphs;
+    protected Address providerAddress;
     @XmlAttribute(name = "providerName")
     protected String providerName;
+
+    /**
+     * Gets the value of the contentions property.
+     * 
+     * <p>
+     * This accessor method returns a reference to the live list,
+     * not a snapshot. Therefore any modification you make to the
+     * returned list will be present inside the JAXB object.
+     * This is why there is not a <CODE>set</CODE> method for the contentions property.
+     * 
+     * <p>
+     * For example, to add a new item, do as follows:
+     * <pre>
+     *    getContentions().add(newItem);
+     * </pre>
+     * 
+     * 
+     * <p>
+     * Objects of the following type(s) are allowed in the list
+     * {@link LetterContention }
+     * 
+     * 
+     */
+    public List<LetterContention> getContentions() {
+        if (contentions == null) {
+            contentions = new ArrayList<LetterContention>();
+        }
+        return this.contentions;
+    }
+
+    /**
+     * Gets the value of the developmentActionParagraphs property.
+     * 
+     * <p>
+     * This accessor method returns a reference to the live list,
+     * not a snapshot. Therefore any modification you make to the
+     * returned list will be present inside the JAXB object.
+     * This is why there is not a <CODE>set</CODE> method for the developmentActionParagraphs property.
+     * 
+     * <p>
+     * For example, to add a new item, do as follows:
+     * <pre>
+     *    getDevelopmentActionParagraphs().add(newItem);
+     * </pre>
+     * 
+     * 
+     * <p>
+     * Objects of the following type(s) are allowed in the list
+     * {@link DevelopmentActionParagraph }
+     * 
+     * 
+     */
+    public List<DevelopmentActionParagraph> getDevelopmentActionParagraphs() {
+        if (developmentActionParagraphs == null) {
+            developmentActionParagraphs = new ArrayList<DevelopmentActionParagraph>();
+        }
+        return this.developmentActionParagraphs;
+    }
+
+    /**
+     * Gets the value of the customParagraphs property.
+     * 
+     * <p>
+     * This accessor method returns a reference to the live list,
+     * not a snapshot. Therefore any modification you make to the
+     * returned list will be present inside the JAXB object.
+     * This is why there is not a <CODE>set</CODE> method for the customParagraphs property.
+     * 
+     * <p>
+     * For example, to add a new item, do as follows:
+     * <pre>
+     *    getCustomParagraphs().add(newItem);
+     * </pre>
+     * 
+     * 
+     * <p>
+     * Objects of the following type(s) are allowed in the list
+     * {@link CustomParagraph }
+     * 
+     * 
+     */
+    public List<CustomParagraph> getCustomParagraphs() {
+        if (customParagraphs == null) {
+            customParagraphs = new ArrayList<CustomParagraph>();
+        }
+        return this.customParagraphs;
+    }
 
     /**
      * Gets the value of the providerAddress property.
@@ -78,107 +163,6 @@ public class ThirdPartyLetter
      */
     public void setProviderAddress(Address value) {
         this.providerAddress = value;
-    }
-
-    /**
-     * Gets the value of the contentions property.
-     * 
-     * <p>
-     * This accessor method returns a reference to the live list,
-     * not a snapshot. Therefore any modification you make to the
-     * returned list will be present inside the JAXB object.
-     * This is why there is not a <CODE>set</CODE> method for the contentions property.
-     * 
-     * <p>
-     * For example, to add a new item, do as follows:
-     * <pre>
-     *    getContentions().add(newItem);
-     * </pre>
-     * 
-     * 
-     * <p>
-     * Objects of the following type(s) are allowed in the list
-     * {@link ThirdPartyContention }
-     * 
-     * 
-     */
-    public List<ThirdPartyContention> getContentions() {
-        if (contentions == null) {
-            contentions = new ArrayList<ThirdPartyContention>();
-        }
-        return this.contentions;
-    }
-
-    /**
-     * Gets the value of the claimant property.
-     * 
-     * @return
-     *     possible object is
-     *     {@link Participant }
-     *     
-     */
-    public Participant getClaimant() {
-        return claimant;
-    }
-
-    /**
-     * Sets the value of the claimant property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link Participant }
-     *     
-     */
-    public void setClaimant(Participant value) {
-        this.claimant = value;
-    }
-
-    /**
-     * Gets the value of the claim property.
-     * 
-     * @return
-     *     possible object is
-     *     {@link Claim }
-     *     
-     */
-    public Claim getClaim() {
-        return claim;
-    }
-
-    /**
-     * Sets the value of the claim property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link Claim }
-     *     
-     */
-    public void setClaim(Claim value) {
-        this.claim = value;
-    }
-
-    /**
-     * Gets the value of the veteran property.
-     * 
-     * @return
-     *     possible object is
-     *     {@link Veteran }
-     *     
-     */
-    public Veteran getVeteran() {
-        return veteran;
-    }
-
-    /**
-     * Sets the value of the veteran property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link Veteran }
-     *     
-     */
-    public void setVeteran(Veteran value) {
-        this.veteran = value;
     }
 
     /**

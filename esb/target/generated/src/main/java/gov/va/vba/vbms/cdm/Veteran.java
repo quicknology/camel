@@ -27,7 +27,7 @@ import javax.xml.bind.annotation.XmlType;
  *       &lt;attribute name="competencyRating" type="{http://www.w3.org/2001/XMLSchema}string" />
  *       &lt;attribute name="competency" type="{http://www.w3.org/2001/XMLSchema}string" />
  *       &lt;attribute name="fileNumber" type="{http://www.w3.org/2001/XMLSchema}string" />
- *       &lt;attribute name="survivingSpouseInd" use="required" type="{http://www.w3.org/2001/XMLSchema}boolean" />
+ *       &lt;attribute name="survivingSpouseInd" type="{http://www.w3.org/2001/XMLSchema}boolean" />
  *       &lt;attribute name="marriageStatus" use="required" type="{http://www.w3.org/2001/XMLSchema}string" />
  *     &lt;/extension>
  *   &lt;/complexContent>
@@ -57,8 +57,8 @@ public class Veteran
     protected String competency;
     @XmlAttribute(name = "fileNumber")
     protected String fileNumber;
-    @XmlAttribute(name = "survivingSpouseInd", required = true)
-    protected boolean survivingSpouseInd;
+    @XmlAttribute(name = "survivingSpouseInd")
+    protected Boolean survivingSpouseInd;
     @XmlAttribute(name = "marriageStatus", required = true)
     protected String marriageStatus;
 
@@ -219,16 +219,24 @@ public class Veteran
     /**
      * Gets the value of the survivingSpouseInd property.
      * 
+     * @return
+     *     possible object is
+     *     {@link Boolean }
+     *     
      */
-    public boolean isSurvivingSpouseInd() {
+    public Boolean isSurvivingSpouseInd() {
         return survivingSpouseInd;
     }
 
     /**
      * Sets the value of the survivingSpouseInd property.
      * 
+     * @param value
+     *     allowed object is
+     *     {@link Boolean }
+     *     
      */
-    public void setSurvivingSpouseInd(boolean value) {
+    public void setSurvivingSpouseInd(Boolean value) {
         this.survivingSpouseInd = value;
     }
 

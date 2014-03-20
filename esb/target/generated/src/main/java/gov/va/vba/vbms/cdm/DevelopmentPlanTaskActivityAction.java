@@ -1,6 +1,8 @@
 
 package gov.va.vba.vbms.cdm;
 
+import java.util.ArrayList;
+import java.util.List;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlAttribute;
@@ -25,8 +27,9 @@ import javax.xml.datatype.XMLGregorianCalendar;
  *         &lt;element name="vbmsUser" type="{http://vbms.vba.va.gov/cdm}VBMSUser"/>
  *         &lt;element name="expirationDt" type="{http://www.w3.org/2001/XMLSchema}date" minOccurs="0"/>
  *         &lt;element name="developmentPlanTaskActivity" type="{http://vbms.vba.va.gov/cdm}DevelopmentPlanTaskActivity"/>
- *         &lt;element name="stdDvlpmtAction" type="{http://vbms.vba.va.gov/cdm}StdDvlpmtAction"/>
+ *         &lt;element name="standardDevelopmentAction" type="{http://vbms.vba.va.gov/cdm}StandardDevelopmentAction"/>
  *         &lt;element name="letter" type="{http://vbms.vba.va.gov/cdm}Letter" minOccurs="0"/>
+ *         &lt;element name="fillInValues" type="{http://vbms.vba.va.gov/cdm}StandardFillInValue" maxOccurs="unbounded" minOccurs="0"/>
  *       &lt;/sequence>
  *       &lt;attribute name="ID" use="required" type="{http://www.w3.org/2001/XMLSchema}long" />
  *       &lt;attribute name="omitInd" use="required" type="{http://www.w3.org/2001/XMLSchema}boolean" />
@@ -46,8 +49,9 @@ import javax.xml.datatype.XMLGregorianCalendar;
     "vbmsUser",
     "expirationDt",
     "developmentPlanTaskActivity",
-    "stdDvlpmtAction",
-    "letter"
+    "standardDevelopmentAction",
+    "letter",
+    "fillInValues"
 })
 public class DevelopmentPlanTaskActivityAction {
 
@@ -64,8 +68,10 @@ public class DevelopmentPlanTaskActivityAction {
     @XmlElement(required = true)
     protected DevelopmentPlanTaskActivity developmentPlanTaskActivity;
     @XmlElement(required = true)
-    protected StdDvlpmtAction stdDvlpmtAction;
+    protected StandardDevelopmentAction standardDevelopmentAction;
     protected Letter letter;
+    @XmlElement(nillable = true)
+    protected List<StandardFillInValue> fillInValues;
     @XmlAttribute(name = "ID", required = true)
     protected long id;
     @XmlAttribute(name = "omitInd", required = true)
@@ -196,27 +202,27 @@ public class DevelopmentPlanTaskActivityAction {
     }
 
     /**
-     * Gets the value of the stdDvlpmtAction property.
+     * Gets the value of the standardDevelopmentAction property.
      * 
      * @return
      *     possible object is
-     *     {@link StdDvlpmtAction }
+     *     {@link StandardDevelopmentAction }
      *     
      */
-    public StdDvlpmtAction getStdDvlpmtAction() {
-        return stdDvlpmtAction;
+    public StandardDevelopmentAction getStandardDevelopmentAction() {
+        return standardDevelopmentAction;
     }
 
     /**
-     * Sets the value of the stdDvlpmtAction property.
+     * Sets the value of the standardDevelopmentAction property.
      * 
      * @param value
      *     allowed object is
-     *     {@link StdDvlpmtAction }
+     *     {@link StandardDevelopmentAction }
      *     
      */
-    public void setStdDvlpmtAction(StdDvlpmtAction value) {
-        this.stdDvlpmtAction = value;
+    public void setStandardDevelopmentAction(StandardDevelopmentAction value) {
+        this.standardDevelopmentAction = value;
     }
 
     /**
@@ -241,6 +247,35 @@ public class DevelopmentPlanTaskActivityAction {
      */
     public void setLetter(Letter value) {
         this.letter = value;
+    }
+
+    /**
+     * Gets the value of the fillInValues property.
+     * 
+     * <p>
+     * This accessor method returns a reference to the live list,
+     * not a snapshot. Therefore any modification you make to the
+     * returned list will be present inside the JAXB object.
+     * This is why there is not a <CODE>set</CODE> method for the fillInValues property.
+     * 
+     * <p>
+     * For example, to add a new item, do as follows:
+     * <pre>
+     *    getFillInValues().add(newItem);
+     * </pre>
+     * 
+     * 
+     * <p>
+     * Objects of the following type(s) are allowed in the list
+     * {@link StandardFillInValue }
+     * 
+     * 
+     */
+    public List<StandardFillInValue> getFillInValues() {
+        if (fillInValues == null) {
+            fillInValues = new ArrayList<StandardFillInValue>();
+        }
+        return this.fillInValues;
     }
 
     /**

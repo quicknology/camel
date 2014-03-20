@@ -1,0 +1,4 @@
+-------------------------------------------------------------------------------
+Test set: com.sms.dcp.esb.CamelCMISTest
+-------------------------------------------------------------------------------
+Tests run: 2, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 2.288 sec - in com.sms.dcp.esb.CamelCMISTest

@@ -1,6 +1,8 @@
 
 package gov.va.vba.vbms.cdm;
 
+import java.util.ArrayList;
+import java.util.List;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlAttribute;
@@ -20,18 +22,20 @@ import javax.xml.datatype.XMLGregorianCalendar;
  *   &lt;complexContent>
  *     &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType">
  *       &lt;sequence>
- *         &lt;element name="createDt" type="{http://www.w3.org/2001/XMLSchema}date"/>
- *         &lt;element name="lastUpdateDt" type="{http://www.w3.org/2001/XMLSchema}date"/>
  *         &lt;element name="vbmsUser" type="{http://vbms.vba.va.gov/cdm}VBMSUser"/>
- *         &lt;element name="expirationDt" type="{http://www.w3.org/2001/XMLSchema}date" minOccurs="0"/>
  *         &lt;element name="developmentTask" type="{http://vbms.vba.va.gov/cdm}DevelopmentTask"/>
  *         &lt;element name="developmentStatus" type="{http://vbms.vba.va.gov/cdm}DevelopmentStatus"/>
  *         &lt;element name="letter" type="{http://vbms.vba.va.gov/cdm}Letter" minOccurs="0"/>
+ *         &lt;element name="developmentPlan" type="{http://vbms.vba.va.gov/cdm}DevelopmentPlan"/>
+ *         &lt;element name="developmentPlanTaskActivities" type="{http://vbms.vba.va.gov/cdm}DevelopmentPlanTaskActivity" maxOccurs="unbounded"/>
  *       &lt;/sequence>
  *       &lt;attribute name="ID" use="required" type="{http://www.w3.org/2001/XMLSchema}long" />
  *       &lt;attribute name="claim_ID" use="required" type="{http://www.w3.org/2001/XMLSchema}long" />
  *       &lt;attribute name="taskTitle" use="required" type="{http://www.w3.org/2001/XMLSchema}string" />
  *       &lt;attribute name="obsoleteInd" use="required" type="{http://www.w3.org/2001/XMLSchema}boolean" />
+ *       &lt;attribute name="createDt" type="{http://www.w3.org/2001/XMLSchema}date" />
+ *       &lt;attribute name="lastUpdateDt" type="{http://www.w3.org/2001/XMLSchema}date" />
+ *       &lt;attribute name="expirationDt" type="{http://www.w3.org/2001/XMLSchema}date" />
  *     &lt;/restriction>
  *   &lt;/complexContent>
  * &lt;/complexType>
@@ -41,31 +45,26 @@ import javax.xml.datatype.XMLGregorianCalendar;
  */
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "DevelopmentPlanTask", propOrder = {
-    "createDt",
-    "lastUpdateDt",
     "vbmsUser",
-    "expirationDt",
     "developmentTask",
     "developmentStatus",
-    "letter"
+    "letter",
+    "developmentPlan",
+    "developmentPlanTaskActivities"
 })
 public class DevelopmentPlanTask {
 
     @XmlElement(required = true)
-    @XmlSchemaType(name = "date")
-    protected XMLGregorianCalendar createDt;
-    @XmlElement(required = true)
-    @XmlSchemaType(name = "date")
-    protected XMLGregorianCalendar lastUpdateDt;
-    @XmlElement(required = true)
     protected VBMSUser vbmsUser;
-    @XmlSchemaType(name = "date")
-    protected XMLGregorianCalendar expirationDt;
     @XmlElement(required = true)
     protected DevelopmentTask developmentTask;
     @XmlElement(required = true)
     protected DevelopmentStatus developmentStatus;
     protected Letter letter;
+    @XmlElement(required = true)
+    protected DevelopmentPlan developmentPlan;
+    @XmlElement(required = true)
+    protected List<DevelopmentPlanTaskActivity> developmentPlanTaskActivities;
     @XmlAttribute(name = "ID", required = true)
     protected long id;
     @XmlAttribute(name = "claim_ID", required = true)
@@ -74,54 +73,15 @@ public class DevelopmentPlanTask {
     protected String taskTitle;
     @XmlAttribute(name = "obsoleteInd", required = true)
     protected boolean obsoleteInd;
-
-    /**
-     * Gets the value of the createDt property.
-     * 
-     * @return
-     *     possible object is
-     *     {@link XMLGregorianCalendar }
-     *     
-     */
-    public XMLGregorianCalendar getCreateDt() {
-        return createDt;
-    }
-
-    /**
-     * Sets the value of the createDt property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link XMLGregorianCalendar }
-     *     
-     */
-    public void setCreateDt(XMLGregorianCalendar value) {
-        this.createDt = value;
-    }
-
-    /**
-     * Gets the value of the lastUpdateDt property.
-     * 
-     * @return
-     *     possible object is
-     *     {@link XMLGregorianCalendar }
-     *     
-     */
-    public XMLGregorianCalendar getLastUpdateDt() {
-        return lastUpdateDt;
-    }
-
-    /**
-     * Sets the value of the lastUpdateDt property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link XMLGregorianCalendar }
-     *     
-     */
-    public void setLastUpdateDt(XMLGregorianCalendar value) {
-        this.lastUpdateDt = value;
-    }
+    @XmlAttribute(name = "createDt")
+    @XmlSchemaType(name = "date")
+    protected XMLGregorianCalendar createDt;
+    @XmlAttribute(name = "lastUpdateDt")
+    @XmlSchemaType(name = "date")
+    protected XMLGregorianCalendar lastUpdateDt;
+    @XmlAttribute(name = "expirationDt")
+    @XmlSchemaType(name = "date")
+    protected XMLGregorianCalendar expirationDt;
 
     /**
      * Gets the value of the vbmsUser property.
@@ -145,30 +105,6 @@ public class DevelopmentPlanTask {
      */
     public void setVbmsUser(VBMSUser value) {
         this.vbmsUser = value;
-    }
-
-    /**
-     * Gets the value of the expirationDt property.
-     * 
-     * @return
-     *     possible object is
-     *     {@link XMLGregorianCalendar }
-     *     
-     */
-    public XMLGregorianCalendar getExpirationDt() {
-        return expirationDt;
-    }
-
-    /**
-     * Sets the value of the expirationDt property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link XMLGregorianCalendar }
-     *     
-     */
-    public void setExpirationDt(XMLGregorianCalendar value) {
-        this.expirationDt = value;
     }
 
     /**
@@ -244,6 +180,59 @@ public class DevelopmentPlanTask {
     }
 
     /**
+     * Gets the value of the developmentPlan property.
+     * 
+     * @return
+     *     possible object is
+     *     {@link DevelopmentPlan }
+     *     
+     */
+    public DevelopmentPlan getDevelopmentPlan() {
+        return developmentPlan;
+    }
+
+    /**
+     * Sets the value of the developmentPlan property.
+     * 
+     * @param value
+     *     allowed object is
+     *     {@link DevelopmentPlan }
+     *     
+     */
+    public void setDevelopmentPlan(DevelopmentPlan value) {
+        this.developmentPlan = value;
+    }
+
+    /**
+     * Gets the value of the developmentPlanTaskActivities property.
+     * 
+     * <p>
+     * This accessor method returns a reference to the live list,
+     * not a snapshot. Therefore any modification you make to the
+     * returned list will be present inside the JAXB object.
+     * This is why there is not a <CODE>set</CODE> method for the developmentPlanTaskActivities property.
+     * 
+     * <p>
+     * For example, to add a new item, do as follows:
+     * <pre>
+     *    getDevelopmentPlanTaskActivities().add(newItem);
+     * </pre>
+     * 
+     * 
+     * <p>
+     * Objects of the following type(s) are allowed in the list
+     * {@link DevelopmentPlanTaskActivity }
+     * 
+     * 
+     */
+    public List<DevelopmentPlanTaskActivity> getDevelopmentPlanTaskActivities() {
+        if (developmentPlanTaskActivities == null) {
+            developmentPlanTaskActivities = new ArrayList<DevelopmentPlanTaskActivity>();
+        }
+        return this.developmentPlanTaskActivities;
+    }
+
+    /**
      * Gets the value of the id property.
      * 
      */
@@ -313,6 +302,78 @@ public class DevelopmentPlanTask {
      */
     public void setObsoleteInd(boolean value) {
         this.obsoleteInd = value;
+    }
+
+    /**
+     * Gets the value of the createDt property.
+     * 
+     * @return
+     *     possible object is
+     *     {@link XMLGregorianCalendar }
+     *     
+     */
+    public XMLGregorianCalendar getCreateDt() {
+        return createDt;
+    }
+
+    /**
+     * Sets the value of the createDt property.
+     * 
+     * @param value
+     *     allowed object is
+     *     {@link XMLGregorianCalendar }
+     *     
+     */
+    public void setCreateDt(XMLGregorianCalendar value) {
+        this.createDt = value;
+    }
+
+    /**
+     * Gets the value of the lastUpdateDt property.
+     * 
+     * @return
+     *     possible object is
+     *     {@link XMLGregorianCalendar }
+     *     
+     */
+    public XMLGregorianCalendar getLastUpdateDt() {
+        return lastUpdateDt;
+    }
+
+    /**
+     * Sets the value of the lastUpdateDt property.
+     * 
+     * @param value
+     *     allowed object is
+     *     {@link XMLGregorianCalendar }
+     *     
+     */
+    public void setLastUpdateDt(XMLGregorianCalendar value) {
+        this.lastUpdateDt = value;
+    }
+
+    /**
+     * Gets the value of the expirationDt property.
+     * 
+     * @return
+     *     possible object is
+     *     {@link XMLGregorianCalendar }
+     *     
+     */
+    public XMLGregorianCalendar getExpirationDt() {
+        return expirationDt;
+    }
+
+    /**
+     * Sets the value of the expirationDt property.
+     * 
+     * @param value
+     *     allowed object is
+     *     {@link XMLGregorianCalendar }
+     *     
+     */
+    public void setExpirationDt(XMLGregorianCalendar value) {
+        this.expirationDt = value;
     }
 
 }

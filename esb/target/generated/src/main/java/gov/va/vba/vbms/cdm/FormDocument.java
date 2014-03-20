@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlType;
 
@@ -21,6 +22,7 @@ import javax.xml.bind.annotation.XmlType;
  *       &lt;sequence>
  *         &lt;element name="formFields" type="{http://vbms.vba.va.gov/cdm}FormField" maxOccurs="unbounded" minOccurs="0"/>
  *       &lt;/sequence>
+ *       &lt;attribute name="dcsScanningComplete" type="{http://www.w3.org/2001/XMLSchema}boolean" />
  *     &lt;/extension>
  *   &lt;/complexContent>
  * &lt;/complexType>
@@ -38,6 +40,8 @@ public class FormDocument
 
     @XmlElement(nillable = true)
     protected List<FormField> formFields;
+    @XmlAttribute(name = "dcsScanningComplete")
+    protected Boolean dcsScanningComplete;
 
     /**
      * Gets the value of the formFields property.
@@ -66,6 +70,30 @@ public class FormDocument
             formFields = new ArrayList<FormField>();
         }
         return this.formFields;
+    }
+
+    /**
+     * Gets the value of the dcsScanningComplete property.
+     * 
+     * @return
+     *     possible object is
+     *     {@link Boolean }
+     *     
+     */
+    public Boolean isDcsScanningComplete() {
+        return dcsScanningComplete;
+    }
+
+    /**
+     * Sets the value of the dcsScanningComplete property.
+     * 
+     * @param value
+     *     allowed object is
+     *     {@link Boolean }
+     *     
+     */
+    public void setDcsScanningComplete(Boolean value) {
+        this.dcsScanningComplete = value;
     }
 
 }

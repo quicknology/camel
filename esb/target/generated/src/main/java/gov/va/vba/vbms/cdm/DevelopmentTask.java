@@ -1,6 +1,8 @@
 
 package gov.va.vba.vbms.cdm;
 
+import java.util.ArrayList;
+import java.util.List;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlAttribute;
@@ -23,6 +25,7 @@ import javax.xml.datatype.XMLGregorianCalendar;
  *         &lt;element name="createDt" type="{http://www.w3.org/2001/XMLSchema}date"/>
  *         &lt;element name="lastUpdateDt" type="{http://www.w3.org/2001/XMLSchema}date"/>
  *         &lt;element name="expirationDt" type="{http://www.w3.org/2001/XMLSchema}date" minOccurs="0"/>
+ *         &lt;element name="developmentActivities" type="{http://vbms.vba.va.gov/cdm}DevelopmentActivity" maxOccurs="unbounded"/>
  *       &lt;/sequence>
  *       &lt;attribute name="ID" use="required" type="{http://www.w3.org/2001/XMLSchema}long" />
  *       &lt;attribute name="name" use="required" type="{http://www.w3.org/2001/XMLSchema}string" />
@@ -42,7 +45,8 @@ import javax.xml.datatype.XMLGregorianCalendar;
 @XmlType(name = "DevelopmentTask", propOrder = {
     "createDt",
     "lastUpdateDt",
-    "expirationDt"
+    "expirationDt",
+    "developmentActivities"
 })
 public class DevelopmentTask {
 
@@ -54,6 +58,8 @@ public class DevelopmentTask {
     protected XMLGregorianCalendar lastUpdateDt;
     @XmlSchemaType(name = "date")
     protected XMLGregorianCalendar expirationDt;
+    @XmlElement(required = true)
+    protected List<DevelopmentActivity> developmentActivities;
     @XmlAttribute(name = "ID", required = true)
     protected long id;
     @XmlAttribute(name = "name", required = true)
@@ -139,6 +145,35 @@ public class DevelopmentTask {
      */
     public void setExpirationDt(XMLGregorianCalendar value) {
         this.expirationDt = value;
+    }
+
+    /**
+     * Gets the value of the developmentActivities property.
+     * 
+     * <p>
+     * This accessor method returns a reference to the live list,
+     * not a snapshot. Therefore any modification you make to the
+     * returned list will be present inside the JAXB object.
+     * This is why there is not a <CODE>set</CODE> method for the developmentActivities property.
+     * 
+     * <p>
+     * For example, to add a new item, do as follows:
+     * <pre>
+     *    getDevelopmentActivities().add(newItem);
+     * </pre>
+     * 
+     * 
+     * <p>
+     * Objects of the following type(s) are allowed in the list
+     * {@link DevelopmentActivity }
+     * 
+     * 
+     */
+    public List<DevelopmentActivity> getDevelopmentActivities() {
+        if (developmentActivities == null) {
+            developmentActivities = new ArrayList<DevelopmentActivity>();
+        }
+        return this.developmentActivities;
     }
 
     /**

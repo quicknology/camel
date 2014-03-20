@@ -31,7 +31,7 @@ import javax.xml.datatype.XMLGregorianCalendar;
  *       &lt;/sequence>
  *       &lt;attribute name="ID" use="required" type="{http://www.w3.org/2001/XMLSchema}string" />
  *       &lt;attribute name="Claim_ID" use="required" type="{http://www.w3.org/2001/XMLSchema}long" />
- *       &lt;attribute name="actionableItemInd" use="required" type="{http://www.w3.org/2001/XMLSchema}boolean" />
+ *       &lt;attribute name="actionableItemInd" type="{http://www.w3.org/2001/XMLSchema}boolean" />
  *       &lt;attribute name="awaitingResponse" use="required" type="{http://www.w3.org/2001/XMLSchema}string" />
  *       &lt;attribute name="classificationCd" type="{http://www.w3.org/2001/XMLSchema}string" />
  *       &lt;attribute name="decisionHistoryCd" type="{http://www.w3.org/2001/XMLSchema}string" />
@@ -81,8 +81,8 @@ public class Contention {
     protected String id;
     @XmlAttribute(name = "Claim_ID", required = true)
     protected long claimID;
-    @XmlAttribute(name = "actionableItemInd", required = true)
-    protected boolean actionableItemInd;
+    @XmlAttribute(name = "actionableItemInd")
+    protected Boolean actionableItemInd;
     @XmlAttribute(name = "awaitingResponse", required = true)
     protected String awaitingResponse;
     @XmlAttribute(name = "classificationCd")
@@ -304,16 +304,24 @@ public class Contention {
     /**
      * Gets the value of the actionableItemInd property.
      * 
+     * @return
+     *     possible object is
+     *     {@link Boolean }
+     *     
      */
-    public boolean isActionableItemInd() {
+    public Boolean isActionableItemInd() {
         return actionableItemInd;
     }
 
     /**
      * Sets the value of the actionableItemInd property.
      * 
+     * @param value
+     *     allowed object is
+     *     {@link Boolean }
+     *     
      */
-    public void setActionableItemInd(boolean value) {
+    public void setActionableItemInd(Boolean value) {
         this.actionableItemInd = value;
     }
 

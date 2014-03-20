@@ -33,8 +33,6 @@ import javax.xml.bind.annotation.XmlType;
 @XmlType(name = "LookUpValue")
 @XmlSeeAlso({
     DocumentType.class,
-    WorkFlow.class,
-    DocumentCategory.class,
     Department.class
 })
 public class LookUpValue {

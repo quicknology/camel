@@ -34,38 +34,6 @@ public class ObjectFactory {
     }
 
     /**
-     * Create an instance of {@link UploadDocument }
-     * 
-     */
-    public UploadDocument createUploadDocument() {
-        return new UploadDocument();
-    }
-
-    /**
-     * Create an instance of {@link DataValidationFaultDetailBean }
-     * 
-     */
-    public DataValidationFaultDetailBean createDataValidationFaultDetailBean() {
-        return new DataValidationFaultDetailBean();
-    }
-
-    /**
-     * Create an instance of {@link GetDocumentTypesResponse }
-     * 
-     */
-    public GetDocumentTypesResponse createGetDocumentTypesResponse() {
-        return new GetDocumentTypesResponse();
-    }
-
-    /**
-     * Create an instance of {@link UploadLetterDocumentResponse }
-     * 
-     */
-    public UploadLetterDocumentResponse createUploadLetterDocumentResponse() {
-        return new UploadLetterDocumentResponse();
-    }
-
-    /**
      * Create an instance of {@link FormFieldError }
      * 
      */
@@ -74,43 +42,35 @@ public class ObjectFactory {
     }
 
     /**
-     * Create an instance of {@link GetFormFieldsForDocumentTypeResponse }
+     * Create an instance of {@link ListDocumentsResponse }
      * 
      */
-    public GetFormFieldsForDocumentTypeResponse createGetFormFieldsForDocumentTypeResponse() {
-        return new GetFormFieldsForDocumentTypeResponse();
+    public ListDocumentsResponse createListDocumentsResponse() {
+        return new ListDocumentsResponse();
     }
 
     /**
-     * Create an instance of {@link UploadDocumentResponse }
+     * Create an instance of {@link UploadDocument }
      * 
      */
-    public UploadDocumentResponse createUploadDocumentResponse() {
-        return new UploadDocumentResponse();
+    public UploadDocument createUploadDocument() {
+        return new UploadDocument();
     }
 
     /**
-     * Create an instance of {@link GetDocumentTypes }
+     * Create an instance of {@link UploadFormDocument }
      * 
      */
-    public GetDocumentTypes createGetDocumentTypes() {
-        return new GetDocumentTypes();
+    public UploadFormDocument createUploadFormDocument() {
+        return new UploadFormDocument();
     }
 
     /**
-     * Create an instance of {@link UploadLetterDocument }
+     * Create an instance of {@link UploadDocumentWithAssociationsResponse }
      * 
      */
-    public UploadLetterDocument createUploadLetterDocument() {
-        return new UploadLetterDocument();
-    }
-
-    /**
-     * Create an instance of {@link GetFormFieldsForDocumentType }
-     * 
-     */
-    public GetFormFieldsForDocumentType createGetFormFieldsForDocumentType() {
-        return new GetFormFieldsForDocumentType();
+    public UploadDocumentWithAssociationsResponse createUploadDocumentWithAssociationsResponse() {
+        return new UploadDocumentWithAssociationsResponse();
     }
 
     /**
@@ -130,6 +90,94 @@ public class ObjectFactory {
     }
 
     /**
+     * Create an instance of {@link UploadLetterDocument }
+     * 
+     */
+    public UploadLetterDocument createUploadLetterDocument() {
+        return new UploadLetterDocument();
+    }
+
+    /**
+     * Create an instance of {@link UploadLetterDocumentResponse }
+     * 
+     */
+    public UploadLetterDocumentResponse createUploadLetterDocumentResponse() {
+        return new UploadLetterDocumentResponse();
+    }
+
+    /**
+     * Create an instance of {@link GetDocumentTypesResponse }
+     * 
+     */
+    public GetDocumentTypesResponse createGetDocumentTypesResponse() {
+        return new GetDocumentTypesResponse();
+    }
+
+    /**
+     * Create an instance of {@link GetDocumentTypes }
+     * 
+     */
+    public GetDocumentTypes createGetDocumentTypes() {
+        return new GetDocumentTypes();
+    }
+
+    /**
+     * Create an instance of {@link UploadDocumentWithAssociations }
+     * 
+     */
+    public UploadDocumentWithAssociations createUploadDocumentWithAssociations() {
+        return new UploadDocumentWithAssociations();
+    }
+
+    /**
+     * Create an instance of {@link ConvertedDocumentResponse }
+     * 
+     */
+    public ConvertedDocumentResponse createConvertedDocumentResponse() {
+        return new ConvertedDocumentResponse();
+    }
+
+    /**
+     * Create an instance of {@link GetFormFieldsForDocumentTypeResponse }
+     * 
+     */
+    public GetFormFieldsForDocumentTypeResponse createGetFormFieldsForDocumentTypeResponse() {
+        return new GetFormFieldsForDocumentTypeResponse();
+    }
+
+    /**
+     * Create an instance of {@link ListDocuments }
+     * 
+     */
+    public ListDocuments createListDocuments() {
+        return new ListDocuments();
+    }
+
+    /**
+     * Create an instance of {@link GetFormFieldsForDocumentType }
+     * 
+     */
+    public GetFormFieldsForDocumentType createGetFormFieldsForDocumentType() {
+        return new GetFormFieldsForDocumentType();
+    }
+
+    /**
+     * Create an instance of {@link DataValidationFaultDetailBean }
+     * 
+     */
+    public DataValidationFaultDetailBean createDataValidationFaultDetailBean() {
+        return new DataValidationFaultDetailBean();
+    }
+
+    /**
+     * Create an instance of {@link FetchDocumentById }
+     * 
+     */
+    public FetchDocumentById createFetchDocumentById() {
+        return new FetchDocumentById();
+    }
+
+    /**
      * Create an instance of {@link UploadFormDocumentResponse }
      * 
      */
@@ -138,11 +186,11 @@ public class ObjectFactory {
     }
 
     /**
-     * Create an instance of {@link UploadFormDocument }
+     * Create an instance of {@link UploadDocumentResponse }
      * 
      */
-    public UploadFormDocument createUploadFormDocument() {
-        return new UploadFormDocument();
+    public UploadDocumentResponse createUploadDocumentResponse() {
+        return new UploadDocumentResponse();
     }
 
     /**

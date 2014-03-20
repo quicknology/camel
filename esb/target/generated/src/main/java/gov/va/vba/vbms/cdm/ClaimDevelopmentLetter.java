@@ -30,6 +30,8 @@ import javax.xml.bind.annotation.XmlType;
  *         &lt;element name="claim" type="{http://vbms.vba.va.gov/cdm}Claim" minOccurs="0"/>
  *         &lt;element name="veteran" type="{http://vbms.vba.va.gov/cdm}Veteran" minOccurs="0"/>
  *         &lt;element name="isAdditionalEvidenceNeeded" type="{http://www.w3.org/2001/XMLSchema}boolean"/>
+ *         &lt;element name="vsoInd" type="{http://www.w3.org/2001/XMLSchema}boolean" minOccurs="0"/>
+ *         &lt;element name="vsoName" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/>
  *       &lt;/sequence>
  *     &lt;/extension>
  *   &lt;/complexContent>
@@ -50,7 +52,9 @@ import javax.xml.bind.annotation.XmlType;
     "claimant",
     "claim",
     "veteran",
-    "isAdditionalEvidenceNeeded"
+    "isAdditionalEvidenceNeeded",
+    "vsoInd",
+    "vsoName"
 })
 public class ClaimDevelopmentLetter
     extends Letter
@@ -73,6 +77,9 @@ public class ClaimDevelopmentLetter
     protected Claim claim;
     protected Veteran veteran;
     protected boolean isAdditionalEvidenceNeeded;
+    @XmlElement(defaultValue = "false")
+    protected Boolean vsoInd;
+    protected String vsoName;
 
     /**
      * Gets the value of the isDevelopmentRequired property.
@@ -337,6 +344,54 @@ public class ClaimDevelopmentLetter
      */
     public void setIsAdditionalEvidenceNeeded(boolean value) {
         this.isAdditionalEvidenceNeeded = value;
+    }
+
+    /**
+     * Gets the value of the vsoInd property.
+     * 
+     * @return
+     *     possible object is
+     *     {@link Boolean }
+     *     
+     */
+    public Boolean isVsoInd() {
+        return vsoInd;
+    }
+
+    /**
+     * Sets the value of the vsoInd property.
+     * 
+     * @param value
+     *     allowed object is
+     *     {@link Boolean }
+     *     
+     */
+    public void setVsoInd(Boolean value) {
+        this.vsoInd = value;
+    }
+
+    /**
+     * Gets the value of the vsoName property.
+     * 
+     * @return
+     *     possible object is
+     *     {@link String }
+     *     
+     */
+    public String getVsoName() {
+        return vsoName;
+    }
+
+    /**
+     * Sets the value of the vsoName property.
+     * 
+     * @param value
+     *     allowed object is
+     *     {@link String }
+     *     
+     */
+    public void setVsoName(String value) {
+        this.vsoName = value;
     }
 
 }

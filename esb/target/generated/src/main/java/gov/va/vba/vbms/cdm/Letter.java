@@ -25,14 +25,15 @@ import javax.xml.datatype.XMLGregorianCalendar;
  *       &lt;sequence>
  *         &lt;element name="senderAddress" type="{http://vbms.vba.va.gov/cdm}Address"/>
  *         &lt;element name="recipientAddress" type="{http://vbms.vba.va.gov/cdm}Address"/>
- *         &lt;element name="generationDate" type="{http://www.w3.org/2001/XMLSchema}date"/>
+ *         &lt;element name="generationDate" type="{http://www.w3.org/2001/XMLSchema}date" minOccurs="0"/>
  *         &lt;element name="salutation" type="{http://www.w3.org/2001/XMLSchema}string"/>
  *         &lt;element name="body" type="{http://vbms.vba.va.gov/cdm}LetterBody"/>
+ *         &lt;element name="signatureTitle" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/>
  *         &lt;element name="signature" type="{http://www.w3.org/2001/XMLSchema}string"/>
  *         &lt;element name="enclosure" type="{http://www.w3.org/2001/XMLSchema}string" maxOccurs="unbounded" minOccurs="0"/>
  *         &lt;element name="blameLine" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/>
  *         &lt;element name="carbonCopy" type="{http://www.w3.org/2001/XMLSchema}string" maxOccurs="unbounded" minOccurs="0"/>
- *         &lt;element name="sentDate" type="{http://www.w3.org/2001/XMLSchema}date"/>
+ *         &lt;element name="sentDate" type="{http://www.w3.org/2001/XMLSchema}date" minOccurs="0"/>
  *         &lt;element name="stationNumber" type="{http://vbms.vba.va.gov/cdm}RegionalOffice" minOccurs="0"/>
  *         &lt;element name="createDt" type="{http://www.w3.org/2001/XMLSchema}date" minOccurs="0"/>
  *         &lt;element name="lastUpdateDt" type="{http://www.w3.org/2001/XMLSchema}date" minOccurs="0"/>
@@ -59,6 +60,7 @@ import javax.xml.datatype.XMLGregorianCalendar;
     "generationDate",
     "salutation",
     "body",
+    "signatureTitle",
     "signature",
     "enclosure",
     "blameLine",
@@ -70,8 +72,8 @@ import javax.xml.datatype.XMLGregorianCalendar;
     "vbmsUser"
 })
 @XmlSeeAlso({
-    ThirdPartyLetter.class,
-    ClaimDevelopmentLetter.class
+    ClaimDevelopmentLetter.class,
+    ClaimLetter.class
 })
 public class Letter {
 
@@ -79,13 +81,13 @@ public class Letter {
     protected Address senderAddress;
     @XmlElement(required = true)
     protected Address recipientAddress;
-    @XmlElement(required = true)
     @XmlSchemaType(name = "date")
     protected XMLGregorianCalendar generationDate;
     @XmlElement(required = true, defaultValue = "Dear")
     protected String salutation;
     @XmlElement(required = true)
     protected LetterBody body;
+    protected String signatureTitle;
     @XmlElement(required = true)
     protected String signature;
     @XmlElement(nillable = true)
@@ -93,7 +95,6 @@ public class Letter {
     protected String blameLine;
     @XmlElement(nillable = true)
     protected List<String> carbonCopy;
-    @XmlElement(required = true)
     @XmlSchemaType(name = "date")
     protected XMLGregorianCalendar sentDate;
     protected RegionalOffice stationNumber;
@@ -237,6 +238,30 @@ public class Letter {
      */
     public void setBody(LetterBody value) {
         this.body = value;
+    }
+
+    /**
+     * Gets the value of the signatureTitle property.
+     * 
+     * @return
+     *     possible object is
+     *     {@link String }
+     *     
+     */
+    public String getSignatureTitle() {
+        return signatureTitle;
+    }
+
+    /**
+     * Sets the value of the signatureTitle property.
+     * 
+     * @param value
+     *     allowed object is
+     *     {@link String }
+     *     
+     */
+    public void setSignatureTitle(String value) {
+        this.signatureTitle = value;
     }
 
     /**

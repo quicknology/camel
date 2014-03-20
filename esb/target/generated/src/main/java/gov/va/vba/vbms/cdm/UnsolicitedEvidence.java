@@ -22,7 +22,6 @@ import javax.xml.datatype.XMLGregorianCalendar;
  *       &lt;sequence>
  *         &lt;element name="rcvdDt" type="{http://www.w3.org/2001/XMLSchema}date"/>
  *       &lt;/sequence>
- *       &lt;attribute name="jrnDt" type="{http://www.w3.org/2001/XMLSchema}date" />
  *       &lt;attribute name="descTxt" type="{http://www.w3.org/2001/XMLSchema}string" />
  *       &lt;attribute name="evdnceTypeCd" type="{http://www.w3.org/2001/XMLSchema}string" />
  *       &lt;attribute name="Incoming_Document_ID" type="{http://www.w3.org/2001/XMLSchema}string" />
@@ -44,9 +43,6 @@ public class UnsolicitedEvidence {
     @XmlElement(required = true)
     @XmlSchemaType(name = "date")
     protected XMLGregorianCalendar rcvdDt;
-    @XmlAttribute(name = "jrnDt")
-    @XmlSchemaType(name = "date")
-    protected XMLGregorianCalendar jrnDt;
     @XmlAttribute(name = "descTxt")
     protected String descTxt;
     @XmlAttribute(name = "evdnceTypeCd")
@@ -80,30 +76,6 @@ public class UnsolicitedEvidence {
      */
     public void setRcvdDt(XMLGregorianCalendar value) {
         this.rcvdDt = value;
-    }
-
-    /**
-     * Gets the value of the jrnDt property.
-     * 
-     * @return
-     *     possible object is
-     *     {@link XMLGregorianCalendar }
-     *     
-     */
-    public XMLGregorianCalendar getJrnDt() {
-        return jrnDt;
-    }
-
-    /**
-     * Sets the value of the jrnDt property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link XMLGregorianCalendar }
-     *     
-     */
-    public void setJrnDt(XMLGregorianCalendar value) {
-        this.jrnDt = value;
     }
 
     /**

@@ -29,6 +29,7 @@ import javax.xml.datatype.XMLGregorianCalendar;
  *       &lt;attribute name="name" use="required" type="{http://www.w3.org/2001/XMLSchema}string" />
  *       &lt;attribute name="sortOrder" use="required" type="{http://www.w3.org/2001/XMLSchema}int" />
  *       &lt;attribute name="evidenceInd" use="required" type="{http://www.w3.org/2001/XMLSchema}boolean" />
+ *       &lt;attribute name="triggerInd" use="required" type="{http://www.w3.org/2001/XMLSchema}boolean" />
  *     &lt;/restriction>
  *   &lt;/complexContent>
  * &lt;/complexType>
@@ -63,6 +64,8 @@ public class DevelopmentActivity {
     protected int sortOrder;
     @XmlAttribute(name = "evidenceInd", required = true)
     protected boolean evidenceInd;
+    @XmlAttribute(name = "triggerInd", required = true)
+    protected boolean triggerInd;
 
     /**
      * Gets the value of the createDt property.
@@ -230,6 +233,22 @@ public class DevelopmentActivity {
      */
     public void setEvidenceInd(boolean value) {
         this.evidenceInd = value;
+    }
+
+    /**
+     * Gets the value of the triggerInd property.
+     * 
+     */
+    public boolean isTriggerInd() {
+        return triggerInd;
+    }
+
+    /**
+     * Sets the value of the triggerInd property.
+     * 
+     */
+    public void setTriggerInd(boolean value) {
+        this.triggerInd = value;
     }
 
 }

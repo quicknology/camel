@@ -37,7 +37,6 @@ import javax.xml.datatype.XMLGregorianCalendar;
     "lastUpdateDt"
 })
 @XmlSeeAlso({
-    Organization.class,
     Person.class
 })
 public abstract class Party {

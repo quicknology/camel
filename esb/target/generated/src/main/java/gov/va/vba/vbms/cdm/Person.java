@@ -44,9 +44,8 @@ import javax.xml.bind.annotation.XmlType;
     "namePrefix"
 })
 @XmlSeeAlso({
-    Veteran.class,
     Participant.class,
-    Dependent.class
+    Veteran.class
 })
 public class Person
     extends Party

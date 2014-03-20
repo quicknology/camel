@@ -4,7 +4,6 @@ package gov.va.vba.vbms.cdm;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlAttribute;
-import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlSchemaType;
 import javax.xml.bind.annotation.XmlType;
 import javax.xml.datatype.XMLGregorianCalendar;
@@ -20,7 +19,7 @@ import javax.xml.datatype.XMLGregorianCalendar;
  *   &lt;complexContent>
  *     &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType">
  *       &lt;sequence>
- *         &lt;element name="source" type="{http://vbms.vba.va.gov/cdm}Source"/>
+ *         &lt;element name="source" type="{http://vbms.vba.va.gov/cdm}Source" minOccurs="0"/>
  *         &lt;element name="createDt" type="{http://www.w3.org/2001/XMLSchema}date" minOccurs="0"/>
  *         &lt;element name="lastUpdateDt" type="{http://www.w3.org/2001/XMLSchema}date" minOccurs="0"/>
  *       &lt;/sequence>
@@ -28,11 +27,11 @@ import javax.xml.datatype.XMLGregorianCalendar;
  *       &lt;attribute name="addressLine1" use="required" type="{http://www.w3.org/2001/XMLSchema}string" />
  *       &lt;attribute name="addressLine2" type="{http://www.w3.org/2001/XMLSchema}string" />
  *       &lt;attribute name="addressLine3" type="{http://www.w3.org/2001/XMLSchema}string" />
- *       &lt;attribute name="AddressType_ID" type="{http://www.w3.org/2001/XMLSchema}long" />
- *       &lt;attribute name="city" use="required" type="{http://www.w3.org/2001/XMLSchema}string" />
+ *       &lt;attribute name="AddressType_ID" type="{http://www.w3.org/2001/XMLSchema}string" />
+ *       &lt;attribute name="city" type="{http://www.w3.org/2001/XMLSchema}string" />
  *       &lt;attribute name="State_Code" type="{http://www.w3.org/2001/XMLSchema}string" />
  *       &lt;attribute name="Country_Code" type="{http://www.w3.org/2001/XMLSchema}string" />
- *       &lt;attribute name="postalCode" use="required" type="{http://www.w3.org/2001/XMLSchema}string" />
+ *       &lt;attribute name="postalCode" type="{http://www.w3.org/2001/XMLSchema}string" />
  *       &lt;attribute name="preferredAddrInd" use="required" type="{http://www.w3.org/2001/XMLSchema}boolean" />
  *       &lt;attribute name="jpaVersion" use="required" type="{http://www.w3.org/2001/XMLSchema}long" />
  *     &lt;/restriction>
@@ -50,7 +49,6 @@ import javax.xml.datatype.XMLGregorianCalendar;
 })
 public class Address {
 
-    @XmlElement(required = true)
     protected Source source;
     @XmlSchemaType(name = "date")
     protected XMLGregorianCalendar createDt;
@@ -65,14 +63,14 @@ public class Address {
     @XmlAttribute(name = "addressLine3")
     protected String addressLine3;
     @XmlAttribute(name = "AddressType_ID")
-    protected Long addressTypeID;
-    @XmlAttribute(name = "city", required = true)
+    protected String addressTypeID;
+    @XmlAttribute(name = "city")
     protected String city;
     @XmlAttribute(name = "State_Code")
     protected String stateCode;
     @XmlAttribute(name = "Country_Code")
     protected String countryCode;
-    @XmlAttribute(name = "postalCode", required = true)
+    @XmlAttribute(name = "postalCode")
     protected String postalCode;
     @XmlAttribute(name = "preferredAddrInd", required = true)
     protected boolean preferredAddrInd;
@@ -244,10 +242,10 @@ public class Address {
      * 
      * @return
      *     possible object is
-     *     {@link Long }
+     *     {@link String }
      *     
      */
-    public Long getAddressTypeID() {
+    public String getAddressTypeID() {
         return addressTypeID;
     }
 
@@ -256,10 +254,10 @@ public class Address {
      * 
      * @param value
      *     allowed object is
-     *     {@link Long }
+     *     {@link String }
      *     
      */
-    public void setAddressTypeID(Long value) {
+    public void setAddressTypeID(String value) {
         this.addressTypeID = value;
     }
 

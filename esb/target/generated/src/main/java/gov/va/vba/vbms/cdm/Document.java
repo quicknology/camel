@@ -51,6 +51,7 @@ import javax.xml.datatype.XMLGregorianCalendar;
  *       &lt;attribute name="veteranMiddleName" type="{http://www.w3.org/2001/XMLSchema}string" />
  *       &lt;attribute name="veteranLastName" type="{http://www.w3.org/2001/XMLSchema}string" />
  *       &lt;attribute name="veteranSuffix" type="{http://www.w3.org/2001/XMLSchema}string" />
+ *       &lt;attribute name="dcsId" type="{http://www.w3.org/2001/XMLSchema}string" />
  *     &lt;/restriction>
  *   &lt;/complexContent>
  * &lt;/complexType>
@@ -68,9 +69,8 @@ import javax.xml.datatype.XMLGregorianCalendar;
     "receivedDt"
 })
 @XmlSeeAlso({
-    LetterDocument.class,
     FormDocument.class,
-    Type526Document.class
+    LetterDocument.class
 })
 public class Document {
 
@@ -127,6 +127,8 @@ public class Document {
     protected String veteranLastName;
     @XmlAttribute(name = "veteranSuffix")
     protected String veteranSuffix;
+    @XmlAttribute(name = "dcsId")
+    protected String dcsId;
 
     /**
      * Gets the value of the annotation property.
@@ -753,6 +755,30 @@ public class Document {
      */
     public void setVeteranSuffix(String value) {
         this.veteranSuffix = value;
+    }
+
+    /**
+     * Gets the value of the dcsId property.
+     * 
+     * @return
+     *     possible object is
+     *     {@link String }
+     *     
+     */
+    public String getDcsId() {
+        return dcsId;
+    }
+
+    /**
+     * Sets the value of the dcsId property.
+     * 
+     * @param value
+     *     allowed object is
+     *     {@link String }
+     *     
+     */
+    public void setDcsId(String value) {
+        this.dcsId = value;
     }
 
 }

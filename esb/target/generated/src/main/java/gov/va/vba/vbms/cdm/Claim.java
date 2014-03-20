@@ -26,9 +26,9 @@ import javax.xml.datatype.XMLGregorianCalendar;
  *         &lt;element name="claimDateDt" type="{http://www.w3.org/2001/XMLSchema}date"/>
  *         &lt;element name="flashList" type="{http://vbms.vba.va.gov/cdm}Flash" maxOccurs="unbounded" minOccurs="0"/>
  *         &lt;element name="suspenseDate" type="{http://www.w3.org/2001/XMLSchema}date" minOccurs="0"/>
- *         &lt;element name="contentions" type="{http://vbms.vba.va.gov/cdm}Contention" maxOccurs="unbounded"/>
+ *         &lt;element name="contentions" type="{http://vbms.vba.va.gov/cdm}Contention" maxOccurs="unbounded" minOccurs="0"/>
  *         &lt;element name="inTakeSite" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/>
- *         &lt;element name="suppressAckLetterInd" type="{http://www.w3.org/2001/XMLSchema}boolean"/>
+ *         &lt;element name="suppressAckLetterInd" type="{http://www.w3.org/2001/XMLSchema}boolean" minOccurs="0"/>
  *         &lt;element name="futureReason" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/>
  *       &lt;/sequence>
  *       &lt;attribute name="ID" use="required" type="{http://www.w3.org/2001/XMLSchema}long" />
@@ -39,7 +39,7 @@ import javax.xml.datatype.XMLGregorianCalendar;
  *       &lt;attribute name="benefitTypeCd" type="{http://www.w3.org/2001/XMLSchema}string" />
  *       &lt;attribute name="claimLevelStatusCd" use="required" type="{http://www.w3.org/2001/XMLSchema}string" />
  *       &lt;attribute name="modifiedEndProductCd" type="{http://www.w3.org/2001/XMLSchema}string" />
- *       &lt;attribute name="gulfWarRegistryInd" use="required" type="{http://www.w3.org/2001/XMLSchema}boolean" />
+ *       &lt;attribute name="gulfWarRegistryInd" type="{http://www.w3.org/2001/XMLSchema}boolean" />
  *       &lt;attribute name="label" use="required" type="{http://www.w3.org/2001/XMLSchema}string" />
  *       &lt;attribute name="payeeCd" use="required" type="{http://www.w3.org/2001/XMLSchema}string" />
  *       &lt;attribute name="sectionUnit" type="{http://www.w3.org/2001/XMLSchema}string" />
@@ -48,7 +48,6 @@ import javax.xml.datatype.XMLGregorianCalendar;
  *       &lt;attribute name="stationOfJurisdiction" use="required" type="{http://www.w3.org/2001/XMLSchema}string" />
  *       &lt;attribute name="currentStationOfJurisdiction" type="{http://www.w3.org/2001/XMLSchema}string" />
  *       &lt;attribute name="suspenseReasonCd" type="{http://www.w3.org/2001/XMLSchema}string" />
- *       &lt;attribute name="suspenseReasonComments" type="{http://www.w3.org/2001/XMLSchema}string" />
  *       &lt;attribute name="priority" use="required" type="{http://www.w3.org/2001/XMLSchema}string" />
  *       &lt;attribute name="td" type="{http://www.w3.org/2001/XMLSchema}string" />
  *       &lt;attribute name="disposition" type="{http://www.w3.org/2001/XMLSchema}string" />
@@ -83,11 +82,11 @@ public class Claim {
     protected List<Flash> flashList;
     @XmlSchemaType(name = "date")
     protected XMLGregorianCalendar suspenseDate;
-    @XmlElement(required = true)
+    @XmlElement(nillable = true)
     protected List<Contention> contentions;
     protected String inTakeSite;
     @XmlElement(defaultValue = "false")
-    protected boolean suppressAckLetterInd;
+    protected Boolean suppressAckLetterInd;
     protected String futureReason;
     @XmlAttribute(name = "ID", required = true)
     protected long id;
@@ -105,8 +104,8 @@ public class Claim {
     protected String claimLevelStatusCd;
     @XmlAttribute(name = "modifiedEndProductCd")
     protected String modifiedEndProductCd;
-    @XmlAttribute(name = "gulfWarRegistryInd", required = true)
-    protected boolean gulfWarRegistryInd;
+    @XmlAttribute(name = "gulfWarRegistryInd")
+    protected Boolean gulfWarRegistryInd;
     @XmlAttribute(name = "label", required = true)
     protected String label;
     @XmlAttribute(name = "payeeCd", required = true)
@@ -123,8 +122,6 @@ public class Claim {
     protected String currentStationOfJurisdiction;
     @XmlAttribute(name = "suspenseReasonCd")
     protected String suspenseReasonCd;
-    @XmlAttribute(name = "suspenseReasonComments")
-    protected String suspenseReasonComments;
     @XmlAttribute(name = "priority", required = true)
     protected String priority;
     @XmlAttribute(name = "td")
@@ -293,16 +290,24 @@ public class Claim {
     /**
      * Gets the value of the suppressAckLetterInd property.
      * 
+     * @return
+     *     possible object is
+     *     {@link Boolean }
+     *     
      */
-    public boolean isSuppressAckLetterInd() {
+    public Boolean isSuppressAckLetterInd() {
         return suppressAckLetterInd;
     }
 
     /**
      * Sets the value of the suppressAckLetterInd property.
      * 
+     * @param value
+     *     allowed object is
+     *     {@link Boolean }
+     *     
      */
-    public void setSuppressAckLetterInd(boolean value) {
+    public void setSuppressAckLetterInd(Boolean value) {
         this.suppressAckLetterInd = value;
     }
 
@@ -501,16 +506,24 @@ public class Claim {
     /**
      * Gets the value of the gulfWarRegistryInd property.
      * 
+     * @return
+     *     possible object is
+     *     {@link Boolean }
+     *     
      */
-    public boolean isGulfWarRegistryInd() {
+    public Boolean isGulfWarRegistryInd() {
         return gulfWarRegistryInd;
     }
 
     /**
      * Sets the value of the gulfWarRegistryInd property.
      * 
+     * @param value
+     *     allowed object is
+     *     {@link Boolean }
+     *     
      */
-    public void setGulfWarRegistryInd(boolean value) {
+    public void setGulfWarRegistryInd(Boolean value) {
         this.gulfWarRegistryInd = value;
     }
 
@@ -704,30 +717,6 @@ public class Claim {
      */
     public void setSuspenseReasonCd(String value) {
         this.suspenseReasonCd = value;
-    }
-
-    /**
-     * Gets the value of the suspenseReasonComments property.
-     * 
-     * @return
-     *     possible object is
-     *     {@link String }
-     *     
-     */
-    public String getSuspenseReasonComments() {
-        return suspenseReasonComments;
-    }
-
-    /**
-     * Sets the value of the suspenseReasonComments property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link String }
-     *     
-     */
-    public void setSuspenseReasonComments(String value) {
-        this.suspenseReasonComments = value;
     }
 
     /**
