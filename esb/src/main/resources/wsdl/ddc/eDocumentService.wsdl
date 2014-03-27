@@ -68,8 +68,8 @@
 </portType>
 
 <binding name="eDocumentServiceSOAPBinding" type="tns:eDocumentService">
-<wsp:PolicyReference URI="#Mtom.xml"/>
-<wsp:PolicyReference URI="#Mtom.xml"/>
+<!-- <wsp:PolicyReference URI="#Mtom.xml"/> -->
+<!-- <wsp:PolicyReference URI="#Mtom.xml"/> -->
 <soap:binding transport="http://schemas.xmlsoap.org/soap/http" style="document"/>
 
 <operation name="uploadFormDocument">

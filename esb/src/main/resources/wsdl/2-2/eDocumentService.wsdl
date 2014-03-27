@@ -13,10 +13,10 @@
 <!-- 		<ns0:OptimizedMimeSerialization -->
 <!-- 			xmlns:ns0="http://schemas.xmlsoap.org/ws/2004/09/policy/optimizedmimeserialization" /> -->
 <!-- 	</wsp:Policy> -->
-	<!-- <wsp:UsingPolicy wssutil:Required="true"/> -->
-	<!-- <wsp:Policy wssutil:Id="Mtom.xml"> -->
-	<!-- <ns1:OptimizedMimeSerialization xmlns:ns1="http://schemas.xmlsoap.org/ws/2004/09/policy/optimizedmimeserialization"/> -->
-	<!-- </wsp:Policy> -->
+<!-- 	<wsp:UsingPolicy wssutil:Required="true"/> -->
+<!-- 	<wsp:Policy wssutil:Id="Mtom.xml"> -->
+<!-- 	<ns1:OptimizedMimeSerialization xmlns:ns1="http://schemas.xmlsoap.org/ws/2004/09/policy/optimizedmimeserialization"/> -->
+<!-- 	</wsp:Policy> -->
 	<types>
 		<xsd:schema>
 			<xsd:import namespace="http://vbms.vba.va.gov/external/eDocumentService/"
