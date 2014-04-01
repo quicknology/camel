@@ -75,13 +75,14 @@ public class FacilitySoapProxyProcessor {
 
 					if (formDoc.getDocContent() != null) {
 						// Is document required?
-						exchange.getIn().setBody(formDoc.getDocContent());
+						exchange.getOut().setBody(formDoc.getDocContent());
 					}
 
 				}
 
 				// }
-				exchange.getIn().getHeaders().put("metadatas", docMetadatas);
+				exchange.getOut().getHeaders().put("metadatas", docMetadatas);
+				exchange.getOut().getHeaders().put("operationName", operationName);
 			}
 		}
 		// code with VA WSDL

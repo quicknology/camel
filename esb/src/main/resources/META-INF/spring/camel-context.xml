@@ -22,25 +22,6 @@
 	<context:property-placeholder
 		location="file:${karaf.home}/va_esb_proxy/config.properties, classpath:cms-context.properties" />
 
-	<bean id="myNameStrategy"
-		class="org.apache.camel.dataformat.soap.name.ServiceInterfaceStrategy">
-		<constructor-arg
-			value="gov.va.vba.vbms.external.edocumentservice.EDocumentService" />
-		<constructor-arg value="false" />
-	</bean>
-	<bean id="ddcNameStrategy"
-		class="org.apache.camel.dataformat.soap.name.ServiceInterfaceStrategy">
-		<constructor-arg
-			value="gov.va.vba.cmp.external.edocumentservice.EDocumentService" />
-		<constructor-arg value="false" />
-	</bean>
-	<bean id="myNameStrategyAlf"
-		class="org.apache.camel.dataformat.soap.name.ServiceInterfaceStrategy">
-		<constructor-arg
-			value="gov.va.vba.cmp.external.edocumentservicealfresco.EDocumentServiceAlfresco" />
-		<constructor-arg value="true" />
-	</bean>
-
 	<bean id="loggingOutInterceptor" class="org.apache.cxf.interceptor.LoggingOutInterceptor" />
 
 	<bean id="loggingInInterceptor" class="org.apache.cxf.interceptor.LoggingInInterceptor" />
@@ -48,8 +29,12 @@
 	<bean id="keystoreCallbackHandler" class="com.sms.dcp.KeystorePasswordCallback">
 		<property name="users">
 			<map>
-				<entry key="${vbms.cms.ws.handler.callbacks.client.keyAlias}"
-					value="${vbms.cms.ws.handler.callbacks.client.keyPassword}" />
+				<!-- unfortunately this doesn't work for wss4j. It can't use bean ref 
+					value is initialized in bean constructor as well. -->
+				<!-- DDC keys -->
+				<entry key="clientkey" value="keypassword" />
+				<entry key="servercert" value="keypassword" />
+				<!-- self generated test keys -->
 				<entry key="myclientkey" value="ckpass" />
 				<entry key="myservicekey" value="skpass" />
 			</map>
@@ -59,112 +44,214 @@
 	<bean id="wss4jInInterceptor-ddc-service" class="org.apache.cxf.ws.security.wss4j.WSS4JInInterceptor">
 		<constructor-arg>
 			<map>
-				<entry key="action" value="${SECURITY_SERVICE_ACTION}" />
+				<entry key="action" value="${SECURITY_DDC_ACTION}" />
 				<entry key="signaturePropFile"
-					value="cms-files/cms-trusted-crypto-service-${SECURITY_RUNTIME_ENV}.properties" />
+					value="cms-files/cms-trusted-crypto-client-${SECURITY_RUNTIME_ENV}.properties" />
 				<entry key="decryptionPropFile"
-					value="cms-files/cms-trusted-crypto-service-${SECURITY_RUNTIME_ENV}.properties" />
+					value="cms-files/cms-trusted-crypto-client-${SECURITY_RUNTIME_ENV}.properties" />
 				<entry key="encryptionKeyTransportAlgorithm" value="http://www.w3.org/2001/04/xmlenc#rsa-oaep-mgf1p" />
 				<entry key="signatureAlgorithm" value="http://www.w3.org/2000/09/xmldsig#rsa-sha1" />
-				<entry key="passwordCallbackClass" value="com.sms.dcp.KeystorePasswordCallback"/>
+				<!-- <entry key="passwordCallbackClass" value="com.sms.dcp.KeystorePasswordCallback" 
+					/> -->
+				<entry key="passwordCallbackRef" value-ref="keystoreCallbackHandler" />
 			</map>
 		</constructor-arg>
 	</bean>
 	<bean id="wss4jOutInterceptor-ddc-service" class="org.apache.cxf.ws.security.wss4j.WSS4JOutInterceptor">
 		<constructor-arg>
 			<map>
-				<entry key="action" value="Timestamp Signature" />
-				<!-- <entry key="action" value="UsernameToken Timestamp Signature Encrypt" 
-					/> -->
-				<entry key="passwordCallbackClass" value="com.sms.dcp.KeystorePasswordCallback" />
-				<!-- <entry key="passwordType" value="PasswordDigest" /> -->
-				<!-- <entry key="decryptionPropFile" value="wssecurity/etc/Server_Decrypt.properties"/> -->
-				<!-- <entry key="encryptionKeyIdentifier" value="IssuerSerial" /> -->
-				<entry key="signaturePropFile" value="cms-files/cms-trusted-crypto-PDT.properties" />
-				<entry key="signatureKeyIdentifier" value="DirectReference" />
-				<entry key="user" value="clientkey" />
-			</map>
-		</constructor-arg>
-	</bean>
-
-	<bean id="wss4jInInterceptor-client" class="org.apache.cxf.ws.security.wss4j.WSS4JInInterceptor">
-		<constructor-arg>
-			<map>
-				<entry key="action" value="Signature" />
-				<!-- <entry key="action" value="UsernameToken Timestamp Signature Encrypt" 
-					/> -->
+				<entry key="action" value="${SECURITY_DDC_ACTION}" />
+				<entry key="user" value="${SECURITY_DDC_SIGNATURE_USER}" />
 				<!-- <entry key="passwordCallbackClass" value="com.sms.dcp.KeystorePasswordCallback" 
 					/> -->
-				<!-- <entry key="passwordType" value="PasswordDigest" /> -->
-				<!-- <entry key="decryptionPropFile" value="wssecurity/etc/Server_Decrypt.properties"/> -->
-				<!-- <entry key="encryptionKeyIdentifier" value="IssuerSerial" /> -->
-				<entry key="signaturePropFile" value="cms-files/cms-trusted-crypto-PDT.properties" />
+				<entry key="passwordCallbackRef" value-ref="keystoreCallbackHandler" />
+
+				<entry key="signaturePropFile"
+					value="cms-files/cms-trusted-crypto-client-${SECURITY_RUNTIME_ENV}.properties" />
 				<entry key="signatureKeyIdentifier" value="DirectReference" />
+				<entry key="signatureParts"
+					value="{Element}{http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-utility-1.0.xsd}Timestamp;{Element}{http://schemas.xmlsoap.org/soap/envelope/}Body" />
+				<!-- What algorithm does VBMS support? -->
+				<entry key="signatureAlgorithm" value="http://www.w3.org/2000/09/xmldsig#rsa-sha1" />
+
+				<entry key="encryptionPropFile"
+					value="cms-files/cms-trusted-crypto-client-${SECURITY_RUNTIME_ENV}.properties" />
+				<entry key="encryptionUser" value="${SECURITY_DDC_EncryptionUser}" />
+				<entry key="encryptionParts"
+					value="{Content}{http://schemas.xmlsoap.org/soap/envelope/}Body" />
+				<entry key="encryptionSymAlgorithm" value="http://www.w3.org/2001/04/xmlenc#tripledes-cbc" />
+				<entry key="encryptionKeyTransportAlgorithm" value="http://www.w3.org/2001/04/xmlenc#rsa-oaep-mgf1p" />
 			</map>
 		</constructor-arg>
 	</bean>
 
-	<bean id="wss4jOutInterceptor-client" class="org.apache.cxf.ws.security.wss4j.WSS4JOutInterceptor">
+	<bean id="wss4jInInterceptor-VBMS-client" class="org.apache.cxf.ws.security.wss4j.WSS4JInInterceptor">
 		<constructor-arg>
 			<map>
-				<entry key="action" value="Timestamp Signature" />
-				<!-- <entry key="action" value="UsernameToken Timestamp Signature Encrypt" 
+				<entry key="action" value="${SECURITY_CLIENT_ACTION}" />
+				<entry key="signaturePropFile"
+					value="cms-files/cms-trusted-crypto-client-${SECURITY_RUNTIME_ENV}.properties" />
+				<entry key="decryptionPropFile"
+					value="cms-files/cms-trusted-crypto-client-${SECURITY_RUNTIME_ENV}.properties" />
+				<entry key="encryptionKeyTransportAlgorithm" value="http://www.w3.org/2001/04/xmlenc#rsa-oaep-mgf1p" />
+				<entry key="signatureAlgorithm" value="http://www.w3.org/2000/09/xmldsig#rsa-sha1" />
+				<!-- <entry key="passwordCallbackClass" value="com.sms.dcp.KeystorePasswordCallback" 
 					/> -->
-				<entry key="passwordCallbackClass" value="com.sms.dcp.KeystorePasswordCallback" />
-				<!-- <entry key="passwordType" value="PasswordDigest" /> -->
-				<!-- <entry key="decryptionPropFile" value="wssecurity/etc/Server_Decrypt.properties"/> -->
-				<!-- <entry key="encryptionKeyIdentifier" value="IssuerSerial" /> -->
-				<entry key="signaturePropFile" value="cms-files/cms-trusted-crypto-PDT.properties" />
-				<entry key="signatureKeyIdentifier" value="DirectReference" />
-				<entry key="user" value="clientkey" />
+				<entry key="passwordCallbackRef" value-ref="keystoreCallbackHandler" />
 			</map>
 		</constructor-arg>
 	</bean>
 
-	<bean id="cxf-transformOutInterceptor"
-		class="org.apache.cxf.interceptor.transform.TransformOutInterceptor">
-		<property name="outTransformElements">
+	<bean id="wss4jOutInterceptor-VBMS-client" class="org.apache.cxf.ws.security.wss4j.WSS4JOutInterceptor">
+		<constructor-arg>
 			<map>
-				<entry key="{http://cmp.vba.va.gov/external/eDocumentServiceAlfresco}*"
-					value="{http://vbms.vba.va.gov/external/eDocumentService}*" />
-				<entry key="{http://cmp.vba.va.gov/cmp}*" value="{http://vbms.vba.va.gov/cdm}*" />
-				<entry key="docContent" value="" />
+				<entry key="action" value="${SECURITY_CLIENT_ACTION}" />
+				<entry key="user" value="${SECURITY_CLIENT_USER}" />
+				<!-- <entry key="passwordCallbackClass" value="com.sms.dcp.KeystorePasswordCallback" 
+					/> -->
+				<entry key="passwordCallbackRef" value-ref="keystoreCallbackHandler" />
+
+				<entry key="signaturePropFile"
+					value="cms-files/cms-trusted-crypto-client-${SECURITY_RUNTIME_ENV}.properties" />
+				<entry key="signatureKeyIdentifier" value="DirectReference" />
+				<entry key="signatureParts"
+					value="{Element}{http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-utility-1.0.xsd}Timestamp;{Element}{http://schemas.xmlsoap.org/soap/envelope/}Body" />
+				<!-- What algorithm does VBMS support? -->
+				<entry key="signatureAlgorithm" value="http://www.w3.org/2000/09/xmldsig#rsa-sha1" />
+
+				<entry key="encryptionPropFile"
+					value="cms-files/cms-trusted-crypto-client-${SECURITY_RUNTIME_ENV}.properties" />
+				<entry key="encryptionUser" value="${SECURITY_SERVICE_USER}" />
+				<entry key="encryptionParts"
+					value="{Content}{http://schemas.xmlsoap.org/soap/envelope/}Body" />
+				<entry key="encryptionSymAlgorithm" value="http://www.w3.org/2001/04/xmlenc#tripledes-cbc" />
+				<entry key="encryptionKeyTransportAlgorithm" value="http://www.w3.org/2001/04/xmlenc#rsa-oaep-mgf1p" />
+
+				<!-- <entry key="passwordType" value="PasswordDigest" /> -->
+				<!-- <entry key="decryptionPropFile" value="wssecurity/etc/Server_Decrypt.properties"/> -->
+				<!-- <entry key="encryptionKeyIdentifier" value="IssuerSerial" /> -->
+				<!-- <entry key="action" value="UsernameToken Timestamp Signature Encrypt" 
+					/> -->
 			</map>
-		</property>
+		</constructor-arg>
 	</bean>
+
+	<!-- Mockup service beans -->
+
+	<bean id="wss4jInInterceptor-VBMS-mock-service" class="org.apache.cxf.ws.security.wss4j.WSS4JInInterceptor">
+		<constructor-arg>
+			<map>
+				<!-- mock service needs to match client action -->
+				<entry key="action" value="${SECURITY_CLIENT_ACTION}" />
+				<entry key="signaturePropFile"
+					value="cms-files/cms-trusted-crypto-service-${SECURITY_RUNTIME_ENV}.properties" />
+				<entry key="decryptionPropFile"
+					value="cms-files/cms-trusted-crypto-service-${SECURITY_RUNTIME_ENV}.properties" />
+				<entry key="encryptionKeyTransportAlgorithm" value="http://www.w3.org/2001/04/xmlenc#rsa-oaep-mgf1p" />
+				<entry key="signatureAlgorithm" value="http://www.w3.org/2000/09/xmldsig#rsa-sha1" />
+				<!-- <entry key="passwordCallbackClass" value="com.sms.dcp.KeystorePasswordCallback" 
+					/> -->
+				<entry key="passwordCallbackRef" value-ref="keystoreCallbackHandler" />
+			</map>
+		</constructor-arg>
+	</bean>
+
+
+	<bean id="wss4jInInterceptor-ddc-client-mock" class="org.apache.cxf.ws.security.wss4j.WSS4JInInterceptor">
+		<constructor-arg>
+			<map>
+				<!-- match what expcted by ddc service at ESB -->
+				<entry key="action" value="${SECURITY_DDC_ACTION}" />
+				<entry key="signaturePropFile"
+					value="cms-files/cms-trusted-crypto-client-${SECURITY_RUNTIME_ENV}.properties" />
+				<entry key="decryptionPropFile"
+					value="cms-files/cms-trusted-crypto-client-${SECURITY_RUNTIME_ENV}.properties" />
+				<entry key="encryptionKeyTransportAlgorithm" value="http://www.w3.org/2001/04/xmlenc#rsa-oaep-mgf1p" />
+				<entry key="signatureAlgorithm" value="http://www.w3.org/2000/09/xmldsig#rsa-sha1" />
+				<!-- <entry key="passwordCallbackClass" value="com.sms.dcp.KeystorePasswordCallback" 
+					/> -->
+				<entry key="passwordCallbackRef" value-ref="keystoreCallbackHandler" />
+			</map>
+		</constructor-arg>
+	</bean>
+
+	<bean id="wss4jOutInterceptor-ddc-client-mock" class="org.apache.cxf.ws.security.wss4j.WSS4JOutInterceptor">
+		<constructor-arg>
+			<map>
+				<!-- match what expcted by ddc service at ESB -->
+				<entry key="action" value="${SECURITY_DDC_ACTION}" />
+				<entry key="user" value="${SECURITY_DDC_SIGNATURE_USER}" />
+				<!-- <entry key="passwordCallbackClass" value="com.sms.dcp.KeystorePasswordCallback" 
+					/> -->
+				<entry key="passwordCallbackRef" value-ref="keystoreCallbackHandler" />
+
+				<entry key="signaturePropFile"
+					value="cms-files/cms-trusted-crypto-client-${SECURITY_RUNTIME_ENV}.properties" />
+				<entry key="signatureKeyIdentifier" value="DirectReference" />
+				<entry key="signatureParts"
+					value="{Element}{http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-utility-1.0.xsd}Timestamp;{Element}{http://schemas.xmlsoap.org/soap/envelope/}Body" />
+				<!-- What algorithm does VBMS support? -->
+				<entry key="signatureAlgorithm" value="http://www.w3.org/2000/09/xmldsig#rsa-sha1" />
+
+				<entry key="encryptionPropFile"
+					value="cms-files/cms-trusted-crypto-client-${SECURITY_RUNTIME_ENV}.properties" />
+				<entry key="encryptionUser" value="${SECURITY_DDC_EncryptionUser}" />
+				<entry key="encryptionParts"
+					value="{Content}{http://schemas.xmlsoap.org/soap/envelope/}Body" />
+				<entry key="encryptionSymAlgorithm" value="http://www.w3.org/2001/04/xmlenc#tripledes-cbc" />
+				<entry key="encryptionKeyTransportAlgorithm" value="http://www.w3.org/2001/04/xmlenc#rsa-oaep-mgf1p" />
+
+				<!-- <entry key="passwordType" value="PasswordDigest" /> -->
+				<!-- <entry key="decryptionPropFile" value="wssecurity/etc/Server_Decrypt.properties"/> -->
+				<!-- <entry key="encryptionKeyIdentifier" value="IssuerSerial" /> -->
+				<!-- <entry key="action" value="UsernameToken Timestamp Signature Encrypt" 
+					/> -->
+			</map>
+		</constructor-arg>
+	</bean>
+	<!-- Mockup service beans end -->
 
 	<cxf:cxfEndpoint id="edocumentVA" address="${VA_URL}"
 		endpointName="s:eDocumentServiceSOAP" serviceName="s:eDocumentService"
-		wsdlURL="wsdl/PDT/eDocumentService.wsdl" serviceClass="gov.va.vba.vbms.external.edocumentservice.EDocumentService"
+		wsdlURL="wsdl/2-2/eDocumentService.wsdl" serviceClass="gov.va.vba.vbms.external.edocumentservice.EDocumentService"
 		xmlns:s="http://vbms.vba.va.gov/external/eDocumentService/">
 		<cxf:properties>
 			<!-- enable mtom by setting this property to true -->
-			<entry key="mtom-enabled" value="${MTOM_ENABLED}" />
-			<entry key="dataFormat" value="CXF_MESSAGE" />
+			<!-- <entry key="mtom-enabled" value="${MTOM_ENABLED}" /> -->
+			<!-- <entry key="dataFormat" value="CXF_MESSAGE" /> -->
+			<entry key="dataFormat" value="POJO" />
+			<entry key="mustUnderstand" value="false" />
 		</cxf:properties>
 		<cxf:inInterceptors>
-			<ref bean="loggingInInterceptor" />
-			<!-- <ref bean="wss4jInInterceptor-client" /> -->
+			<!-- <ref bean="loggingInInterceptor" /> -->
+			<!-- <ref bean="wss4jInInterceptor-VBMS-client" /> -->
 		</cxf:inInterceptors>
 		<cxf:outInterceptors>
 			<ref bean="loggingOutInterceptor" />
-			<ref bean="wss4jOutInterceptor-client" />
-			<ref bean="cxf-transformOutInterceptor" />
+			<ref bean="wss4jOutInterceptor-VBMS-client" />
+			<!-- <ref bean="cxf-transformOutInterceptor" /> -->
 		</cxf:outInterceptors>
-		<!-- <cxf:features> -->
-		<!-- <bean id="transformFeature" class="org.apache.cxf.feature.StaxTransformFeature"> -->
-		<!-- <property name="outTransformElements"> -->
-		<!-- <map> -->
-		<!-- change namespace -->
-		<!-- <entry -->
-		<!-- key="{http://cmp.vba.va.gov/external/eDocumentServiceAlfresco}*" -->
-		<!-- value="{http://vbms.vba.va.gov/external/eDocumentService}*" /> -->
-		<!-- <entry key="{http://cmp.vba.va.gov/cmp}*" value="{http://vbms.vba.va.gov/cdm}*" 
-			/> -->
-		<!-- </map> -->
-		<!-- </property> -->
-		<!-- </bean> -->
-		<!-- </cxf:features> -->
+	</cxf:cxfEndpoint>
+
+	<cxf:cxfEndpoint id="edocumentVAMock" address="${VA_URL}"
+		endpointName="s:eDocumentServiceSOAP" serviceName="s:eDocumentService"
+		wsdlURL="wsdl/2-2/eDocumentService.wsdl" serviceClass="gov.va.vba.vbms.external.edocumentservice.EDocumentService"
+		xmlns:s="http://vbms.vba.va.gov/external/eDocumentService/">
+		<cxf:properties>
+			<!-- enable mtom by setting this property to true -->
+			<!-- <entry key="mtom-enabled" value="${MTOM_ENABLED}" /> -->
+			<!-- <entry key="dataFormat" value="CXF_MESSAGE" /> -->
+			<entry key="dataFormat" value="POJO" />
+			<entry key="mustUnderstand" value="false" />
+		</cxf:properties>
+		<cxf:inInterceptors>
+			<ref bean="loggingInInterceptor" />
+			<ref bean="wss4jInInterceptor-VBMS-mock-service" />
+		</cxf:inInterceptors>
+		<cxf:outInterceptors>
+			<!-- <ref bean="loggingOutInterceptor" /> -->
+			<!-- <ref bean="wss4jOutInterceptor-VBMS-mock-service" /> -->
+		</cxf:outInterceptors>
 	</cxf:cxfEndpoint>
 
 	<cxf:cxfEndpoint id="edocumentDDC" address="${FACILITY_URL}"
@@ -176,13 +263,46 @@
 			<entry key="mtom-enabled" value="${MTOM_ENABLED}" />
 		</cxf:properties>
 	</cxf:cxfEndpoint>
+
+	<cxf:cxfEndpoint id="edocumentDDCClientMock" address="${FACILITY_CLIENT_MOCK_URL}"
+		endpointName="s:eDocumentServiceSOAP" serviceName="s:eDocumentService"
+		wsdlURL="wsdl/ddc/eDocumentService.wsdl" serviceClass="gov.va.vba.cmp.external.edocumentservice.EDocumentService"
+		xmlns:s="http://cmp.vba.va.gov/external/eDocumentService/">
+		<cxf:properties>
+			<!-- enable mtom by setting this property to true -->
+			<!-- <entry key="mtom-enabled" value="${MTOM_ENABLED}" /> -->
+		</cxf:properties>
+	</cxf:cxfEndpoint>
+
+	<cxf:cxfEndpoint id="edocumentDDCClientSecurityMock"
+		address="${FACILITY_URL}" endpointName="s:eDocumentServiceSOAP"
+		serviceName="s:eDocumentService" wsdlURL="wsdl/ddc/eDocumentService.wsdl"
+		serviceClass="gov.va.vba.cmp.external.edocumentservice.EDocumentService"
+		xmlns:s="http://cmp.vba.va.gov/external/eDocumentService/">
+		<cxf:properties>
+			<!-- enable mtom by setting this property to true -->
+			<!-- <entry key="mtom-enabled" value="${MTOM_ENABLED}" /> -->
+			<entry key="dataFormat" value="POJO" />
+			<entry key="mustUnderstand" value="false" />
+			<!-- <entry key="dataFormat" value="CXF_MESSAGE" /> -->
+		</cxf:properties>
+		<cxf:inInterceptors>
+			<ref bean="loggingInInterceptor" />
+			<ref bean="wss4jInInterceptor-ddc-client-mock" />
+		</cxf:inInterceptors>
+		<cxf:outInterceptors>
+			<ref bean="loggingOutInterceptor" />
+			<ref bean="wss4jOutInterceptor-ddc-client-mock" />
+		</cxf:outInterceptors>
+	</cxf:cxfEndpoint>
+
 	<cxf:cxfEndpoint id="edocumentDDCWithSecurity" address="${FACILITY_URL}"
 		endpointName="s:eDocumentServiceSOAP" serviceName="s:eDocumentService"
 		wsdlURL="wsdl/ddc/eDocumentService.wsdl" serviceClass="gov.va.vba.cmp.external.edocumentservice.EDocumentService"
 		xmlns:s="http://cmp.vba.va.gov/external/eDocumentService/">
 		<cxf:properties>
 			<!-- enable mtom by setting this property to true -->
-			<entry key="mtom-enabled" value="${MTOM_ENABLED}" />
+			<!-- <entry key="mtom-enabled" value="${MTOM_ENABLED}" /> -->
 			<entry key="dataFormat" value="POJO" />
 			<!-- <entry key="dataFormat" value="CXF_MESSAGE" /> -->
 		</cxf:properties>
@@ -192,7 +312,7 @@
 		</cxf:inInterceptors>
 		<cxf:outInterceptors>
 			<ref bean="loggingOutInterceptor" />
-			<!-- <ref bean="wss4jOutInterceptor-client" /> -->
+			<ref bean="wss4jOutInterceptor-ddc-service" />
 		</cxf:outInterceptors>
 	</cxf:cxfEndpoint>
 
@@ -202,7 +322,8 @@
 		serviceClass="gov.va.vba.cmp.external.edocumentservicealfresco.EDocumentServiceAlfresco"
 		xmlns:s="http://cmp.vba.va.gov/external/eDocumentServiceAlfresco/">
 		<cxf:properties>
-			<entry key="dataFormat" value="CXF_MESSAGE" />
+			<!-- <entry key="dataFormat" value="CXF_MESSAGE" /> -->
+			<entry key="dataFormat" value="POJO" />
 		</cxf:properties>
 	</cxf:cxfEndpoint>
 
@@ -221,88 +342,50 @@
 		<property name="alfrescoFolder" value="${Alfresco_Folder}" />
 	</bean>
 
-	<camel:camelContext id="smsESB" trace="{{SECURITY_ENABLED}}">
+	<camel:camelContext id="smsESB" trace="{{ESB_TRACE_ENABLED}}">
 		<camel:propertyPlaceholder id="properties"
 			location="file:${karaf.home}/va_esb_proxy/config.properties" />
-		<!-- <camel:routeBuilder ref="myroute" /> -->
-		<!-- <camel:routeBuilder ref="alfrescoroute"/> -->
-		<!-- <camel:route id="alfrescoSoapProxy"> -->
-		<!-- <camel:from uri="cxf:bean:edocumentAlfresco" /> -->
-		<!-- <camel:to uri="log:alfrescoSoapProxy" /> -->
-		<!-- </camel:route> -->
+
 		<camel:route id="ddcSoapProxy" autoStartup="false">
 			<camel:from uri="cxf:bean:edocumentDDC" />
 			<camel:to uri="log:ddcSoapProxy" />
 			<camel:to uri="bean:facilitySoapProxyProcessor" />
 			<camel:to uri="direct:SOAPToAlfresco" />
 		</camel:route>
+
 		<camel:route id="ddcSoapProxyWithSecurity" autoStartup="{{SECURITY_ENABLED}}">
 			<camel:from uri="cxf:bean:edocumentDDCWithSecurity" />
-<!-- 			<camel:transform> -->
-<!-- 				<camel:simple>Security Headers:${headers}</camel:simple> -->
-<!-- 			</camel:transform> -->
 			<camel:to uri="log:ddcSoapProxy" />
 			<camel:to uri="bean:facilitySoapProxyProcessor" />
 			<!-- <camel:to uri="bean:facilitySoapProxyMessageProcessor" /> -->
 			<camel:to uri="direct:SOAPToAlfresco" />
 		</camel:route>
+
 		<camel:route id="fileToAlfrescoDemo">
 			<camel:from uri="file://inbox?noop=true" />
 			<camel:to uri="direct:alfrescoFile" />
 			<!-- <camel:to uri="bean:alfrescoUploadProcessor?method=uploadFile" /> -->
 		</camel:route>
-		<camel:route id="transformNamespace">
-			<camel:from uri="direct:transformNamespace" />
-			<!-- <camel:marshal> -->
-			<!-- <camel:jaxb prettyPrint="true" -->
-			<!-- contextPath="gov.va.vba.vbms.cdm" /> -->
-			<!-- </camel:marshal> -->
 
-			<camel:transform>
-				<camel:simple>${body.replaceAll("cmp.vba.va.gov/external/eDocumentServiceAlfresco", "vbms.vba.va.gov/external/eDocumentService")}</camel:simple>
-			</camel:transform>
-			<camel:transform>
-				<camel:simple>${body.replaceAll("cmp.vba.va.gov/cmp", "vbms.vba.va.gov/cdm")}</camel:simple>
-			</camel:transform>
-			<camel:setHeader headerName="operationName">
-				<camel:simple resultType="java.lang.String">uploadFormDocument</camel:simple>
-			</camel:setHeader>
-			<camel:setHeader headerName="operationNamespace">
-				<camel:simple resultType="java.lang.String">http://vbms.vba.va.gov/external/eDocumentService/</camel:simple>
-			</camel:setHeader>
-			<camel:setHeader headerName="SOAPAction">
-				<camel:simple resultType="java.lang.String">http://vbms.vba.va.gov/external/eDocumentService/uploadFormDocument</camel:simple>
-			</camel:setHeader>
-		</camel:route>
+
 		<camel:route id="alfrescoSOAPService">
 			<camel:from uri="cxf:bean:edocumentAlfresco" />
 			<camel:to uri="log:toVA?level=INFO" />
+
 			<!-- <camel:to uri="bean:alfrescoSoapProxyProcessor" /> -->
-			<!-- <camel:to uri="bean:alfrescoSoapProxyPOJOProcessor" /> -->
-			<!-- <camel:marshal> -->
-			<!-- <camel:soapjaxb contextPath="gov.va.vba.vbms.cdm:gov.va.vba.vbms.external.edocumentservice" -->
-			<!-- version="1.2" elementNameStrategyRef="myNameStrategy" /> -->
-			<!-- </camel:marshal> -->
-			<!-- <camel:to uri="log:toVA?level=INFO" /> -->
-			<camel:log message="soap jaxb conversion: ${body}"
-				loggingLevel="INFO" />
-			<camel:convertBodyTo type="java.lang.String" />
-			<camel:to uri="log:toVA?level=INFO" />
-			<!-- <camel:to uri="direct:transformNamespace" /> -->
-			<!-- <camel:to uri="bean:alfrescoSoapProxyProcessor" /> -->
-			<!-- <camel:to uri="bean:alfrescoSoapProxyStringProcessor" /> -->
-			<camel:to uri="log:toVA?level=INFO" />
-			<!-- <camel:convertBodyTo type="javax.xml.transform.Source.class"/> -->
-			<!-- <camel:convertBodyTo type="com.sun.xml.messaging.saaj.soap.ver1_1.Message1_1Impl.class"/> -->
-			<!-- com.sun.xml.messaging.saaj.soap.ver1_1.Message1_1Impl -->
+			<camel:to uri="bean:alfrescoSoapProxyPOJOProcessor" />
 			<camel:to uri="cxf:bean:edocumentVA" />
-			<!-- add post processor to transform name space -->
+			<camel:to uri="direct:setOperationSupportHeader" />
+			<camel:to uri="direct:contentBasedReply" />
+
 		</camel:route>
+
 		<camel:route id="directFileToAlfresco">
 			<camel:from uri="direct:alfrescoFile" />
 			<camel:to uri="log:alfresco?showHeaders" />
 			<camel:to uri="bean:alfrescoUploadProcessor?method=uploadFile" />
 		</camel:route>
+
 		<camel:route id="SOAPToAlfresco">
 			<camel:from uri="direct:SOAPToAlfresco" />
 			<camel:to uri="log:alfresco?showHeaders" />
@@ -310,6 +393,7 @@
 			<camel:to uri="direct:setOperationSupportHeader" />
 			<camel:to uri="direct:contentBasedReply" />
 		</camel:route>
+
 		<camel:route id="directSetBody">
 			<camel:from uri="direct:contentBasedReply" />
 			<camel:choice>
@@ -321,11 +405,12 @@
 				</camel:when>
 				<camel:otherwise>
 					<camel:setBody>
-						<camel:simple>Operation Not Supported</camel:simple>
+						<camel:simple>Operation Not Supported: ${header.operationName}</camel:simple>
 					</camel:setBody>
 				</camel:otherwise>
 			</camel:choice>
 		</camel:route>
+
 		<camel:route id="setOperationSupportHeader">
 			<camel:from uri="direct:setOperationSupportHeader" />
 			<camel:choice>
@@ -343,11 +428,20 @@
 			</camel:choice>
 		</camel:route>
 
-		<!-- <camel:route id="mockVASOAP"> -->
-		<!-- <camel:from uri="cxf:bean:edocumentVA" /> -->
-		<!-- <camel:to uri="direct:setOperationSupportHeader" /> -->
-		<!-- <camel:to uri="direct:contentBasedReply" /> -->
-		<!-- </camel:route> -->
+		<!-- mock up service route -->
+		<camel:route id="mockVASOAP">
+			<camel:from uri="cxf:bean:edocumentVAMock" />
+			<camel:to uri="direct:setOperationSupportHeader" />
+			<camel:to uri="direct:contentBasedReply" />
+		</camel:route>
+
+		<camel:route id="mockDDCClientSOAP">
+			<camel:from uri="cxf:bean:edocumentDDCClientMock" />
+			<camel:to uri="cxf:bean:edocumentDDCClientSecurityMock" />
+		</camel:route>
+
+
+		<!-- mock up service end -->
 	</camel:camelContext>
 
 </beans>

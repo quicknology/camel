@@ -19,9 +19,11 @@ public class KeystorePasswordCallback implements CallbackHandler {
 
 	public KeystorePasswordCallback() {
 		users = new HashMap<String, String>();
-		users.put("myclientkey", "ckpass");
-		users.put("myservicekey", "skpass");
-		users.put("clientkey", "storepassword");
+		
+//		users.put("myclientkey", "ckpass");
+//		users.put("servercert", "ckpass");
+//		users.put("myservicekey", "skpass");
+//		users.put("clientkey", "keypassword");
 	}
 
 	public Map<String, String> getUsers() {

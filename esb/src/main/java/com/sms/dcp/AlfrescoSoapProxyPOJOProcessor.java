@@ -27,8 +27,7 @@ public class AlfrescoSoapProxyPOJOProcessor {
 			for (Object currentObj : exchange.getIn().getBody(List.class)) {
 				if (currentObj instanceof FormDocument) {
 					logger.info("Got FormDocument");
-					FormDocument formDoc = (FormDocument) exchange.getIn()
-							.getBody(List.class).get(0);
+					FormDocument formDoc = (FormDocument) currentObj;
 
 					gov.va.vba.vbms.cdm.FormDocument vaFormDoc = new gov.va.vba.vbms.cdm.FormDocument();
 
