@@ -29,9 +29,7 @@
 	<bean id="keystoreCallbackHandler" class="com.sms.dcp.KeystorePasswordCallback">
 		<property name="users">
 			<map>
-				<!-- unfortunately this doesn't work for wss4j. It can't use bean ref 
-					value is initialized in bean constructor as well. -->
-				<!-- DDC keys -->
+				<!-- VBMS keys -->
 				<entry key="clientkey" value="keypassword" />
 				<entry key="servercert" value="keypassword" />
 				<!-- self generated test keys -->
@@ -49,8 +47,8 @@
 					value="cms-files/cms-trusted-crypto-client-${SECURITY_RUNTIME_ENV}.properties" />
 				<entry key="decryptionPropFile"
 					value="cms-files/cms-trusted-crypto-client-${SECURITY_RUNTIME_ENV}.properties" />
-				<entry key="encryptionKeyTransportAlgorithm" value="http://www.w3.org/2001/04/xmlenc#rsa-oaep-mgf1p" />
-				<entry key="signatureAlgorithm" value="http://www.w3.org/2000/09/xmldsig#rsa-sha1" />
+				<entry key="encryptionKeyTransportAlgorithm" value="${SECURITY_ENCRYPTION_KEY_TRANSPORT_ALGORITHM}" />
+				<entry key="signatureAlgorithm" value="${SECURITY_SIGNATURE_ALGORITHM}" />
 				<!-- <entry key="passwordCallbackClass" value="com.sms.dcp.KeystorePasswordCallback" 
 					/> -->
 				<entry key="passwordCallbackRef" value-ref="keystoreCallbackHandler" />
@@ -69,18 +67,16 @@
 				<entry key="signaturePropFile"
 					value="cms-files/cms-trusted-crypto-client-${SECURITY_RUNTIME_ENV}.properties" />
 				<entry key="signatureKeyIdentifier" value="DirectReference" />
-				<entry key="signatureParts"
-					value="{Element}{http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-utility-1.0.xsd}Timestamp;{Element}{http://schemas.xmlsoap.org/soap/envelope/}Body" />
+				<entry key="signatureParts" value="${SECURITY_SIGNATURE_PARTS}" />
 				<!-- What algorithm does VBMS support? -->
-				<entry key="signatureAlgorithm" value="http://www.w3.org/2000/09/xmldsig#rsa-sha1" />
+				<entry key="signatureAlgorithm" value="${SECURITY_SIGNATURE_ALGORITHM}" />
 
 				<entry key="encryptionPropFile"
 					value="cms-files/cms-trusted-crypto-client-${SECURITY_RUNTIME_ENV}.properties" />
 				<entry key="encryptionUser" value="${SECURITY_DDC_EncryptionUser}" />
-				<entry key="encryptionParts"
-					value="{Content}{http://schemas.xmlsoap.org/soap/envelope/}Body" />
-				<entry key="encryptionSymAlgorithm" value="http://www.w3.org/2001/04/xmlenc#tripledes-cbc" />
-				<entry key="encryptionKeyTransportAlgorithm" value="http://www.w3.org/2001/04/xmlenc#rsa-oaep-mgf1p" />
+				<entry key="encryptionParts" value="${SECURITY_ENCRYPTION_PARTS}" />
+				<entry key="encryptionSymAlgorithm" value="${SECURITY_ENCRYPTION_SYM_ALGORITHM}" />
+				<entry key="encryptionKeyTransportAlgorithm" value="${SECURITY_ENCRYPTION_KEY_TRANSPORT_ALGORITHM}" />
 			</map>
 		</constructor-arg>
 	</bean>
@@ -88,13 +84,13 @@
 	<bean id="wss4jInInterceptor-VBMS-client" class="org.apache.cxf.ws.security.wss4j.WSS4JInInterceptor">
 		<constructor-arg>
 			<map>
-				<entry key="action" value="${SECURITY_CLIENT_ACTION}" />
+				<entry key="action" value="${SECURITY_VBMS_ACTION}" />
 				<entry key="signaturePropFile"
 					value="cms-files/cms-trusted-crypto-client-${SECURITY_RUNTIME_ENV}.properties" />
 				<entry key="decryptionPropFile"
 					value="cms-files/cms-trusted-crypto-client-${SECURITY_RUNTIME_ENV}.properties" />
-				<entry key="encryptionKeyTransportAlgorithm" value="http://www.w3.org/2001/04/xmlenc#rsa-oaep-mgf1p" />
-				<entry key="signatureAlgorithm" value="http://www.w3.org/2000/09/xmldsig#rsa-sha1" />
+				<entry key="encryptionKeyTransportAlgorithm" value="${SECURITY_ENCRYPTION_KEY_TRANSPORT_ALGORITHM}" />
+				<entry key="signatureAlgorithm" value="${SECURITY_SIGNATURE_ALGORITHM}" />
 				<!-- <entry key="passwordCallbackClass" value="com.sms.dcp.KeystorePasswordCallback" 
 					/> -->
 				<entry key="passwordCallbackRef" value-ref="keystoreCallbackHandler" />
@@ -105,8 +101,8 @@
 	<bean id="wss4jOutInterceptor-VBMS-client" class="org.apache.cxf.ws.security.wss4j.WSS4JOutInterceptor">
 		<constructor-arg>
 			<map>
-				<entry key="action" value="${SECURITY_CLIENT_ACTION}" />
-				<entry key="user" value="${SECURITY_CLIENT_USER}" />
+				<entry key="action" value="${SECURITY_VBMS_ACTION}" />
+				<entry key="user" value="${SECURITY_VBMS_SIGNATURE_USER}" />
 				<!-- <entry key="passwordCallbackClass" value="com.sms.dcp.KeystorePasswordCallback" 
 					/> -->
 				<entry key="passwordCallbackRef" value-ref="keystoreCallbackHandler" />
@@ -114,18 +110,16 @@
 				<entry key="signaturePropFile"
 					value="cms-files/cms-trusted-crypto-client-${SECURITY_RUNTIME_ENV}.properties" />
 				<entry key="signatureKeyIdentifier" value="DirectReference" />
-				<entry key="signatureParts"
-					value="{Element}{http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-utility-1.0.xsd}Timestamp;{Element}{http://schemas.xmlsoap.org/soap/envelope/}Body" />
+				<entry key="signatureParts" value="${SECURITY_SIGNATURE_PARTS}" />
 				<!-- What algorithm does VBMS support? -->
-				<entry key="signatureAlgorithm" value="http://www.w3.org/2000/09/xmldsig#rsa-sha1" />
+				<entry key="signatureAlgorithm" value="${SECURITY_SIGNATURE_ALGORITHM}" />
 
 				<entry key="encryptionPropFile"
 					value="cms-files/cms-trusted-crypto-client-${SECURITY_RUNTIME_ENV}.properties" />
-				<entry key="encryptionUser" value="${SECURITY_SERVICE_USER}" />
-				<entry key="encryptionParts"
-					value="{Content}{http://schemas.xmlsoap.org/soap/envelope/}Body" />
-				<entry key="encryptionSymAlgorithm" value="http://www.w3.org/2001/04/xmlenc#tripledes-cbc" />
-				<entry key="encryptionKeyTransportAlgorithm" value="http://www.w3.org/2001/04/xmlenc#rsa-oaep-mgf1p" />
+				<entry key="encryptionUser" value="${SECURITY_VBMS_EncryptionUser}" />
+				<entry key="encryptionParts" value="${SECURITY_ENCRYPTION_PARTS}" />
+				<entry key="encryptionSymAlgorithm" value="${SECURITY_ENCRYPTION_SYM_ALGORITHM}" />
+				<entry key="encryptionKeyTransportAlgorithm" value="${SECURITY_ENCRYPTION_KEY_TRANSPORT_ALGORITHM}" />
 
 				<!-- <entry key="passwordType" value="PasswordDigest" /> -->
 				<!-- <entry key="decryptionPropFile" value="wssecurity/etc/Server_Decrypt.properties"/> -->
@@ -142,13 +136,13 @@
 		<constructor-arg>
 			<map>
 				<!-- mock service needs to match client action -->
-				<entry key="action" value="${SECURITY_CLIENT_ACTION}" />
+				<entry key="action" value="${SECURITY_VBMS_ACTION}" />
 				<entry key="signaturePropFile"
 					value="cms-files/cms-trusted-crypto-service-${SECURITY_RUNTIME_ENV}.properties" />
 				<entry key="decryptionPropFile"
 					value="cms-files/cms-trusted-crypto-service-${SECURITY_RUNTIME_ENV}.properties" />
-				<entry key="encryptionKeyTransportAlgorithm" value="http://www.w3.org/2001/04/xmlenc#rsa-oaep-mgf1p" />
-				<entry key="signatureAlgorithm" value="http://www.w3.org/2000/09/xmldsig#rsa-sha1" />
+				<entry key="encryptionKeyTransportAlgorithm" value="${SECURITY_ENCRYPTION_KEY_TRANSPORT_ALGORITHM}" />
+				<entry key="signatureAlgorithm" value="${SECURITY_SIGNATURE_ALGORITHM}" />
 				<!-- <entry key="passwordCallbackClass" value="com.sms.dcp.KeystorePasswordCallback" 
 					/> -->
 				<entry key="passwordCallbackRef" value-ref="keystoreCallbackHandler" />
@@ -166,8 +160,8 @@
 					value="cms-files/cms-trusted-crypto-client-${SECURITY_RUNTIME_ENV}.properties" />
 				<entry key="decryptionPropFile"
 					value="cms-files/cms-trusted-crypto-client-${SECURITY_RUNTIME_ENV}.properties" />
-				<entry key="encryptionKeyTransportAlgorithm" value="http://www.w3.org/2001/04/xmlenc#rsa-oaep-mgf1p" />
-				<entry key="signatureAlgorithm" value="http://www.w3.org/2000/09/xmldsig#rsa-sha1" />
+				<entry key="encryptionKeyTransportAlgorithm" value="${SECURITY_ENCRYPTION_KEY_TRANSPORT_ALGORITHM}" />
+				<entry key="signatureAlgorithm" value="${SECURITY_SIGNATURE_ALGORITHM}" />
 				<!-- <entry key="passwordCallbackClass" value="com.sms.dcp.KeystorePasswordCallback" 
 					/> -->
 				<entry key="passwordCallbackRef" value-ref="keystoreCallbackHandler" />
@@ -188,18 +182,16 @@
 				<entry key="signaturePropFile"
 					value="cms-files/cms-trusted-crypto-client-${SECURITY_RUNTIME_ENV}.properties" />
 				<entry key="signatureKeyIdentifier" value="DirectReference" />
-				<entry key="signatureParts"
-					value="{Element}{http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-utility-1.0.xsd}Timestamp;{Element}{http://schemas.xmlsoap.org/soap/envelope/}Body" />
+				<entry key="signatureParts" value="${SECURITY_SIGNATURE_PARTS}" />
 				<!-- What algorithm does VBMS support? -->
-				<entry key="signatureAlgorithm" value="http://www.w3.org/2000/09/xmldsig#rsa-sha1" />
+				<entry key="signatureAlgorithm" value="${SECURITY_SIGNATURE_ALGORITHM}" />
 
 				<entry key="encryptionPropFile"
 					value="cms-files/cms-trusted-crypto-client-${SECURITY_RUNTIME_ENV}.properties" />
 				<entry key="encryptionUser" value="${SECURITY_DDC_EncryptionUser}" />
-				<entry key="encryptionParts"
-					value="{Content}{http://schemas.xmlsoap.org/soap/envelope/}Body" />
-				<entry key="encryptionSymAlgorithm" value="http://www.w3.org/2001/04/xmlenc#tripledes-cbc" />
-				<entry key="encryptionKeyTransportAlgorithm" value="http://www.w3.org/2001/04/xmlenc#rsa-oaep-mgf1p" />
+				<entry key="encryptionParts" value="${SECURITY_ENCRYPTION_PARTS}" />
+				<entry key="encryptionSymAlgorithm" value="${SECURITY_ENCRYPTION_SYM_ALGORITHM}" />
+				<entry key="encryptionKeyTransportAlgorithm" value="${SECURITY_ENCRYPTION_KEY_TRANSPORT_ALGORITHM}" />
 
 				<!-- <entry key="passwordType" value="PasswordDigest" /> -->
 				<!-- <entry key="decryptionPropFile" value="wssecurity/etc/Server_Decrypt.properties"/> -->
