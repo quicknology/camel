@@ -1,0 +1,507 @@
+  <bean id="loggingOutInterceptor" class="org.apache.cxf.interceptor.LoggingOutInterceptor"/>
+    
+  <bean id="loggingInInterceptor" class="org.apache.cxf.interceptor.LoggingInInterceptor"/>
+
+  <bean id="wss4jInInterceptor" class="org.apache.cxf.ws.security.wss4j.WSS4JInInterceptor">
+    <constructor-arg>
+      <map>
+        <entry key="action" value="UsernameToken Timestamp"/>
+        <entry key="passwordType" value="PasswordDigest"/>
+        <entry key="passwordCallbackClass" value="org.apache.camel.example.reportincident.UTPasswordCallback"/>
+      </map>
+    </constructor-arg>
+  </bean>
+
+  <!--
+ <bean id="wss4jOutInterceptor" class="org.apache.cxf.ws.security.wss4j.WSS4JOutInterceptor">
+   <constructor-arg>
+       <map>
+           <entry key="action" value="UsernameToken Timestamp"/>
+           <entry key="passwordType" value="PasswordText"/>
+           <entry key="user" value="Alice"/>
+           <entry key="passwordCallbackClass" value="org.apache.camel.example.reportincident.UTPasswordCallback"/>
+       </map>
+   </constructor-arg>
+ </bean>
+  -->
+
+  User Forum Question
+  http://camel.465427.n5.nabble.com/Camel-CXF-Proxy-with-WS-Security-td5749223.html#a5749229
+  
+  CXF WS-Security
+  http://cxf.apache.org/docs/ws-security.html
+  
+  Glen Mazza's Weblog
+  Using X.509 security with Apache CXF
+  http://www.jroller.com/gmazza/entry/cxf_x509_profile
+  
+      <!-- 
+        This bean is needed only if you're using the CXF interceptor method (per above 
+        configuration, it's ignored if you're using the WS-SecurityPolicy method.)
+        
+        This bean is an Out interceptor which will add a timestamp, 
+        sign the timestamp and body, and then encrypt the timestamp 
+        and body.  It uses 3DES as the symmetric key algorithm.
+    -->
+    <!--bean 
+        class="org.apache.cxf.ws.security.wss4j.WSS4JOutInterceptor"
+        id="TimestampSignEncrypt_Request">
+        <constructor-arg>
+            <map>
+                <entry key="action" value="Timestamp Signature Encrypt"/>
+                <entry key="user" value="myclientkey"/>
+                <entry key="signaturePropFile" value="clientKeystore.properties"/>
+                <entry key="encryptionPropFile" value="clientKeystore.properties"/>
+                <entry key="encryptionUser" value="myservicekey"/>
+                <entry key="passwordCallbackClass" value="client.ClientKeystorePasswordCallback"/>
+                <entry key="signatureParts" value="{Element}{http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-utility-1.0.xsd}Timestamp;{Element}{http://schemas.xmlsoap.org/soap/envelope/}Body"/>
+                <entry key="encryptionParts" value="{Element}{http://www.w3.org/2000/09/xmldsig#}Signature;{Content}{http://schemas.xmlsoap.org/soap/envelope/}Body"/>
+                <entry key="encryptionSymAlgorithm" value="http://www.w3.org/2001/04/xmlenc#tripledes-cbc"/>
+                <entry key="encryptionKeyTransportAlgorithm" value="http://www.w3.org/2001/04/xmlenc#rsa-oaep-mgf1p"/>
+                <entry key="signatureAlgorithm" value="http://www.w3.org/2000/09/xmldsig#rsa-sha1"/>
+            </map>
+        </constructor-arg>
+    </bean-->
+    
+    <!--    
+        This bean is needed only if you're using the CXF interceptor method (per above 
+        configuration, it's ignored if you're using the WS-SecurityPolicy method.)
+
+        This bean is an In interceptor which will validate a signed,    
+         encrypted response, and timestamp it.    
+    -->
+    <!--bean 
+        class="org.apache.cxf.ws.security.wss4j.WSS4JInInterceptor"
+        id="TimestampSignEncrypt_Response">
+        <constructor-arg>
+            <map>
+                <entry key="action" value="Timestamp Signature Encrypt"/>
+                <entry key="signaturePropFile" value="clientKeystore.properties"/>
+                <entry key="decryptionPropFile" value="clientKeystore.properties"/>
+                <entry key="passwordCallbackClass" value="client.ClientKeystorePasswordCallback"/>
+                <entry key="encryptionKeyTransportAlgorithm" value="http://www.w3.org/2001/04/xmlenc#rsa-oaep-mgf1p"/>
+                <entry key="signatureAlgorithm" value="http://www.w3.org/2000/09/xmldsig#rsa-sha1"/>
+            </map>
+        </constructor-arg>
+    </bean-->
+	
+	
+	clientKeystore.properties:
+
+org.apache.ws.security.crypto.merlin.keystore.file=clientKeystore.jks
+org.apache.ws.security.crypto.merlin.keystore.password=cspass
+org.apache.ws.security.crypto.merlin.keystore.type=jks
+org.apache.ws.security.crypto.merlin.keystore.alias=myclientkey
+
+
+  camel-example-reportincident-wssecurity
+  
+  <cxf:cxfEndpoint id="reportIncident"
+                   address="http://localhost:{{port}}/camel-example-reportincident/webservices/incident"
+                   wsdlURL="etc/report_incident.wsdl"
+                   serviceClass="org.apache.camel.example.reportincident.ReportIncidentEndpoint">
+
+    <cxf:inInterceptors>
+      <ref bean="loggingInInterceptor"/>
+      <ref bean="wss4jInInterceptor"/>
+    </cxf:inInterceptors>
+
+    <cxf:outInterceptors>
+      <ref bean="loggingOutInterceptor"/>
+      <!--  <ref bean="wss4jOutInterceptor"/> -->
+    </cxf:outInterceptors>
+
+  </cxf:cxfEndpoint>
+
+  <bean id="myBean" class="org.apache.camel.example.reportincident.MyBean"/>
+  <bean id="filenameGenerator" class="org.apache.camel.example.reportincident.FilenameGenerator"/>
+
+  <camel:camelContext id="camel">
+    <!-- property which contains port number -->
+    <camel:propertyPlaceholder id="properties" ignoreMissingLocation="true" location="classpath:incident.properties,file:target/custom.properties"/>
+
+    <camel:route>
+      <camel:from uri="cxf:bean:reportIncident"/>
+      <camel:convertBodyTo type="org.apache.camel.example.reportincident.InputReportIncident"/>
+      <camel:setHeader headerName="CamelFileName">
+        <camel:method bean="filenameGenerator" method="generateFilename"/>
+      </camel:setHeader>
+      <camel:to uri="velocity:etc/MailBody.vm"/>
+      <camel:to uri="file://target/subfolder"/>
+      <camel:transform>
+        <camel:method bean="myBean" method="getOK"/>
+      </camel:transform>
+    </camel:route>
+
+	WSS4J configuration
+	http://ws.apache.org/wss4j/config.html
+	configuration tags
+	
+	javax.xml.soap SOAPMessage
+	http://docs.oracle.com/javaee/5/api/javax/xml/soap/SOAPMessage.html
+	
+	org.apache.camel.Message
+	https://camel.apache.org/maven/current/camel-core/apidocs/org/apache/camel/Message.html
+	
+	
+	loggingOutInterceptor---log....
+	22:57:11,599 | INFO  | qtp463461961-652 | eptor.AbstractLoggingInterceptor  234 | 122 - org.apache.cxf.cxf-api - 2.7.7 | Outbound Message
+---------------------------
+ID: 3
+Address: http://0.0.0.0:8088/vbmsp2-cms/eDocumentService
+Encoding: UTF-8
+Http-Method: POST
+Content-Type: text/xml
+Headers: {Accept=[*/*], SOAPAction=[http://vbms.vba.va.gov/external/eDocumentService/uploadFormDocument]}
+Payload: <soap:Envelope xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/"><SOAP-ENV:Header xmlns:SOAP-ENV="http://schemas.xmlsoap.org/soap/envelope/"><wsse:Security xmlns:wsse="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-secext-1.0.xsd" xmlns:wsu="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-utility-1.0.xsd" soap:mustUnderstand="1"><wsu:Timestamp wsu:Id="TS-521DE0366CCEDC54EA13956298315993"><wsu:Created>2014-03-24T02:57:11.598Z</wsu:Created><wsu:Expires>2014-03-24T03:02:11.598Z</wsu:Expires></wsu:Timestamp></wsse:Security></SOAP-ENV:Header><soap:Body/></soap:Envelope>
+===
+17:16:55,485 | INFO  | qtp160122247-514 | s.dcp.AlfrescoSoapProxyProcessor   21 | 315 - com.sms.dcp.esb - 1.0.0 | VA SOAP Request operation name:uploadFormDocument, message type:com.sun.xml.messaging.saaj.soap.ver1_1.Message1_1Impl
+
+com.sun.xml.internal.messaging.saaj.soap.ver1_1.Message1_1Impl->com.sun.xml.messaging.saaj.soap.MessageImpl->javax.xml.soap.SOAPMessage
+http://grepcode.com/file/repository.grepcode.com/java/root/jdk/openjdk/6-b27/javax/xml/soap/SOAPMessage.java#SOAPMessage.getSOAPHeader%28%29
+some programming examples
+http://www.programcreek.com/java-api-examples/index.php?api=javax.xml.soap.SOAPMessage
+===
+<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:cmp="http://vbms.vba.va.gov/cdm" xmlns:edoc="http://vbms.vba.va.gov/external/eDocumentService/"><soapenv:Header/><soapenv:Body>
+      <edoc:uploadFormDocument>
+<!--
+         <edoc:formDocument ID="1" externalID="100" Veteran_Person_ID="1234567890"  fileNumber="10" filename="formDoc1"  docType="txt" veteranFirstName="Will" veteranMiddleName="Work" veteranLastName="Hard" >
+-->
+         <edoc:formDocument ID="1" Veteran_Person_ID="1234567890" externalID="100" filename="formDoc1.txt" veteranFirstName="Will" veteranLastName="Hard" veteranMiddleName="Work">
+            
+   <!--Optional:-->
+            <cmp:docContent>cid:1259044760059</cmp:docContent>
+         </edoc:formDocument>
+      </edoc:uploadFormDocument>
+   </soapenv:Body>
+   
+   </soapenv:Envelope>
+====
+   
+   
+Route autostart and startup order
+<route autoStartup="false">
+   <from uri="activemq:queue:special"/>
+   <to uri="file://backup"/>
+</route>
+<route startupOrder="1">
+    <from uri="seda:foo"/>
+    <to uri="mock:result"/>
+</route>
+ 
+<route startupOrder="2">
+    <from uri="direct:start"/>
+    <to uri="seda:foo"/>
+</route>
+ 
+<route>
+    <from uri="direct:bar"/>
+    <to uri="seda:bar"/>
+</route>
+
+
+Camel property place holder
+<camelContext ...>
+   <propertyPlaceholder id="properties" location="com/mycompany/myprop.properties"/>
+</camelContext>
+location=file:${karaf.home}/etc/foo.properties
+location=file:${env:APP_HOME}/etc/${prop.name}.properties
+
+====================
+
+https://github.com/apache/camel/blob/master/components/camel-cxf/src/main/resources/META-INF/services/org/apache/camel/TypeConverter
+
+org.apache.camel.component.cxf.converter.CxfConverter
+org.apache.camel.component.cxf.converter.CxfPayloadConverter
+
+
+transform example:
+<camelContext xmlns="http://camel.apache.org/schema/spring">
+  <route>
+    <from uri="direct:start"/>
+    <transform>
+      <simple>${in.body} extra data!</simple>
+    </transform>
+    <to uri="mock:end"/>
+  </route>
+</camelContext>
+
+
+
+======================security============
+http://svn.apache.org/viewvc/cxf/trunk/systests/ws-security/src/test/resources/org/apache/cxf/systest/ws/security/server.xml?view=markup
+
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:cxf="http://cxf.apache.org/core" xmlns:jaxws="http://cxf.apache.org/jaxws" xmlns:test="http://apache.org/hello_world_soap_http" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:wsa="http://cxf.apache.org/ws/addressing" xsi:schemaLocation="http://cxf.apache.org/core         http://cxf.apache.org/schemas/core.xsd         http://www.springframework.org/schema/beans         http://www.springframework.org/schema/beans/spring-beans.xsd         http://cxf.apache.org/jaxws                                              http://cxf.apache.org/schemas/jaxws.xsd">
+21	    <bean class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer"/>
+22	    <!--    
+23	         Enable logging at all endpoints    
+24	    -->
+25	    <cxf:bus>
+26	        <cxf:features>
+27	            <bean class="org.apache.cxf.feature.LoggingFeature"/>
+28	        </cxf:features>
+29	    </cxf:bus>
+30	    <!--    
+31	         UsernameToken endpoint definition    
+32	         This endpoint is configured to read the username and password tokens    
+33	         and validate them using a password callback handler.    
+34	    -->
+35	    <jaxws:endpoint id="UsernameTokenEndpoint" implementor="org.apache.cxf.systest.ws.security.GreeterImpl" address="http://localhost:${testutil.ports.Server}/GreeterService/UsernameTokenPort" serviceName="test:GreeterService" endpointName="test:UsernameTokenPort">
+36	        <jaxws:features>
+37	            <wsa:addressing/>
+38	        </jaxws:features>
+39	        <jaxws:inInterceptors>
+40	            <ref bean="UsernameToken_Request"/>
+41	        </jaxws:inInterceptors>
+42	    </jaxws:endpoint>
+43	    <!--    
+44	         WSS4JInInterceptor for UsernameTokenEndpoint above    
+45	    -->
+46	    <bean id="UsernameToken_Request" class="org.apache.cxf.ws.security.wss4j.WSS4JInInterceptor">
+47	        <constructor-arg>
+48	            <map>
+49	                <entry key="action" value="UsernameToken"/>
+50	                <entry key="passwordType" value="PasswordDigest"/>
+51	                <entry key="passwordCallbackClass" value="org.apache.cxf.systest.ws.common.KeystorePasswordCallback"/>
+52	            </map>
+53	        </constructor-arg>
+54	    </bean>
+55	    <!--    
+56	         TimestampSignEncryptEndpoint endpoint definition    
+57	         This endpoint is configured to work with public key certificates    
+58	         on both client (Alice) and service (Bob) side.    
+59	    -->
+60	    <jaxws:endpoint id="TimestampSignEncryptEndpoint" implementor="org.apache.cxf.systest.ws.security.GreeterImpl" address="http://localhost:${testutil.ports.Server}/GreeterService/TimestampSignEncryptPort" serviceName="test:GreeterService" endpointName="test:TimestampSignEncryptPort">
+61	        <jaxws:outInterceptors>
+62	            <ref bean="TimestampSignEncrypt_Response"/>
+63	        </jaxws:outInterceptors>
+64	        <jaxws:inInterceptors>
+65	            <ref bean="TimestampSignEncrypt_Request"/>
+66	        </jaxws:inInterceptors>
+67	    </jaxws:endpoint>
+68	    <!--    
+69	         WSS4JInInterceptor for decrypting and validating the signature of the
+70	         SOAP request.
+71	    -->
+72	    <bean id="TimestampSignEncrypt_Request" class="org.apache.cxf.ws.security.wss4j.WSS4JInInterceptor">
+73	        <constructor-arg>
+74	            <map>
+75	                <!-- Use this action order for local clients -->
+76	                <entry key="action" value="Timestamp Signature Encrypt"/>
+77	                <!-- Use this action spec for WCF clients 
+78	                <entry key="action" value="Signature Encrypt Timestamp"/>
+79	                -->
+80	                <entry key="signaturePropFile" value="org/apache/cxf/systest/ws/security/alice.properties"/>
+81	                <entry key="decryptionPropFile" value="org/apache/cxf/systest/ws/security/bob.properties"/>
+82	                <entry key="passwordCallbackClass" value="org.apache.cxf.systest.ws.common.KeystorePasswordCallback"/>
+83	            </map>
+84	        </constructor-arg>
+85	    </bean>
+86	    <!--    
+87	         WSS4JOutInterceptor for encoding and signing the SOAP response.    
+88	    -->
+89	    <bean id="TimestampSignEncrypt_Response" class="org.apache.cxf.ws.security.wss4j.WSS4JOutInterceptor">
+90	        <constructor-arg>
+91	            <map>
+92	                <entry key="action" value="Timestamp Signature Encrypt"/>
+93	                <entry key="user" value="bob"/>
+94	                <entry key="signaturePropFile" value="org/apache/cxf/systest/ws/security/bob.properties"/>
+95	                <entry key="encryptionPropFile" value="org/apache/cxf/systest/ws/security/alice.properties"/>
+96	                <entry key="encryptionUser" value="Alice"/>
+97	                <entry key="signatureKeyIdentifier" value="DirectReference"/>
+98	                <entry key="passwordCallbackClass" value="org.apache.cxf.systest.ws.common.KeystorePasswordCallback"/>
+99	                <entry key="signatureParts" value="{Element}{http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-utility-1.0.xsd}Timestamp;{Element}{http://schemas.xmlsoap.org/soap/envelope/}Body"/>
+100	                <!--    
+101	                     Recommendation: signatures should be encrypted    
+102	                -->
+103	                <entry key="encryptionParts" value="{Element}{http://www.w3.org/2000/09/xmldsig#}Signature;{Content}{http://schemas.xmlsoap.org/soap/envelope/}Body"/>
+104	                <!-- <entry key="encryptionKeyTransportAlgorithm" value="RSA15"/> -->
+105	                <entry key="encryptionSymAlgorithm" value="http://www.w3.org/2001/04/xmlenc#tripledes-cbc"/>
+106	            </map>
+107	        </constructor-arg>
+108	    </bean>
+109	</beans>
+
+wsse_security header
+http://grepcode.com/file/repo1.maven.org/maven2/org.apache.ws.security/wss4j/1.6.12/org/apache/ws/security/handler/WSHandler.java#WSHandler.checkReceiverResultsAnyOrder%28java.util.List%2Cjava.util.List%29
+
+
+Camel-user posts related to CXF_MESSAGE
+http://camel.465427.n5.nabble.com/Issue-using-camel-cxf-and-wss4j-td5725191.html#a5725222
+
+
+MTOM with Security Signature
+http://stackoverflow.com/questions/21492255/cxf-client-ws-security-mtom-trouble
+
+
+http://camel.465427.n5.nabble.com/insert-custom-Soap-Header-problem-td5726415.html#a5726438
+<route id="CustomerServiceUpdateCustomerTest">
+        <camel:from uri="direct:iccsUpdateCustomerRequest"/>
+        <camel:process ref="addCredentials"/>
+        <to uri="cxf:bean:ICCSCustomerService"/>  
+</route>
+
+The Header should be inserted by the processor witch looks like that: 
+@Override 
+public void process(Exchange exchange) throws Exception { 
+   List<SoapHeader> soapHeaders = CastUtils.cast((List<?)exchange.getOut().getHeader(Header.HEADER_LIST)); 
+    // Insert a new header 
+    String xml = "<?xml version=\"1.0\" encoding=\"utf-8\"?><outofbandHeader " 
+        + "xmlns=\"http://cxf.apache.org/outofband/Header\" hdrAttribute=\"testHdrAttribute\" " 
+        + "xmlns:soap=\"http://schemas.xmlsoap.org/soap/envelope/\" soap:mustUnderstand=\"1\">" 
+        + "<name>simpleAuth username=\"xxx\" password=\"abc\" xmlns=\"http://xsoap.iccs.de/v1\"</name></outofbandHeader>"; 
+
+    SoapHeader newHeader = new SoapHeader(new QName("http://xsoap.iccs.de/v1", "simpleAuth"), 
+                   DOMUtils.readXml(new StringReader(xml)).getDocumentElement()); 
+    // make sure direction is OUT since it is a response message. 
+    newHeader.setDirection(Direction.DIRECTION_OUT); 
+    //newHeader.setMustUnderstand(false); 
+    soapHeaders.add(newHeader); 
+} 
+
+If you want to add the customer SOAP header for the cxf endpoint, you can just create a new List of SoapHeader, and set it into camel message header with the key Header.HEADER_LIST like this 
+
+List<SoapHeader> soapHeaders = new ArrayList<SoapHeader>(); 
+…… 
+exchange.getOut().setHeader(Header.HEADER_LIST, soapHeaders); 
+
+
+
+
+
+
+http://camel.465427.n5.nabble.com/insert-custom-Soap-Header-problem-td5726415.html#a5726438
+not sure if this is the same, but I had to do something similar for SAML. 
+
+I did it through an Interecepter: 
+
+{code} 
+public class SAMLResponseInterceptor extends AbstractSoapInterceptor { 
+        
+        private static final transient Logger LOG = LoggerFactory.getLogger(SAMLResponseInterceptor.class); 
+
+    public SAMLResponseInterceptor() { 
+        super(Phase.PRE_PROTOCOL); 
+    } 
+
+    @Override 
+    public void handleMessage(SoapMessage message) throws Fault { 
+    
+        LOG.debug("Out interceptor called....."); 
+        
+        SAMLHelper sam = new SAMLHelper(); 
+        
+        Element saml = sam.getResponseSAML(); 
+        
+        if (saml != null) { 
+        
+            QName q = new QName("http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-secext-1.0.xsd","Security", "wsse"); 
+            Header h = message.getHeader(q); 
+            
+            if (h == null) { 
+            
+                QName q1 = new QName("http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-secext-1.0.xsd","Security", "o"); 
+                Header h1 = message.getHeader(q1); 
+                
+                if (h1 == null) { 
+                
+                    h = new Header(q, saml); 
+                    message.getHeaders().add(h); 
+                    LOG.debug("New soap header added"); 
+                } 
+                else { 
+                    h1.setObject(saml); 
+                    LOG.debug("soap header updated"); 
+                } 
+            } 
+            else { 
+                h.setObject(saml); 
+                LOG.debug("soap header updated"); 
+            } 
+        } 
+    } 
+} 
+
+{code}
+
+SAML
+https://git-wip-us.apache.org/repos/asf?p=cxf.git;a=blob;f=systests/ws-security/src/test/resources/org/apache/cxf/systest/ws/action/client/client.xml;h=e0cac1dfe57bbfd2a89e250777cd68316da2aeb6;hb=refs/heads/2.7.x-fixes
+
+ 144     <bean id="samlCallbackHandler" class="org.apache.cxf.systest.ws.saml.client.SamlCallbackHandler">
+ 145         <property name="confirmationMethod" value="urn:oasis:names:tc:SAML:2.0:cm:bearer" />
+ 146     </bean>
+ 147     
+ 148     <util:properties id="samlProperties" location="classpath:saml_sv.properties"/>
+ 149     
+ 150     <jaxws:client name="{http://www.example.org/contract/DoubleIt}DoubleItSamlTokenPort" 
+ 151                   createdFromAPI="true">
+ 152        <jaxws:outInterceptors>
+ 153            <bean class="org.apache.cxf.ws.security.wss4j.WSS4JOutInterceptor">
+ 154                <constructor-arg>
+ 155                    <map>
+ 156                         <entry key="action" value="SAMLTokenUnsigned"/> 
+ 157                         <entry key="samlCallbackRef" value-ref="samlCallbackHandler"/>
+ 158                         <entry key="samlPropRefId" value="samlPropertiesId" />
+ 159                         <entry key="samlPropertiesId" value-ref="samlProperties" />
+ 160                    </map>
+ 161                </constructor-arg>
+ 162            </bean>
+ 163        </jaxws:outInterceptors>
+ 164     </jaxws:client>
+
+http://ws.apache.org/wss4j/config.html
+
+Property name	Property value
+org.apache.ws.security.saml.issuerClass	The SAML Issuer implementation (defaults to "org.apache.ws.security.saml.SAMLIssuerImpl").
+org.apache.ws.security.saml.issuer.cryptoProp.file	The crypto properties file corresponding to the issuer crypto instance, if the assertion is to be signed.
+org.apache.ws.security.saml.issuer.key.name	The KeyStore alias for the issuer key.
+org.apache.ws.security.saml.issuer.key.password	The KeyStore password for the issuer key.
+org.apache.ws.security.saml.issuer	The issuer name
+org.apache.ws.security.saml.issuer.sendKeyValue	Whether to send the key value or the X509Certificate. Default is "false".
+org.apache.ws.security.saml.issuer.signAssertion	Whether the SAMLIssuer implementation will sign the assertion or not. Defaults is "false".
+org.apache.ws.security.saml.callback	The name of the SAML CallbackHandler implementation used to populate the SAML Assertion.
+
+http://camel.465427.n5.nabble.com/add-SAML-TOKEN-to-SOAP-header-td5749520.html
+As the error message says, "IssueInstant" is a required attribute of a SAML 
+2.0 assertion. Do you have control over the generation of the SAML token? 
+The SAML Token is technically invalid without this attribute. If not, then 
+an alternative is for you to extend the SamlAssertionValidator in WSS4J + 
+override the "validateAssertion" method, not to validate the received 
+assertion against the schemas. You can then plug this Validator into CXF 
+via a jax-ws property "ws-security.saml2.validator". 
+
+Colm. 
+
+code example
+https://git-wip-us.apache.org/repos/asf?p=cxf.git;a=blob;f=systests/ws-security/src/test/resources/org/apache/cxf/systest/ws/action/client/client.xml;h=e0cac1dfe57bbfd2a89e250777cd68316da2aeb6;hb=refs/heads/2.7.x-fixes#l145
+
+
+
+
+
+
+
+
+
+
+
+
+==============Example of outbound message to VA===============
+15:52:37,558 | INFO  | p1746345545-2234 | eptor.AbstractLoggingInterceptor  234 | 122 - org.apache.cxf.cxf-api - 2.7.7 | Outbound Message
+---------------------------
+ID: 49
+Address: http://0.0.0.0:9050/cmp/edocumentServiceVA
+Encoding: UTF-8
+Http-Method: POST
+Content-Type: multipart/related; type="application/xop+xml"; boundary="uuid:72621e7d-ae1b-415e-906f-d36d0eaf8b7b"; start="<root.message@cxf.apache.org>"; start-info="text/xml"
+Headers: {Accept=[*/*], SOAPAction=["http://vbms.vba.va.gov/external/eDocumentService/uploadFormDocument"]}
+Messages: Outbound Message (saved to tmp file):
+Filename: C:\Talend\5.4.1_3\esb\container\bin\..\data\tmp\cxf-tmp-967583\cos5309852516776282648tmp
+(message truncated to 102400 bytes)
+
+Payload: --uuid:72621e7d-ae1b-415e-906f-d36d0eaf8b7b
+Content-Type: application/xop+xml; charset=UTF-8; type="text/xml";
+Content-Transfer-Encoding: binary
+Content-ID: <root.message@cxf.apache.org>
+
+<soap:Envelope xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/"><SOAP-ENV:Header xmlns:SOAP-ENV="http://schemas.xmlsoap.org/soap/envelope/"><wsse:Security xmlns:wsse="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-secext-1.0.xsd" xmlns:wsu="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-utility-1.0.xsd"><wsse:BinarySecurityToken EncodingType="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-soap-message-security-1.0#Base64Binary" ValueType="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-x509-token-profile-1.0#X509v3" wsu:Id="X509-C72558A7B481E8BDBF139603635751014">MIIBoTCCAQqgAwIBAgIEUzODuDANBgkqhkiG9w0BAQUFADAVMRMwEQYDVQQDEwpjbGllbnR1c2VyMB4XDTE0MDMyNzAxNDk0NFoXDTE2MDMyNjAxNDk0NFowFTETMBEGA1UEAxMKY2xpZW50dXNlcjCBnzANBgkqhkiG9w0BAQEFAAOBjQAwgYkCgYEAhSnl5uoP/pHOWadGRfWcyA/6HRsRnTwgZACaXKYxHy/CvOBvq0+J3cja/8NbQ5h6oXTA7KaesEmhm9GdQquqoo2+DFp7eXUnPG58tp0VHRSqY1zkdRVfex4uu2ib35mSrF5khU+EiGAm7nlgEIvnxSbHSu/Sl5/YVrhvCHwWjMMCAwEAATANBgkqhkiG9w0BAQUFAAOBgQB4AOlict4YAf1Zv48pqOT7rVU7OWkQKrr18zeMSz9qy5eqAEKGQ5NfjE2DwYUf1jiywu82KurdUGX4HNcAveQd8aslYz+6Bz1BW7P8s995WY8ylmI1VMjOkZLxaEDwUcDZgNTak14iP9RBPqrmFwmWhJykTlOLsvEI79kyqe7eiQ==</wsse:BinarySecurityToken><ds:Signature xmlns:ds="http://www.w3.org/2000/09/xmldsig#" Id="SIG-C72558A7B481E8BDBF139603635751118"><ds:SignedInfo><ds:CanonicalizationMethod Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#"><ec:InclusiveNamespaces xmlns:ec="http://www.w3.org/2001/10/xml-exc-c14n#" PrefixList="soap"/></ds:CanonicalizationMethod><ds:SignatureMethod Algorithm="http://www.w3.org/2000/09/xmldsig#rsa-sha1"/><ds:Reference URI="#TS-C72558A7B481E8BDBF139603635750813"><ds:Transforms><ds:Transform Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#"><ec:InclusiveNamespaces xmlns:ec="http://www.w3.org/2001/10/xml-exc-c14n#" PrefixList="wsse soap"/></ds:Transform></ds:Transforms><ds:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1"/><ds:DigestValue>0b37yf30Y/CwDP5ItaqI96Pd9Rw=</ds:DigestValue></ds:Reference><ds:Reference URI="#id-C72558A7B481E8BDBF139603635751017"><ds:Transforms><ds:Transform Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#"><ec:InclusiveNamespaces xmlns:ec="http://www.w3.org/2001/10/xml-exc-c14n#" PrefixList=""/></ds:Transform></ds:Transforms><ds:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1"/><ds:DigestValue>Rr5zgDI0WKaa2nSBmjBLlpdmTQ0=</ds:DigestValue></ds:Reference></ds:SignedInfo><ds:SignatureValue>DpuSZmmVgQUIHkla8r66UCzUWMVreGkm1Ml1MLsgYm2Z7URhD2C8H6bEyaLW212wALQ0uZ8yEeRgHiouq+lej5d+YLCgUWobs4B99o7y8vdksbKIHCyUuq2N3B2re4jaTBL7jmcpRdoUU7f529/O0mO3TmtYebGWxQXw29NUWmI=</ds:SignatureValue><ds:KeyInfo Id="KI-C72558A7B481E8BDBF139603635751015"><wsse:SecurityTokenReference wsu:Id="STR-C72558A7B481E8BDBF139603635751016"><wsse:Reference URI="#X509-C72558A7B481E8BDBF139603635751014" ValueType="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-x509-token-profile-1.0#X509v3"/></wsse:SecurityTokenReference></ds:KeyInfo></ds:Signature><wsu:Timestamp wsu:Id="TS-C72558A7B481E8BDBF139603635750813"><wsu:Created>2014-03-28T19:52:37.508Z</wsu:Created><wsu:Expires>2014-03-28T19:57:37.508Z</wsu:Expires></wsu:Timestamp></wsse:Security></SOAP-ENV:Header><soap:Body xmlns:wsu="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-utility-1.0.xsd" wsu:Id="id-C72558A7B481E8BDBF139603635751017"><ns2:uploadFormDocument xmlns="http://vbms.vba.va.gov/cdm" xmlns:ns2="http://vbms.vba.va.gov/external/eDocumentService/"><ns2:formDocument Veteran_Person_ID="0" actionable="false" filename="formDoc2.txt" newMail="false" veteranFirstName="Will" veteranLastName="Hard" veteranMiddleName="Work"><docContent>JVBERi0xLjcNJeLjz9MNCjgwMCAwIG9ia...................................

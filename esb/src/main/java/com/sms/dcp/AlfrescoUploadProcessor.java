@@ -13,6 +13,7 @@ import java.util.Map;
 import java.util.Random;
 
 import javax.activation.DataHandler;
+import javax.xml.datatype.XMLGregorianCalendar;
 
 import org.apache.camel.Exchange;
 import org.apache.chemistry.opencmis.client.api.Document;
@@ -171,7 +172,12 @@ public class AlfrescoUploadProcessor {
 		properties.put(PropertyIds.SECONDARY_OBJECT_TYPE_IDS, aspects);
 		for (String propName : metadatas.keySet()) {
 			if (propName.startsWith("sve:")) {
-				properties.put(propName, metadatas.get(propName));
+				Object propValue = metadatas.get(propName);
+				if (propValue instanceof XMLGregorianCalendar) {
+					propValue = ((XMLGregorianCalendar) propValue).toGregorianCalendar().getTime();
+				}
+						
+				properties.put(propName, propValue);
 			}
 		}
 		properties.put(PropertyIds.NAME, name);
